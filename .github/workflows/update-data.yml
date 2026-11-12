@@ -44,7 +44,13 @@ jobs:
             echo "Fără modificări"
           else
             git commit -m "date: actualizare automată $(date -u +%Y-%m-%dT%H:%MZ)"
-            git push
+            # dacă între timp s-a făcut alt push pe main, integrăm și reîncercăm
+            for i in 1 2 3 4 5; do
+              git push && break
+              echo "push respins – rebase și reîncercare ($i)"
+              sleep $((i * 5))
+              git pull --rebase -X theirs origin main || { git rebase --abort; git pull --no-rebase -X ours origin main; }
+            done
           fi
       - name: Semnalează eșecul validării (primești e-mail de la GitHub)
         if: steps.build.outcome == 'failure'
