@@ -1,5 +1,22 @@
 [
  {
+  "run": "2026-11-12T15:26:25+00:00",
+  "offline": false,
+  "errors": [],
+  "warnings": [
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004000817%20rom.pdf",
+    "msg": "cupon flotant: comunicat necitit (text salvat în data/debug)",
+    "attempt": 2
+   },
+   {
+    "level": "info",
+    "msg": "cupoane flotante: 124 link-uri pe paginile MF, 124 comunicate candidate, 25 noi, 99 în total"
+   }
+  ]
+ },
+ {
   "run": "2026-11-12T15:25:22+00:00",
   "offline": false,
   "errors": [],
