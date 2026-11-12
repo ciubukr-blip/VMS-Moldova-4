@@ -1,5 +1,131 @@
 [
  {
+  "id": "launch:2025-07-09",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-07-09",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "launch:2025-08-13",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-08-13",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "launch:2025-09-10",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-09-10",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "launch:2025-10-08",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-10-08",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "launch:2025-10-15",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-10-15",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "launch:2025-11-04",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-11-04",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "launch:2025-11-18",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-11-18",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "launch:2025-12-02",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-12-02",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "launch:2025-12-10",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-12-10",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "launch:2025-12-16",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-12-16",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "launch:2025-12-23",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-12-23",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "integrated:2026-04-14",
+  "kind": "integrated",
+  "title": "Rezultate integrate 2026-04-14",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "integrated:2026-05-05",
+  "kind": "integrated",
+  "title": "Rezultate integrate 2026-05-05",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "integrated:2026-05-19",
+  "kind": "integrated",
+  "title": "Rezultate integrate 2026-05-19",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "integrated:2026-06-02",
+  "kind": "integrated",
+  "title": "Rezultate integrate 2026-06-02",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "integrated:2026-06-16",
+  "kind": "integrated",
+  "title": "Rezultate integrate 2026-06-16",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "integrated:2026-06-30",
+  "kind": "integrated",
+  "title": "Rezultate integrate 2026-06-30",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "integrated:2026-07-14",
+  "kind": "integrated",
+  "title": "Rezultate integrate 2026-07-14",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "integrated:2026-08-18",
+  "kind": "integrated",
+  "title": "Rezultate integrate 2026-08-18",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "integrated:2026-09-01",
+  "kind": "integrated",
+  "title": "Rezultate integrate 2026-09-01",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
+  "id": "integrated:2026-09-15",
+  "kind": "integrated",
+  "title": "Rezultate integrate 2026-09-15",
+  "at": "2026-11-12T13:05:31+00:00"
+ },
+ {
   "id": "integrated:2026-10-13",
   "kind": "integrated",
   "title": "Rezultate integrate 2026-10-13",
