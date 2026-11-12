@@ -1,5 +1,61 @@
 [
  {
+  "run": "2026-11-12T12:39:54+00:00",
+  "offline": false,
+  "errors": [],
+  "warnings": [
+   {
+    "level": "info",
+    "msg": "93 comunicate de plasare rămase pentru rulările următoare"
+   },
+   {
+    "level": "warn",
+    "msg": "detaliu licitație fără ISIN unic",
+    "record": {
+     "auction_date": "2026-10-15",
+     "type": "BT",
+     "term_raw": "91",
+     "rate_avg": 3.11,
+     "announced": 50000.0,
+     "demand": 32071.0,
+     "placed_nominal": 31431.0,
+     "placed_price": 31193.42,
+     "source": "https://mf.gov.md/ro/content/licita%C8%9Bie-vms-15102026-termenul-91"
+    }
+   },
+   {
+    "level": "warn",
+    "msg": "detaliu licitație fără ISIN unic",
+    "record": {
+     "auction_date": "2026-10-15",
+     "type": "BT",
+     "term_raw": "182",
+     "rate_avg": 11.07,
+     "announced": 1350000.0,
+     "demand": 1561338.5,
+     "placed_nominal": 1539086.8,
+     "placed_price": 1458518.2,
+     "source": "https://mf.gov.md/ro/content/licita%C8%9Bie-vms-15102026-termenul-182"
+    }
+   },
+   {
+    "level": "warn",
+    "msg": "detaliu licitație fără ISIN unic",
+    "record": {
+     "auction_date": "2026-10-15",
+     "type": "BT",
+     "term_raw": "364",
+     "rate_avg": 11.7,
+     "announced": 1800000.0,
+     "demand": 1133576.7,
+     "placed_nominal": 1133576.7,
+     "placed_price": 1015154.16,
+     "source": "https://mf.gov.md/ro/content/licita%C8%9Bie-vms-15102026-termenul-364"
+    }
+   }
+  ]
+ },
+ {
   "run": "2026-11-12T11:06:56+00:00",
   "offline": false,
   "errors": [],

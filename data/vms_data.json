@@ -3877,6 +3877,65 @@
    "coupon_rate": null,
    "coupon_dates": [],
    "source": "Comunicat plasare BT-03.11.2026"
+  },
+  {
+   "isin": "MD4004002904",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1826,
+   "auction_date": "2026-11-11",
+   "issue_date": "2026-11-13",
+   "maturity": "2031-11-13",
+   "coupon_rate": 8.25,
+   "coupon_dates": [
+    "2027-05-13",
+    "2027-11-13",
+    "2028-05-13",
+    "2028-11-13",
+    "2029-05-13",
+    "2029-11-13",
+    "2030-05-13",
+    "2030-11-13",
+    "2031-05-13",
+    "2031-11-13"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.11.2026-rom.pdf"
+  },
+  {
+   "isin": "MD4003005304",
+   "type": "BT",
+   "term_label": "91 zile",
+   "term_days": 91,
+   "auction_date": "2026-11-17",
+   "issue_date": "2026-11-19",
+   "maturity": "2027-02-18",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-17.11.2026-rom.pdf"
+  },
+  {
+   "isin": "MD4003005312",
+   "type": "BT",
+   "term_label": "182 zile",
+   "term_days": 182,
+   "auction_date": "2026-11-17",
+   "issue_date": "2026-11-19",
+   "maturity": "2027-05-20",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-17.11.2026-rom.pdf"
+  },
+  {
+   "isin": "MD4003005320",
+   "type": "BT",
+   "term_label": "364 zile",
+   "term_days": 364,
+   "auction_date": "2026-11-17",
+   "issue_date": "2026-11-19",
+   "maturity": "2027-11-18",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-17.11.2026-rom.pdf"
   }
  ],
  "auctions": [
@@ -4498,7 +4557,12 @@
    "rate_avg": 3.06,
    "rate_max": 3.06,
    "settlement_date": "2026-10-01",
-   "maturity": "2026-12-24"
+   "maturity": "2026-12-24",
+   "announced": 50000.0,
+   "demand": 30857.0,
+   "placed_nominal": 30857.0,
+   "placed_price": 30641.12,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-09-29",
@@ -4509,7 +4573,12 @@
    "rate_avg": 10.13,
    "rate_max": 11.0,
    "settlement_date": "2026-10-01",
-   "maturity": "2027-04-01"
+   "maturity": "2027-04-01",
+   "announced": 1350000.0,
+   "demand": 839497.8,
+   "placed_nominal": 791497.8,
+   "placed_price": 753456.84,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-09-29",
@@ -4520,7 +4589,40 @@
    "rate_avg": 10.32,
    "rate_max": 11.65,
    "settlement_date": "2026-10-01",
-   "maturity": "2027-09-30"
+   "maturity": "2027-09-30",
+   "announced": 1800000.0,
+   "demand": 1206760.8,
+   "placed_nominal": 1196760.8,
+   "placed_price": 1085103.72,
+   "unit": "mii lei"
+  },
+  {
+   "auction_date": "2026-10-07",
+   "isin": "MD4004002763",
+   "type": "OS",
+   "term_label": "2 ani",
+   "announced": 30000.0,
+   "demand": 13515.0,
+   "placed_nominal": 13515.0,
+   "placed_price": 13515.0,
+   "rate_avg": 7.75,
+   "settlement_date": "2026-10-09",
+   "maturity": "2028-10-09",
+   "unit": "mii lei"
+  },
+  {
+   "auction_date": "2026-10-07",
+   "isin": "MD4004002771",
+   "type": "OS",
+   "term_label": "3 ani",
+   "announced": 30000.0,
+   "demand": 707.6,
+   "placed_nominal": 707.6,
+   "placed_price": 707.6,
+   "rate_avg": 7.85,
+   "settlement_date": "2026-10-09",
+   "maturity": "2029-10-09",
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-10-13",
@@ -4601,6 +4703,20 @@
    "demand": 1622749.8,
    "placed_nominal": 1602059.7,
    "placed_price": 1423055.43,
+   "unit": "mii lei"
+  },
+  {
+   "auction_date": "2026-11-11",
+   "isin": "MD4004002904",
+   "type": "OS",
+   "term_label": "5 ani",
+   "announced": 50000.0,
+   "demand": 210.0,
+   "placed_nominal": 210.0,
+   "placed_price": 210.0,
+   "rate_avg": 8.25,
+   "settlement_date": "2026-11-13",
+   "maturity": "2031-11-13",
    "unit": "mii lei"
   }
  ],
@@ -4802,5 +4918,5 @@
    ]
   }
  ],
- "generated_at": "2026-11-12T09:42:43+00:00"
+ "generated_at": "2026-11-12T12:39:54+00:00"
 }

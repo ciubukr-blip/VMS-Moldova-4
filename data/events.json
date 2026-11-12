@@ -1,0 +1,32 @@
+[
+ {
+  "id": "launch:2026-11-11",
+  "kind": "launch",
+  "title": "Licitație anunțată 2026-11-11",
+  "at": "2026-11-12T12:39:54+00:00"
+ },
+ {
+  "id": "launch:2026-11-17",
+  "kind": "launch",
+  "title": "Licitație anunțată 2026-11-17",
+  "at": "2026-11-12T12:39:54+00:00"
+ },
+ {
+  "id": "integrated:2026-09-29",
+  "kind": "integrated",
+  "title": "Rezultate integrate 2026-09-29",
+  "at": "2026-11-12T12:39:54+00:00"
+ },
+ {
+  "id": "integrated:2026-10-07",
+  "kind": "integrated",
+  "title": "Rezultate integrate 2026-10-07",
+  "at": "2026-11-12T12:39:54+00:00"
+ },
+ {
+  "id": "integrated:2026-11-11",
+  "kind": "integrated",
+  "title": "Rezultate integrate 2026-11-11",
+  "at": "2026-11-12T12:39:54+00:00"
+ }
+]
