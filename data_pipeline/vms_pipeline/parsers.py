@@ -327,7 +327,9 @@ _RO_DATE = r"(\d{1,2})\s+([a-zăâîșşțţ]+)\s+(\d{4})"
 
 
 def _ro_date(d: str, month: str, y: str) -> dt.date | None:
-    m = RO_MONTHS.get(month.lower().replace("ş", "ș").replace("ţ", "ț"))
+    key = month.lower().replace("ş", "ș").replace("ţ", "ț")
+    # toleră greșeli de tipar în comunicate („marte”): lunile se disting după primele 3 litere
+    m = RO_MONTHS.get(key) or next((v for k, v in RO_MONTHS.items() if k[:3] == key[:3]), None)
     try:
         return dt.date(int(y), m, int(d)) if m else None
     except ValueError:

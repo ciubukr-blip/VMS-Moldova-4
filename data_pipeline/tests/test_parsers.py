@@ -179,6 +179,12 @@ zile 6,87 % plus marja 0,75 p.p.)."""
                                         "trezorerie de 182 zile 4,07 % plus marja 0,25 p.p.).", "x")
         self.assertEqual((r["isin"], r["date"], r["rate"], r["margin"]), ("MD4004001096", "2024-11-11", 4.32, 0.25))
 
+    def test_notice_month_typo(self):
+        r = parsers.parse_coupon_notice("ISIN MD4004000817 emise la data de 11 martie 2022, ce urmează să fie plătit la data de "
+                                        "11 marte 2023, constituie 22,32% (rata medie la bonurile de trezorerie de 182 zile "
+                                        "20,32% plus marja 2,00 p.p.).", "x")
+        self.assertEqual((r["date"], r["rate"]), ("2023-03-11", 22.32))
+
     def test_notice_inconsistent_flagged(self):
         r = parsers.parse_coupon_notice(self.NOTICE_2026.replace("10,32%", "11,32%"), "x")
         self.assertIn("_issues", r)
