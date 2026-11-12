@@ -1,0 +1,62 @@
+[
+ {
+  "auction_date": "2026-11-03",
+  "isin": "MD4003005270",
+  "announced": 60000.0,
+  "demand": 41032.2,
+  "placed_nominal": 41032.2,
+  "placed_price": 40713.41,
+  "unit": "mii lei",
+  "source": "MF"
+ },
+ {
+  "auction_date": "2026-11-03",
+  "isin": "MD4003005288",
+  "announced": 1400000.0,
+  "demand": 1808799.7,
+  "placed_nominal": 1765710.4,
+  "placed_price": 1668885.52,
+  "unit": "mii lei",
+  "source": "MF"
+ },
+ {
+  "auction_date": "2026-11-03",
+  "isin": "MD4003005296",
+  "announced": 1800000.0,
+  "demand": 1622749.8,
+  "placed_nominal": 1602059.7,
+  "placed_price": 1423055.43,
+  "unit": "mii lei",
+  "source": "MF"
+ },
+ {
+  "auction_date": "2026-08-04",
+  "isin": "MD4003005098",
+  "announced": 50000.0,
+  "demand": 32725.0,
+  "placed_nominal": 32725.0,
+  "placed_price": 32479.6,
+  "unit": "mii lei",
+  "source": "MF"
+ },
+ {
+  "auction_date": "2026-08-04",
+  "isin": "MD4003005106",
+  "announced": 1300000.0,
+  "demand": 1901551.6,
+  "placed_nominal": 1300000.4,
+  "placed_price": 1238431.5,
+  "unit": "mii lei",
+  "source": "MF"
+ },
+ {
+  "auction_date": "2026-08-04",
+  "isin": "MD4003005114",
+  "announced": 1700000.0,
+  "demand": 1469123.1,
+  "placed_nominal": 1380451.6,
+  "placed_price": 1253650.2,
+  "unit": "mii lei",
+  "source": "MF"
+ }
+]
