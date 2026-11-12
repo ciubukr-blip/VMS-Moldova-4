@@ -95,6 +95,16 @@ def scrape(state: dict, log: list, budget_s: float = 420) -> dict[str, list]:
             out.append((d, url, title))
         return sorted(out, reverse=True)  # cele mai noi întâi
 
+    try:
+        _scrape_steps(sources, state, log, got, processed, attempts, today, cutoff, MAX_NEW, out_of_time, failed, dated)
+    except Exception:
+        log.append({"level": "error", "msg": "pas de preluare întrerupt", "trace": traceback.format_exc()[-1500:]})
+    finally:
+        state["processed"] = sorted(processed)  # progresul nu se pierde la eroare
+    return got
+
+
+def _scrape_steps(sources, state, log, got, processed, attempts, today, cutoff, MAX_NEW, out_of_time, failed, dated) -> None:
     placements, results = sources.placement_and_result_pdfs()
     todo = [(d, u, t) for d, u, t in dated(placements)
             if u not in processed and attempts.get(u, 0) < 3
@@ -103,7 +113,10 @@ def scrape(state: dict, log: list, budget_s: float = 420) -> dict[str, list]:
         if out_of_time():
             break
         try:
-            recs = parsers.parse_placement(sources.pdf_text(sources.pdf_bytes(url)), auction, url)
+            data = sources.pdf_bytes(url)
+            if not data[:1024].lstrip().startswith(b"%PDF"):
+                raise ValueError("răspunsul nu este PDF")
+            recs = parsers.parse_placement(sources.pdf_text(data), auction, url)
             got["securities"].extend(recs)
             processed.add(url)
         except Exception as e:  # keep going, record the problem
@@ -116,7 +129,10 @@ def scrape(state: dict, log: list, budget_s: float = 420) -> dict[str, list]:
         if out_of_time():
             break
         try:
-            text = sources.pdf_text(sources.pdf_bytes(url))
+            data = sources.pdf_bytes(url)
+            if not data[:1024].lstrip().startswith(b"%PDF"):
+                raise ValueError("răspunsul nu este PDF")
+            text = sources.pdf_text(data)
             recs = parsers.parse_results_bt(text, auction, url)
             got["results"].extend(recs)
             processed.add(url)  # bond-only results carry no min/max; detail pages cover them
@@ -152,12 +168,18 @@ def scrape(state: dict, log: list, budget_s: float = 420) -> dict[str, list]:
             except Exception as e:
                 failed(url, f"calendar: {e}")
                 break
+            if not data[:1024].lstrip().startswith(b"%PDF"):
+                continue  # site-ul răspunde cu o pagină HTML: calendarul nu este (încă) publicat
             digest = hashlib.sha256(data).hexdigest()
             key = f"{year}-Q{quarter}"
             if state.setdefault("calendar_hash", {}).get(key) == digest:
                 break
-            rows = [r for t in sources.pdf_tables(data) for r in t]
-            entries = parsers.parse_calendar_rows(rows, key, url)
+            try:
+                rows = [r for t in sources.pdf_tables(data) for r in t]
+                entries = parsers.parse_calendar_rows(rows, key, url)
+            except Exception as e:
+                failed(url, f"calendar: {e}")
+                break
             if entries:
                 got["calendar"].append({"quarter": key, "source_url": url, "entries": entries})
             else:
@@ -165,9 +187,6 @@ def scrape(state: dict, log: list, budget_s: float = 420) -> dict[str, list]:
                             "msg": "calendar găsit dar tabelul nu a putut fi citit – completează manual/calendar.json"})
             state["calendar_hash"][key] = digest
             break
-
-    state["processed"] = sorted(processed)
-    return got
 
 
 # --------------------------------------------------------------------------
