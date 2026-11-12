@@ -125,6 +125,9 @@ def parse_placement(text: str, auction_date: dt.date, source: str) -> list[dict[
         }
         if is_bond and floating:
             rec["coupon_type"] = "flotant"
+            margin = parse_margin(after)
+            if margin is not None:
+                rec["margin"] = margin
         if "redeschid" in flat.lower() and is_bond:
             # la redeschidere comunicatul conține maturitatea reziduală și dobânda acumulată,
             # nu datele emisiunii inițiale: nu actualizăm automat titlul
@@ -308,3 +311,61 @@ def parse_calendar_rows(rows: list[list[str | None]], quarter: str, source: str)
                 "source": source,
             })
     return entries
+
+
+# --------------------------------------------------------------------------
+# Floating-rate bonds: MF announces every coupon in a separate communiqué
+# ("Comunicat oficial cupon ISIN MD4004001583_ro.pdf"):
+#   "... cu codul ISIN MD4004001583 emise la data de 15 martie 2024, ce urmează să fie plătit
+#    la data de 15 martie 2026, constituie 10,32% (rata medie la bonurile de trezorerie de
+#    182 zile – 9,32 % plus marja – 1,00p.p.)."
+# --------------------------------------------------------------------------
+RO_MONTHS = {"ianuarie": 1, "februarie": 2, "martie": 3, "aprilie": 4, "mai": 5, "iunie": 6, "iulie": 7,
+             "august": 8, "septembrie": 9, "octombrie": 10, "noiembrie": 11, "decembrie": 12}
+_DASH = r"\s*[–—-]?\s*"
+_RO_DATE = r"(\d{1,2})\s+([a-zăâîșşțţ]+)\s+(\d{4})"
+
+
+def _ro_date(d: str, month: str, y: str) -> dt.date | None:
+    m = RO_MONTHS.get(month.lower().replace("ş", "ș").replace("ţ", "ț"))
+    try:
+        return dt.date(int(y), m, int(d)) if m else None
+    except ValueError:
+        return None
+
+
+def parse_margin(text: str) -> float | None:
+    """Marja (p.p.) a unei obligațiuni flotante, dacă apare în text."""
+    flat = re.sub(r"\s+", " ", text)
+    m = (re.search(r"marj\w*" + _DASH + r"(?:de\s+)?(\d{1,2}(?:[.,]\d{1,4})?)\s*(?:p\.?\s*p|puncte)", flat, re.I)
+         or re.search(r"\+\s*(\d{1,2}(?:[.,]\d{1,4})?)\s*p\.?\s*p", flat, re.I))
+    if not m:
+        return None
+    v = float(m.group(1).replace(",", "."))
+    return v if 0 <= v < 10 else None
+
+
+def parse_coupon_notice(text: str, source: str) -> dict[str, Any] | None:
+    """Rata anunțată pentru un cupon al unei obligațiuni cu dobândă flotantă."""
+    flat = re.sub(r"\s+", " ", text)
+    isin = ISIN_RE.search(flat)
+    pay = re.search(r"pl[ăa]tit\w*\s+la\s+data\s+de\s+" + _RO_DATE, flat, re.I)
+    rate = re.search(r"constituie\s+(\d{1,2}(?:[.,]\d{1,4})?)\s*%", flat, re.I)
+    if not (isin and pay and rate):
+        return None
+    pay_d = _ro_date(*pay.groups())
+    if not pay_d:
+        return None
+    rec: dict[str, Any] = {"isin": isin.group(0), "date": pay_d.isoformat(),
+                           "rate": float(rate.group(1).replace(",", ".")), "source": source}
+    base = re.search(r"182\s*zile" + _DASH + r"(\d{1,2}(?:[.,]\d{1,4})?)\s*%", flat, re.I)
+    if base:
+        rec["base"] = float(base.group(1).replace(",", "."))
+    margin = parse_margin(flat)
+    if margin is not None:
+        rec["margin"] = margin
+    if "base" in rec and "margin" in rec and abs(rec["base"] + rec["margin"] - rec["rate"]) > 0.02:
+        rec["_issues"] = ["rata ≠ rata medie BT 182 zile + marja"]
+    if not 0 < rec["rate"] < 40:
+        rec["_issues"] = rec.get("_issues", []) + ["rată neplauzibilă"]
+    return rec

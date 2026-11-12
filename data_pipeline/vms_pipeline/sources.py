@@ -112,3 +112,38 @@ def pdf_tables(data: bytes) -> list[list[list[str | None]]]:
 
 
 DATE_IN_NAME = re.compile(r"(\d{2})[.\-](\d{2})[.\-](\d{4})")
+
+
+def _is_coupon_notice(url: str, text: str) -> bool:
+    name = (unquote(url) + " " + text).lower()
+    return (name.split("?")[0].endswith(".pdf") or ".pdf" in name) and "md4004" in name and (
+        "cupo" in name or "rata dob" in name)
+
+
+def coupon_notice_pdfs(extra_pages: list[str] = ()) -> list[tuple[str, str]]:
+    """Comunicatele MF cu rata cuponului la obligațiunile cu dobândă flotantă (link-uri găsite pe pagini)."""
+    out: dict[str, str] = {}
+    for page in [PLACEMENT_PAGE, AUCTIONS_PAGE, *extra_pages]:
+        try:
+            for url, text in links(page):
+                if _is_coupon_notice(url, text) and "_ru" not in url.lower() and "rus" not in url.lower():
+                    out.setdefault(url, text)
+        except Exception:
+            continue
+    return list(out.items())
+
+
+def guess_coupon_notice_urls(isin: str) -> list[str]:
+    """Denumiri folosite de MF pentru aceste comunicate (inclusiv sufixele adăugate la reîncărcare)."""
+    stems = [
+        f"Comunicat%20oficial%20cupon%20ISIN%20{isin}_ro",
+        f"Comunicat%20oficial%20cupo%20ISIN%20{isin}_ro",
+        f"Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20{isin}.rom_",
+        f"Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20{isin}%20.rom_",
+        f"Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20{isin}%20rom",
+    ]
+    out = []
+    for st in stems:
+        for suffix in ("", "_0", "_1", "_2", "%20%281%29"):
+            out.append(f"{BASE}/sites/default/files/{st}{suffix}.pdf")
+    return out

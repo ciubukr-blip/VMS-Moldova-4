@@ -153,5 +153,40 @@ class MergeTests(unittest.TestCase):
         self.assertEqual(out["securities"][0]["coupon_rate"], 6.5)
 
 
+class FloatingCouponTests(unittest.TestCase):
+    NOTICE_2026 = """Ministerul Finanţelor anunţă, că rata anuală a dobânzii ce va fi aplicată pentru
+calcularea mărimii cuponului, aferent obligațiunilor de stat cu dobânda flotantă cu
+codul ISIN MD4004001583 emise la data de 15 martie 2024, ce urmează să fie plătit
+la data de 15 martie 2026, constituie 10,32% (rata medie la bonurile de trezorerie de
+182 zile – 9,32 % plus marja – 1,00p.p.)."""
+    NOTICE_2024 = """flotantă cu codul ISIN MD4004001054 emise la data de 13 octombrie 2022, ce urmează să fie plătit la
+data de 13 aprilie 2024, constituie 7,62 % (rata medie la bonurile de trezorerie de 182
+zile 6,87 % plus marja 0,75 p.p.)."""
+
+    def test_notice_new_wording(self):
+        r = parsers.parse_coupon_notice(self.NOTICE_2026, "x")
+        self.assertEqual((r["isin"], r["date"], r["rate"], r["base"], r["margin"]),
+                         ("MD4004001583", "2026-03-15", 10.32, 9.32, 1.0))
+        self.assertNotIn("_issues", r)
+
+    def test_notice_old_wording(self):
+        r = parsers.parse_coupon_notice(self.NOTICE_2024, "x")
+        self.assertEqual((r["date"], r["rate"], r["base"], r["margin"]), ("2024-04-13", 7.62, 6.87, 0.75))
+
+    def test_notice_inconsistent_flagged(self):
+        r = parsers.parse_coupon_notice(self.NOTICE_2026.replace("10,32%", "11,32%"), "x")
+        self.assertIn("_issues", r)
+
+    def test_apply_notices(self):
+        from vms_pipeline import build
+        secs = {"MD4004001583": {"isin": "MD4004001583", "type": "OS", "coupon_rate": None, "coupon_type": "flotant"}}
+        n1 = parsers.parse_coupon_notice(self.NOTICE_2026, "x")
+        n0 = {**n1, "date": "2025-09-15", "rate": 9.5}
+        build.apply_coupon_notices(secs, [n1, n0])
+        s = secs["MD4004001583"]
+        self.assertEqual([h["date"] for h in s["coupon_history"]], ["2025-09-15", "2026-03-15"])
+        self.assertEqual(s["margin"], 1.0)
+
+
 if __name__ == "__main__":
     unittest.main()

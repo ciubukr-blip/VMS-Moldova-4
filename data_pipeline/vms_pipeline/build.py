@@ -205,6 +205,8 @@ def _scrape_steps(sources, state, log, got, processed, attempts, today, cutoff, 
             except Exception as e:
                 failed(url, f"detaliu: {e}")
 
+    _scrape_coupon_notices(sources, state, log, processed, attempts, today, out_of_time, failed)
+
     q = (today.month - 1) // 3 + 1
     for year, quarter in sorted({(today.year, q), (today.year + (q == 4), 1 if q == 4 else q + 1)}):
         if out_of_time():
@@ -236,6 +238,65 @@ def _scrape_steps(sources, state, log, got, processed, attempts, today, cutoff, 
                             "msg": "calendar găsit dar tabelul nu a putut fi citit – completează manual/calendar.json"})
             state["calendar_hash"][key] = digest
             break
+
+
+def _scrape_coupon_notices(sources, state, log, processed, attempts, today, out_of_time, failed) -> None:
+    """Ratele cupoanelor anunțate pentru obligațiunile cu dobândă flotantă.
+
+    Se păstrează în state["coupon_notices"] (istoric complet) și se aplică la fiecare rulare.
+    Surse: link-urile de pe paginile MF + denumirile uzuale ale fișierelor (verificate o dată pe zi).
+    """
+    if out_of_time():
+        return
+    notices: list[dict] = state.setdefault("coupon_notices", [])
+    urls = [u for u, _ in sources.coupon_notice_pdfs()]
+    found_links = len(urls)
+    if state.get("notice_guess_day") != today.isoformat():
+        state["notice_guess_day"] = today.isoformat()
+        for isin in state.get("floating_isins", []):
+            if out_of_time():
+                break
+            for u in sources.guess_coupon_notice_urls(isin):
+                if u not in processed and u not in urls and sources.exists(u):
+                    urls.append(u)
+    new = 0
+    for url in urls:
+        if url in processed or attempts.get(url, 0) >= 3 or out_of_time() or new >= 25:
+            continue
+        try:
+            data = sources.pdf_bytes(url)
+            if not data[:1024].lstrip().startswith(b"%PDF"):
+                raise ValueError("răspunsul nu este PDF")
+            text = sources.pdf_text(data)
+            rec = parsers.parse_coupon_notice(text, url)
+            if not rec:
+                save_debug(url, text)
+                failed(url, "cupon flotant: comunicat necitit (text salvat în data/debug)")
+                continue
+            if rec.get("_issues"):
+                log.append({"level": "warn", "isin": rec["isin"], "msg": "cupon flotant: " + "; ".join(rec["_issues"]), "record": rec})
+            else:
+                notices[:] = [n for n in notices if not (n["isin"] == rec["isin"] and n["date"] == rec["date"])] + [rec]
+                new += 1
+            processed.add(url)
+        except Exception as e:
+            failed(url, f"cupon flotant: {e}")
+    log.append({"level": "info", "msg": f"cupoane flotante: {found_links} link-uri pe paginile MF, "
+                                         f"{len(urls)} comunicate candidate, {new} noi, {len(notices)} în total"})
+
+
+def apply_coupon_notices(secs: dict[str, dict], notices: list[dict]) -> None:
+    """Adaugă la obligațiunile flotante istoricul ratelor anunțate și marja."""
+    for n in sorted(notices, key=lambda n: n["date"]):
+        s = secs.get(n["isin"])
+        if not s or s.get("type") != "OS":
+            continue
+        s = secs[n["isin"]] = {**s, "coupon_type": "flotant"}
+        hist = {h["date"]: h for h in s.get("coupon_history", [])}
+        hist[n["date"]] = {k: n[k] for k in ("date", "rate", "base", "margin") if k in n}
+        s["coupon_history"] = [hist[k] for k in sorted(hist)]
+        if n.get("margin") is not None:
+            s["margin"] = n["margin"]
 
 
 # --------------------------------------------------------------------------
@@ -275,6 +336,7 @@ def merge(prev: dict, manual: dict, scraped: dict, log: list) -> dict:
         secs[s["isin"]] = {**(old or {}), **s}
     for s in manual["securities"]:
         secs[s["isin"]] = s
+    apply_coupon_notices(secs, scraped.get("coupon_notices", []))
     by_isin = secs
 
     # rates history (settlement-date keyed, like the original app)
@@ -373,6 +435,9 @@ def validate(data: dict) -> list[str]:
             errs.append(f"{s['isin']}: emitere după scadență")
         if s["type"] == "OS" and not s.get("coupon_rate") and s.get("coupon_type") != "flotant":
             errs.append(f"{s['isin']}: obligațiune fără cupon")
+        for h in s.get("coupon_history", []):
+            if not 0 < h["rate"] < 40:
+                errs.append(f"{s['isin']}: rată cupon flotant neplauzibilă {h}")
     for a in data["auctions"]:
         mn, av, mx = a.get("rate_min"), a.get("rate_avg"), a.get("rate_max")
         if None not in (mn, av, mx) and not (mn <= av <= mx):
@@ -426,7 +491,10 @@ def main(argv: list[str] | None = None) -> int:
         except Exception:
             log.append({"level": "error", "msg": "scrape eșuat", "trace": traceback.format_exc()[-2000:]})
 
+    scraped["coupon_notices"] = state.get("coupon_notices", [])
     new = merge(prev, manual, scraped, log)
+    state["floating_isins"] = sorted(s["isin"] for s in new["securities"]
+                                     if s.get("coupon_type") == "flotant" and s.get("maturity", "") >= dt.date.today().isoformat())
     errs = validate(new)
     now = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
     log_entry = {"run": now, "offline": args.offline, "errors": errs, "warnings": log}
