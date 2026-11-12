@@ -2839,6 +2839,1771 @@
  ],
  "securities": [
   {
+   "isin": "MD4004000205",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2020-09-16",
+   "issue_date": "2020-09-18",
+   "maturity": "2022-09-18",
+   "coupon_rate": 5.7,
+   "coupon_dates": [
+    "2021-03-18",
+    "2021-09-18",
+    "2022-03-18",
+    "2022-09-18"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-16.09.2020-rom.pdf"
+  },
+  {
+   "isin": "MD4004000213",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1095,
+   "auction_date": "2020-09-16",
+   "issue_date": "2020-09-18",
+   "maturity": "2023-09-18",
+   "coupon_rate": 5.9,
+   "coupon_dates": [
+    "2021-03-18",
+    "2021-09-18",
+    "2022-03-18",
+    "2022-09-18",
+    "2023-03-18",
+    "2023-09-18"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-16.09.2020-rom.pdf"
+  },
+  {
+   "isin": "MD4004000221",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2020-09-30",
+   "issue_date": "2020-10-02",
+   "maturity": "2022-10-02",
+   "coupon_rate": null,
+   "coupon_dates": [
+    "2021-04-02",
+    "2021-10-02",
+    "2022-04-02",
+    "2022-10-02"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-30.09.2020-rom.pdf",
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2021-10-02",
+     "rate": 5.18,
+     "base": 4.93,
+     "margin": 0.25
+    },
+    {
+     "date": "2022-04-02",
+     "rate": 5.44,
+     "base": 5.19,
+     "margin": 0.25
+    },
+    {
+     "date": "2022-10-02",
+     "rate": 12.41,
+     "base": 12.16,
+     "margin": 0.25
+    }
+   ],
+   "margin": 0.25
+  },
+  {
+   "isin": "MD4004000239",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2020-10-15",
+   "issue_date": "2020-10-16",
+   "maturity": "2022-10-16",
+   "coupon_rate": 5.7,
+   "coupon_dates": [
+    "2021-04-16",
+    "2021-10-16",
+    "2022-04-16",
+    "2022-10-16"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-15.10.2020-rom.pdf"
+  },
+  {
+   "isin": "MD4004000247",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1095,
+   "auction_date": "2020-10-15",
+   "issue_date": "2020-10-16",
+   "maturity": "2023-10-16",
+   "coupon_rate": 5.9,
+   "coupon_dates": [
+    "2021-04-16",
+    "2021-10-16",
+    "2022-04-16",
+    "2022-10-16",
+    "2023-04-16",
+    "2023-10-16"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-15.10.2020-rom.pdf"
+  },
+  {
+   "isin": "MD4004000502",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2021-06-16",
+   "issue_date": "2021-06-18",
+   "maturity": "2023-06-18",
+   "coupon_rate": 5.65,
+   "coupon_dates": [
+    "2021-12-18",
+    "2022-06-18",
+    "2022-12-18",
+    "2023-06-18"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-16.06.2021-rom.pdf"
+  },
+  {
+   "isin": "MD4004000510",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2021-06-16",
+   "issue_date": "2021-06-18",
+   "maturity": "2024-06-18",
+   "coupon_rate": 5.85,
+   "coupon_dates": [
+    "2021-12-18",
+    "2022-06-18",
+    "2022-12-18",
+    "2023-06-18",
+    "2023-12-18",
+    "2024-06-18"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-16.06.2021-rom.pdf"
+  },
+  {
+   "isin": "MD4004000528",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2021-06-30",
+   "issue_date": "2021-07-02",
+   "maturity": "2023-07-02",
+   "coupon_rate": null,
+   "coupon_dates": [
+    "2022-01-02",
+    "2022-07-02",
+    "2023-01-02",
+    "2023-07-02"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-30.06.2021-rom.pdf",
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2022-07-02",
+     "rate": 7.89,
+     "base": 7.64,
+     "margin": 0.25
+    },
+    {
+     "date": "2023-01-02",
+     "rate": 17.33,
+     "base": 17.08,
+     "margin": 0.25
+    },
+    {
+     "date": "2023-07-02",
+     "rate": 20.93,
+     "base": 20.68,
+     "margin": 0.25
+    }
+   ],
+   "margin": 0.25
+  },
+  {
+   "isin": "MD4004000536",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2021-07-14",
+   "issue_date": "2021-07-16",
+   "maturity": "2023-07-16",
+   "coupon_rate": 5.65,
+   "coupon_dates": [
+    "2022-01-16",
+    "2022-07-16",
+    "2023-01-16",
+    "2023-07-16"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-14.07.2021-rom.pdf"
+  },
+  {
+   "isin": "MD4004000544",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2021-07-14",
+   "issue_date": "2021-07-16",
+   "maturity": "2024-07-16",
+   "coupon_rate": 5.85,
+   "coupon_dates": [
+    "2022-01-16",
+    "2022-07-16",
+    "2023-01-16",
+    "2023-07-16",
+    "2024-01-16",
+    "2024-07-16"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-14.07.2021-rom.pdf"
+  },
+  {
+   "isin": "MD4004000551",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2021-08-04",
+   "issue_date": "2021-08-06",
+   "maturity": "2023-08-06",
+   "coupon_rate": null,
+   "coupon_dates": [
+    "2022-02-06",
+    "2022-08-06",
+    "2023-02-06",
+    "2023-08-06"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-04.08.2021-rom.pdf",
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2022-08-06",
+     "rate": 10.19,
+     "base": 9.94,
+     "margin": 0.25
+    },
+    {
+     "date": "2023-02-06",
+     "rate": 18.32,
+     "base": 18.07,
+     "margin": 0.25
+    },
+    {
+     "date": "2023-08-06",
+     "rate": 16.69,
+     "base": 16.44,
+     "margin": 0.25
+    }
+   ],
+   "margin": 0.25
+  },
+  {
+   "isin": "MD4004000593",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2021-09-02",
+   "issue_date": "2021-09-03",
+   "maturity": "2023-09-03",
+   "coupon_rate": null,
+   "coupon_dates": [
+    "2022-03-03",
+    "2022-09-03",
+    "2023-03-03",
+    "2023-09-03"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-02.09.2021-rom.pdf",
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2022-09-03",
+     "rate": 10.77,
+     "base": 10.52,
+     "margin": 0.25
+    },
+    {
+     "date": "2023-09-03",
+     "rate": 19.9,
+     "base": 19.65,
+     "margin": 0.25
+    }
+   ],
+   "margin": 0.25
+  },
+  {
+   "isin": "MD4004000601",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2021-09-15",
+   "issue_date": "2021-09-17",
+   "maturity": "2023-09-17",
+   "coupon_rate": 6.0,
+   "coupon_dates": [
+    "2022-03-17",
+    "2022-09-17",
+    "2023-03-17",
+    "2023-09-17"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-15.09.2021-rom.pdf"
+  },
+  {
+   "isin": "MD4004000619",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2021-09-15",
+   "issue_date": "2021-09-17",
+   "maturity": "2024-09-17",
+   "coupon_rate": 6.1,
+   "coupon_dates": [
+    "2022-03-17",
+    "2022-09-17",
+    "2023-03-17",
+    "2023-09-17",
+    "2024-03-17",
+    "2024-09-17"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-15.09.2021-rom.pdf"
+  },
+  {
+   "isin": "MD4004000627",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1826,
+   "auction_date": "2021-09-15",
+   "issue_date": "2021-09-17",
+   "maturity": "2026-09-17",
+   "coupon_rate": 6.2,
+   "coupon_dates": [
+    "2022-03-17",
+    "2022-09-17",
+    "2023-03-17",
+    "2023-09-17",
+    "2024-03-17",
+    "2024-09-17",
+    "2025-03-17",
+    "2025-09-17",
+    "2026-03-17",
+    "2026-09-17"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-15.09.2021-rom.pdf"
+  },
+  {
+   "isin": "MD4004000635",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2021-10-06",
+   "issue_date": "2021-10-08",
+   "maturity": "2023-10-08",
+   "coupon_rate": null,
+   "coupon_dates": [
+    "2022-04-08",
+    "2022-10-08",
+    "2023-04-08",
+    "2023-10-08"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-06.10.2021-rom.pdf",
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2022-10-08",
+     "rate": 12.41,
+     "base": 12.16,
+     "margin": 0.25
+    },
+    {
+     "date": "2023-04-08",
+     "rate": 21.22,
+     "base": 20.97,
+     "margin": 0.25
+    },
+    {
+     "date": "2023-10-08",
+     "rate": 12.35,
+     "base": 12.1,
+     "margin": 0.25
+    }
+   ],
+   "margin": 0.25
+  },
+  {
+   "isin": "MD4004000643",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2021-10-13",
+   "issue_date": "2021-10-15",
+   "maturity": "2023-10-15",
+   "coupon_rate": 6.0,
+   "coupon_dates": [
+    "2022-04-15",
+    "2022-10-15",
+    "2023-04-15",
+    "2023-10-15"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-13.10.2021-rom.pdf"
+  },
+  {
+   "isin": "MD4004000650",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2021-10-13",
+   "issue_date": "2021-10-15",
+   "maturity": "2024-10-15",
+   "coupon_rate": 6.1,
+   "coupon_dates": [
+    "2022-04-15",
+    "2022-10-15",
+    "2023-04-15",
+    "2023-10-15",
+    "2024-04-15",
+    "2024-10-15"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-13.10.2021-rom.pdf"
+  },
+  {
+   "isin": "MD4004000668",
+   "type": "OS",
+   "term_label": "7 ani",
+   "term_days": 2557,
+   "auction_date": "2021-10-20",
+   "issue_date": "2021-10-22",
+   "maturity": "2028-10-22",
+   "coupon_rate": 7.0,
+   "coupon_dates": [
+    "2022-04-22",
+    "2022-10-22",
+    "2023-04-22",
+    "2023-10-22",
+    "2024-04-22",
+    "2024-10-22",
+    "2025-04-22",
+    "2025-10-22",
+    "2026-04-22",
+    "2026-10-22",
+    "2027-04-22",
+    "2027-10-22",
+    "2028-04-22",
+    "2028-10-22"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-20.10.2021-rom.pdf"
+  },
+  {
+   "isin": "MD4004000676",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2021-11-03",
+   "issue_date": "2021-11-05",
+   "maturity": "2023-11-05",
+   "coupon_rate": null,
+   "coupon_dates": [
+    "2022-05-05",
+    "2022-11-05",
+    "2023-05-05",
+    "2023-11-05"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-03.11.2021-rom.pdf",
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2022-11-05",
+     "rate": 14.8,
+     "base": 14.4,
+     "margin": 0.4
+    },
+    {
+     "date": "2023-05-05",
+     "rate": 22.37,
+     "base": 21.97,
+     "margin": 0.4
+    },
+    {
+     "date": "2023-11-05",
+     "rate": 10.75,
+     "base": 10.35,
+     "margin": 0.4
+    }
+   ],
+   "margin": 0.4
+  },
+  {
+   "isin": "MD4004000684",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2021-11-17",
+   "issue_date": "2021-11-19",
+   "maturity": "2024-11-19",
+   "coupon_rate": 7.0,
+   "coupon_dates": [
+    "2022-05-19",
+    "2022-11-19",
+    "2023-05-19",
+    "2023-11-19",
+    "2024-05-19",
+    "2024-11-19"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-17.11.2021-rom.pdf"
+  },
+  {
+   "isin": "MD4004000692",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1826,
+   "auction_date": "2021-11-17",
+   "issue_date": "2021-11-19",
+   "maturity": "2026-11-19",
+   "coupon_rate": 7.5,
+   "coupon_dates": [
+    "2022-05-19",
+    "2022-11-19",
+    "2023-05-19",
+    "2023-11-19",
+    "2024-05-19",
+    "2024-11-19",
+    "2025-05-19",
+    "2025-11-19",
+    "2026-05-19",
+    "2026-11-19"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-17.11.2021-rom.pdf"
+  },
+  {
+   "isin": "MD4004000700",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2021-12-01",
+   "issue_date": "2021-12-03",
+   "maturity": "2023-12-03",
+   "coupon_rate": null,
+   "coupon_dates": [
+    "2022-06-03",
+    "2022-12-03",
+    "2023-06-03",
+    "2023-12-03"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-01.12.2021-rom.pdf",
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2022-12-03",
+     "rate": 16.56,
+     "base": 16.26,
+     "margin": 0.3
+    },
+    {
+     "date": "2023-06-03",
+     "rate": 22.25,
+     "base": 21.95,
+     "margin": 0.3
+    },
+    {
+     "date": "2023-12-03",
+     "rate": 10.49,
+     "base": 10.19,
+     "margin": 0.3
+    }
+   ],
+   "margin": 0.3
+  },
+  {
+   "isin": "MD4004000718",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2021-12-15",
+   "issue_date": "2021-12-17",
+   "maturity": "2023-12-17",
+   "coupon_rate": 6.5,
+   "coupon_dates": [
+    "2022-06-17",
+    "2022-12-17",
+    "2023-06-17",
+    "2023-12-17"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-15.12.2021-rom.pdf"
+  },
+  {
+   "isin": "MD4004000726",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2021-12-15",
+   "issue_date": "2021-12-17",
+   "maturity": "2024-12-17",
+   "coupon_rate": 7.0,
+   "coupon_dates": [
+    "2022-06-17",
+    "2022-12-17",
+    "2023-06-17",
+    "2023-12-17",
+    "2024-06-17",
+    "2024-12-17"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-15.12.2021-rom.pdf"
+  },
+  {
+   "isin": "MD4004000734",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2022-01-12",
+   "issue_date": "2022-01-14",
+   "maturity": "2024-01-14",
+   "coupon_rate": null,
+   "coupon_dates": [
+    "2022-07-14",
+    "2023-01-14",
+    "2023-07-14",
+    "2024-01-14"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-12.01.2022-rom.pdf",
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2023-01-14",
+     "rate": 17.79,
+     "base": 17.59,
+     "margin": 0.2
+    },
+    {
+     "date": "2023-07-14",
+     "rate": 20.05,
+     "base": 19.85,
+     "margin": 0.2
+    },
+    {
+     "date": "2024-01-14",
+     "rate": 9.12,
+     "base": 8.92,
+     "margin": 0.2
+    }
+   ],
+   "margin": 0.2
+  },
+  {
+   "isin": "MD4004000742",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2022-01-19",
+   "issue_date": "2022-01-21",
+   "maturity": "2024-01-21",
+   "coupon_rate": 6.5,
+   "coupon_dates": [
+    "2022-07-21",
+    "2023-01-21",
+    "2023-07-21",
+    "2024-01-21"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-19.01.2022-rom.pdf"
+  },
+  {
+   "isin": "MD4004000759",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2022-01-19",
+   "issue_date": "2022-01-21",
+   "maturity": "2025-01-21",
+   "coupon_rate": 7.0,
+   "coupon_dates": [
+    "2022-07-21",
+    "2023-01-21",
+    "2023-07-21",
+    "2024-01-21",
+    "2024-07-21",
+    "2025-01-21"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-19.01.2022-rom.pdf"
+  },
+  {
+   "isin": "MD4004000767",
+   "type": "OS",
+   "term_label": "7 ani",
+   "term_days": 2557,
+   "auction_date": "2022-01-26",
+   "issue_date": "2022-01-28",
+   "maturity": "2029-01-28",
+   "coupon_rate": 10.0,
+   "coupon_dates": [
+    "2022-07-28",
+    "2023-01-28",
+    "2023-07-28",
+    "2024-01-28",
+    "2024-07-28",
+    "2025-01-28",
+    "2025-07-28",
+    "2026-01-28",
+    "2026-07-28",
+    "2027-01-28",
+    "2027-07-28",
+    "2028-01-28",
+    "2028-07-28",
+    "2029-01-28"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-26.01.2022-rom.pdf"
+  },
+  {
+   "isin": "MD4004000775",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2022-02-09",
+   "issue_date": "2022-02-11",
+   "maturity": "2024-02-11",
+   "coupon_rate": null,
+   "coupon_dates": [
+    "2022-08-11",
+    "2023-02-11",
+    "2023-08-11",
+    "2024-02-11"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-09.02.2022-rom.pdf",
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2023-02-11",
+     "rate": 19.11,
+     "base": 18.71,
+     "margin": 0.4
+    },
+    {
+     "date": "2023-08-11",
+     "rate": 16.84,
+     "base": 16.44,
+     "margin": 0.4
+    },
+    {
+     "date": "2024-02-11",
+     "rate": 7.95,
+     "base": 7.55,
+     "margin": 0.4
+    }
+   ],
+   "margin": 0.4
+  },
+  {
+   "isin": "MD4004000783",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2022-02-16",
+   "issue_date": "2022-02-18",
+   "maturity": "2024-02-18",
+   "coupon_rate": 7.0,
+   "coupon_dates": [
+    "2022-08-18",
+    "2023-02-18",
+    "2023-08-18",
+    "2024-02-18"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-16.02.2022-rom.pdf"
+  },
+  {
+   "isin": "MD4004000791",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1826,
+   "auction_date": "2022-02-16",
+   "issue_date": "2022-02-18",
+   "maturity": "2027-02-18",
+   "coupon_rate": 9.0,
+   "coupon_dates": [
+    "2022-08-18",
+    "2023-02-18",
+    "2023-08-18",
+    "2024-02-18",
+    "2024-08-18",
+    "2025-02-18",
+    "2025-08-18",
+    "2026-02-18",
+    "2026-08-18",
+    "2027-02-18"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-16.02.2022-rom.pdf"
+  },
+  {
+   "isin": "MD4004000817",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 731,
+   "auction_date": "2022-03-09",
+   "issue_date": "2022-03-11",
+   "maturity": "2024-03-11",
+   "coupon_rate": null,
+   "coupon_dates": [
+    "2022-09-11",
+    "2023-03-11",
+    "2023-09-11",
+    "2024-03-11"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-09.03.2022-rom.pdf",
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2023-09-11",
+     "rate": 15.07,
+     "base": 13.07,
+     "margin": 2.0
+    },
+    {
+     "date": "2024-03-11",
+     "rate": 8.93,
+     "base": 6.93,
+     "margin": 2.0
+    }
+   ],
+   "margin": 2.0
+  },
+  {
+   "isin": "MD4004000825",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 731,
+   "auction_date": "2022-03-16",
+   "issue_date": "2022-03-18",
+   "maturity": "2024-03-18",
+   "coupon_rate": 13.5,
+   "coupon_dates": [
+    "2022-09-18",
+    "2023-03-18",
+    "2023-09-18",
+    "2024-03-18"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-16.03.2022%20-rom.pdf"
+  },
+  {
+   "isin": "MD4004000833",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2022-03-16",
+   "issue_date": "2022-03-18",
+   "maturity": "2025-03-18",
+   "coupon_rate": 13.0,
+   "coupon_dates": [
+    "2022-09-18",
+    "2023-03-18",
+    "2023-09-18",
+    "2024-03-18",
+    "2024-09-18",
+    "2025-03-18"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-16.03.2022%20-rom.pdf"
+  },
+  {
+   "isin": "MD4004000841",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1826,
+   "auction_date": "2022-03-16",
+   "issue_date": "2022-03-18",
+   "maturity": "2027-03-18",
+   "coupon_rate": 11.0,
+   "coupon_dates": [
+    "2022-09-18",
+    "2023-03-18",
+    "2023-09-18",
+    "2024-03-18",
+    "2024-09-18",
+    "2025-03-18",
+    "2025-09-18",
+    "2026-03-18",
+    "2026-09-18",
+    "2027-03-18"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-16.03.2022%20-rom.pdf"
+  },
+  {
+   "isin": "MD4004001179",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 731,
+   "auction_date": "2023-01-11",
+   "issue_date": "2023-01-13",
+   "maturity": "2025-01-13",
+   "coupon_rate": null,
+   "coupon_dates": [
+    "2023-07-13",
+    "2024-01-13",
+    "2024-07-13",
+    "2025-01-13"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.01.2023-rom.pdf",
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2024-01-13",
+     "rate": 9.02,
+     "base": 8.92,
+     "margin": 0.1
+    },
+    {
+     "date": "2024-07-13",
+     "rate": 5.87,
+     "base": 5.77,
+     "margin": 0.1
+    },
+    {
+     "date": "2025-01-13",
+     "rate": 4.2,
+     "base": 4.1,
+     "margin": 0.1
+    }
+   ],
+   "margin": 0.1
+  },
+  {
+   "isin": "MD4004001187",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2023-01-11",
+   "issue_date": "2023-01-13",
+   "maturity": "2026-01-13",
+   "coupon_rate": null,
+   "coupon_dates": [
+    "2023-07-13",
+    "2024-01-13",
+    "2024-07-13",
+    "2025-01-13",
+    "2025-07-13",
+    "2026-01-13"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.01.2023-rom.pdf",
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2024-01-13",
+     "rate": 9.07,
+     "base": 8.92,
+     "margin": 0.15
+    },
+    {
+     "date": "2024-07-13",
+     "rate": 5.92,
+     "base": 5.77,
+     "margin": 0.15
+    },
+    {
+     "date": "2025-01-13",
+     "rate": 4.25,
+     "base": 4.1,
+     "margin": 0.15
+    },
+    {
+     "date": "2025-07-13",
+     "rate": 5.92,
+     "base": 5.77,
+     "margin": 0.15
+    },
+    {
+     "date": "2026-01-13",
+     "rate": 9.59,
+     "base": 9.44,
+     "margin": 0.15
+    }
+   ],
+   "margin": 0.15
+  },
+  {
+   "isin": "MD4004001195",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 731,
+   "auction_date": "2023-01-18",
+   "issue_date": "2023-01-20",
+   "maturity": "2025-01-20",
+   "coupon_rate": 13.0,
+   "coupon_dates": [
+    "2023-07-20",
+    "2024-01-20",
+    "2024-07-20",
+    "2025-01-20"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-18.01.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001203",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2023-01-18",
+   "issue_date": "2023-01-20",
+   "maturity": "2026-01-20",
+   "coupon_rate": 12.0,
+   "coupon_dates": [
+    "2023-07-20",
+    "2024-01-20",
+    "2024-07-20",
+    "2025-01-20",
+    "2025-07-20",
+    "2026-01-20"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-18.01.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001211",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 731,
+   "auction_date": "2023-02-08",
+   "issue_date": "2023-02-10",
+   "maturity": "2025-02-10",
+   "coupon_rate": 10.0,
+   "coupon_dates": [
+    "2023-08-10",
+    "2024-02-10",
+    "2024-08-10",
+    "2025-02-10"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-08.02.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001229",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2023-02-08",
+   "issue_date": "2023-02-10",
+   "maturity": "2026-02-10",
+   "coupon_rate": 8.0,
+   "coupon_dates": [
+    "2023-08-10",
+    "2024-02-10",
+    "2024-08-10",
+    "2025-02-10",
+    "2025-08-10",
+    "2026-02-10"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-08.02.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001237",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 731,
+   "auction_date": "2023-02-15",
+   "issue_date": "2023-02-17",
+   "maturity": "2025-02-17",
+   "coupon_rate": 9.0,
+   "coupon_dates": [
+    "2023-08-17",
+    "2024-02-17",
+    "2024-08-17",
+    "2025-02-17"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-15.02.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001245",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2023-02-15",
+   "issue_date": "2023-02-17",
+   "maturity": "2026-02-17",
+   "coupon_rate": 8.0,
+   "coupon_dates": [
+    "2023-08-17",
+    "2024-02-17",
+    "2024-08-17",
+    "2025-02-17",
+    "2025-08-17",
+    "2026-02-17"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-15.02.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001252",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 731,
+   "auction_date": "2023-03-07",
+   "issue_date": "2023-03-09",
+   "maturity": "2025-03-09",
+   "coupon_rate": 7.0,
+   "coupon_dates": [
+    "2023-09-09",
+    "2024-03-09",
+    "2024-09-09",
+    "2025-03-09"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-07.03.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001260",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2023-03-07",
+   "issue_date": "2023-03-09",
+   "maturity": "2026-03-09",
+   "coupon_rate": 8.0,
+   "coupon_dates": [
+    "2023-09-09",
+    "2024-03-09",
+    "2024-09-09",
+    "2025-03-09",
+    "2025-09-09",
+    "2026-03-09"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-07.03.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001278",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 731,
+   "auction_date": "2023-03-15",
+   "issue_date": "2023-03-17",
+   "maturity": "2025-03-17",
+   "coupon_rate": 7.0,
+   "coupon_dates": [
+    "2023-09-17",
+    "2024-03-17",
+    "2024-09-17",
+    "2025-03-17"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-15.03.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001286",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2023-03-15",
+   "issue_date": "2023-03-17",
+   "maturity": "2026-03-17",
+   "coupon_rate": 8.0,
+   "coupon_dates": [
+    "2023-09-17",
+    "2024-03-17",
+    "2024-09-17",
+    "2025-03-17",
+    "2025-09-17",
+    "2026-03-17"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-15.03.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001310",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 731,
+   "auction_date": "2023-05-24",
+   "issue_date": "2023-05-26",
+   "maturity": "2025-05-26",
+   "coupon_rate": 8.0,
+   "coupon_dates": [
+    "2023-11-26",
+    "2024-05-26",
+    "2024-11-26",
+    "2025-05-26"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-24.05.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001328",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2023-05-24",
+   "issue_date": "2023-05-26",
+   "maturity": "2026-05-26",
+   "coupon_rate": 8.25,
+   "coupon_dates": [
+    "2023-11-26",
+    "2024-05-26",
+    "2024-11-26",
+    "2025-05-26",
+    "2025-11-26",
+    "2026-05-26"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-24.05.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001336",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1827,
+   "auction_date": "2023-05-24",
+   "issue_date": "2023-05-26",
+   "maturity": "2028-05-26",
+   "coupon_rate": 8.5,
+   "coupon_dates": [
+    "2023-11-26",
+    "2024-05-26",
+    "2024-11-26",
+    "2025-05-26",
+    "2025-11-26",
+    "2026-05-26",
+    "2026-11-26",
+    "2027-05-26",
+    "2027-11-26",
+    "2028-05-26"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-24.05.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001344",
+   "type": "OS",
+   "term_label": "7 ani",
+   "term_days": 2557,
+   "auction_date": "2023-05-24",
+   "issue_date": "2023-05-26",
+   "maturity": "2030-05-26",
+   "coupon_rate": 9.0,
+   "coupon_dates": [
+    "2023-11-26",
+    "2024-05-26",
+    "2024-11-26",
+    "2025-05-26",
+    "2025-11-26",
+    "2026-05-26",
+    "2026-11-26",
+    "2027-05-26",
+    "2027-11-26",
+    "2028-05-26",
+    "2028-11-26",
+    "2029-05-26",
+    "2029-11-26",
+    "2030-05-26"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-24.05.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001351",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 731,
+   "auction_date": "2023-06-21",
+   "issue_date": "2023-06-23",
+   "maturity": "2025-06-23",
+   "coupon_rate": 8.0,
+   "coupon_dates": [
+    "2023-12-23",
+    "2024-06-23",
+    "2024-12-23",
+    "2025-06-23"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-21.06.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001369",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2023-06-21",
+   "issue_date": "2023-06-23",
+   "maturity": "2026-06-23",
+   "coupon_rate": 8.25,
+   "coupon_dates": [
+    "2023-12-23",
+    "2024-06-23",
+    "2024-12-23",
+    "2025-06-23",
+    "2025-12-23",
+    "2026-06-23"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-21.06.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001468",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 731,
+   "auction_date": "2023-10-25",
+   "issue_date": "2023-10-27",
+   "maturity": "2025-10-27",
+   "coupon_rate": 7.0,
+   "coupon_dates": [
+    "2024-04-27",
+    "2024-10-27",
+    "2025-04-27",
+    "2025-10-27"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-25.10.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001476",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 731,
+   "auction_date": "2023-11-22",
+   "issue_date": "2023-11-24",
+   "maturity": "2025-11-24",
+   "coupon_rate": 6.75,
+   "coupon_dates": [
+    "2024-05-24",
+    "2024-11-24",
+    "2025-05-24",
+    "2025-11-24"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-22.11.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001484",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2023-11-22",
+   "issue_date": "2023-11-24",
+   "maturity": "2026-11-24",
+   "coupon_rate": 7.0,
+   "coupon_dates": [
+    "2024-05-24",
+    "2024-11-24",
+    "2025-05-24",
+    "2025-11-24",
+    "2026-05-24",
+    "2026-11-24"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-22.11.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001492",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1827,
+   "auction_date": "2023-11-22",
+   "issue_date": "2023-11-24",
+   "maturity": "2028-11-24",
+   "coupon_rate": 7.25,
+   "coupon_dates": [
+    "2024-05-24",
+    "2024-11-24",
+    "2025-05-24",
+    "2025-11-24",
+    "2026-05-24",
+    "2026-11-24",
+    "2027-05-24",
+    "2027-11-24",
+    "2028-05-24",
+    "2028-11-24"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-22.11.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001500",
+   "type": "OS",
+   "term_label": "7 ani",
+   "term_days": 2557,
+   "auction_date": "2023-11-22",
+   "issue_date": "2023-11-24",
+   "maturity": "2030-11-24",
+   "coupon_rate": 7.5,
+   "coupon_dates": [
+    "2024-05-24",
+    "2024-11-24",
+    "2025-05-24",
+    "2025-11-24",
+    "2026-05-24",
+    "2026-11-24",
+    "2027-05-24",
+    "2027-11-24",
+    "2028-05-24",
+    "2028-11-24",
+    "2029-05-24",
+    "2029-11-24",
+    "2030-05-24",
+    "2030-11-24"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-22.11.2023-rom.pdf"
+  },
+  {
+   "isin": "MD4004001518",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 731,
+   "auction_date": "2023-12-20",
+   "issue_date": "2023-12-22",
+   "maturity": "2025-12-22",
+   "coupon_rate": 6.0,
+   "coupon_dates": [
+    "2024-06-22",
+    "2024-12-22",
+    "2025-06-22",
+    "2025-12-22"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-20.12.2023-rom%20%281%29.pdf"
+  },
+  {
+   "isin": "MD4004001526",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2023-12-20",
+   "issue_date": "2023-12-22",
+   "maturity": "2026-12-22",
+   "coupon_rate": 6.25,
+   "coupon_dates": [
+    "2024-06-22",
+    "2024-12-22",
+    "2025-06-22",
+    "2025-12-22",
+    "2026-06-22",
+    "2026-12-22"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-20.12.2023-rom%20%281%29.pdf"
+  },
+  {
+   "isin": "MD4004001534",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1827,
+   "auction_date": "2023-12-20",
+   "issue_date": "2023-12-22",
+   "maturity": "2028-12-22",
+   "coupon_rate": 6.5,
+   "coupon_dates": [
+    "2024-06-22",
+    "2024-12-22",
+    "2025-06-22",
+    "2025-12-22",
+    "2026-06-22",
+    "2026-12-22",
+    "2027-06-22",
+    "2027-12-22",
+    "2028-06-22",
+    "2028-12-22"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-20.12.2023-rom%20%281%29.pdf"
+  },
+  {
+   "isin": "MD4004001542",
+   "type": "OS",
+   "term_label": "7 ani",
+   "term_days": 2557,
+   "auction_date": "2023-12-20",
+   "issue_date": "2023-12-22",
+   "maturity": "2030-12-22",
+   "coupon_rate": 6.8,
+   "coupon_dates": [
+    "2024-06-22",
+    "2024-12-22",
+    "2025-06-22",
+    "2025-12-22",
+    "2026-06-22",
+    "2026-12-22",
+    "2027-06-22",
+    "2027-12-22",
+    "2028-06-22",
+    "2028-12-22",
+    "2029-06-22",
+    "2029-12-22",
+    "2030-06-22",
+    "2030-12-22"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-20.12.2023-rom%20%281%29.pdf"
+  },
+  {
+   "isin": "MD4004001559",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 731,
+   "auction_date": "2024-01-10",
+   "issue_date": "2024-01-12",
+   "maturity": "2026-01-12",
+   "coupon_rate": 5.5,
+   "coupon_dates": [
+    "2024-07-12",
+    "2025-01-12",
+    "2025-07-12",
+    "2026-01-12"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-10.01.2024-rom.pdf"
+  },
+  {
+   "isin": "MD4004001567",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2024-01-10",
+   "issue_date": "2024-01-12",
+   "maturity": "2027-01-12",
+   "coupon_rate": 5.7,
+   "coupon_dates": [
+    "2024-07-12",
+    "2025-01-12",
+    "2025-07-12",
+    "2026-01-12",
+    "2026-07-12",
+    "2027-01-12"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-10.01.2024-rom.pdf"
+  },
+  {
+   "isin": "MD4004001575",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1827,
+   "auction_date": "2024-02-07",
+   "issue_date": "2024-02-09",
+   "maturity": "2029-02-09",
+   "coupon_rate": 5.8,
+   "coupon_dates": [
+    "2024-08-09",
+    "2025-02-09",
+    "2025-08-09",
+    "2026-02-09",
+    "2026-08-09",
+    "2027-02-09",
+    "2027-08-09",
+    "2028-02-09",
+    "2028-08-09",
+    "2029-02-09"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-07.02.2024-rom.pdf"
+  },
+  {
+   "isin": "MD4004001583",
+   "type": "OS",
+   "term_label": "7 ani",
+   "term_days": 2556,
+   "auction_date": "2024-03-13",
+   "issue_date": "2024-03-15",
+   "maturity": "2031-03-15",
+   "coupon_rate": null,
+   "coupon_dates": [
+    "2024-09-15",
+    "2025-03-15",
+    "2025-09-15",
+    "2026-03-15",
+    "2026-09-15",
+    "2027-03-15",
+    "2027-09-15",
+    "2028-03-15",
+    "2028-09-15",
+    "2029-03-15",
+    "2029-09-15",
+    "2030-03-15",
+    "2030-09-15",
+    "2031-03-15"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-13.03.2024-rom.pdf",
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2025-03-15",
+     "rate": 5.3,
+     "base": 4.3,
+     "margin": 1.0
+    },
+    {
+     "date": "2025-09-15",
+     "rate": 9.15,
+     "base": 8.15,
+     "margin": 1.0
+    },
+    {
+     "date": "2026-03-15",
+     "rate": 10.32,
+     "base": 9.32,
+     "margin": 1.0
+    },
+    {
+     "date": "2026-09-15",
+     "rate": 10.54,
+     "base": 9.54,
+     "margin": 1.0
+    },
+    {
+     "date": "2027-03-15",
+     "rate": 10.95,
+     "base": 9.95,
+     "margin": 1.0
+    }
+   ],
+   "margin": 1.0
+  },
+  {
+   "isin": "MD4004001591",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2024-04-10",
+   "issue_date": "2024-04-12",
+   "maturity": "2026-04-12",
+   "coupon_rate": 4.75,
+   "coupon_dates": [
+    "2024-10-12",
+    "2025-04-12",
+    "2025-10-12",
+    "2026-04-12"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-10.04.2024-rom.pdf"
+  },
+  {
+   "isin": "MD4004001609",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1095,
+   "auction_date": "2024-04-10",
+   "issue_date": "2024-04-12",
+   "maturity": "2027-04-12",
+   "coupon_rate": 5.0,
+   "coupon_dates": [
+    "2024-10-12",
+    "2025-04-12",
+    "2025-10-12",
+    "2026-04-12",
+    "2026-10-12",
+    "2027-04-12"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-10.04.2024-rom.pdf"
+  },
+  {
+   "isin": "MD4004001617",
+   "type": "OS",
+   "term_label": "7 ani",
+   "term_days": 2556,
+   "auction_date": "2024-05-08",
+   "issue_date": "2024-05-10",
+   "maturity": "2031-05-10",
+   "coupon_rate": 5.8,
+   "coupon_dates": [
+    "2024-11-10",
+    "2025-05-10",
+    "2025-11-10",
+    "2026-05-10",
+    "2026-11-10",
+    "2027-05-10",
+    "2027-11-10",
+    "2028-05-10",
+    "2028-11-10",
+    "2029-05-10",
+    "2029-11-10",
+    "2030-05-10",
+    "2030-11-10",
+    "2031-05-10"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-08.05.2024-rom.pdf"
+  },
+  {
+   "isin": "MD4004001641",
+   "type": "OS",
+   "term_label": "10 ani",
+   "term_days": 3652,
+   "auction_date": "2024-07-10",
+   "issue_date": "2024-07-12",
+   "maturity": "2034-07-12",
+   "coupon_rate": 7.0,
+   "coupon_dates": [
+    "2025-01-12",
+    "2025-07-12",
+    "2026-01-12",
+    "2026-07-12",
+    "2027-01-12",
+    "2027-07-12",
+    "2028-01-12",
+    "2028-07-12",
+    "2029-01-12",
+    "2029-07-12",
+    "2030-01-12",
+    "2030-07-12",
+    "2031-01-12",
+    "2031-07-12",
+    "2032-01-12",
+    "2032-07-12",
+    "2033-01-12",
+    "2033-07-12",
+    "2034-01-12",
+    "2034-07-12"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-10.07.2024-rom.pdf"
+  },
+  {
+   "isin": "MD4004001658",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2024-08-07",
+   "issue_date": "2024-08-09",
+   "maturity": "2026-08-09",
+   "coupon_rate": 4.8,
+   "coupon_dates": [
+    "2025-02-09",
+    "2025-08-09",
+    "2026-02-09",
+    "2026-08-09"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-07.08.2024-rom.pdf"
+  },
+  {
+   "isin": "MD4004001666",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1095,
+   "auction_date": "2024-08-07",
+   "issue_date": "2024-08-09",
+   "maturity": "2027-08-09",
+   "coupon_rate": 5.1,
+   "coupon_dates": [
+    "2025-02-09",
+    "2025-08-09",
+    "2026-02-09",
+    "2026-08-09",
+    "2027-02-09",
+    "2027-08-09"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-07.08.2024-rom.pdf"
+  },
+  {
+   "isin": "MD4004001674",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1826,
+   "auction_date": "2024-09-11",
+   "issue_date": "2024-09-13",
+   "maturity": "2029-09-13",
+   "coupon_rate": 5.7,
+   "coupon_dates": [
+    "2025-03-13",
+    "2025-09-13",
+    "2026-03-13",
+    "2026-09-13",
+    "2027-03-13",
+    "2027-09-13",
+    "2028-03-13",
+    "2028-09-13",
+    "2029-03-13",
+    "2029-09-13"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.09.2024-rom.pdf"
+  },
+  {
+   "isin": "MD4004001716",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1826,
+   "auction_date": "2024-11-13",
+   "issue_date": "2024-11-15",
+   "maturity": "2029-11-15",
+   "coupon_rate": 6.1,
+   "coupon_dates": [
+    "2025-05-15",
+    "2025-11-15",
+    "2026-05-15",
+    "2026-11-15",
+    "2027-05-15",
+    "2027-11-15",
+    "2028-05-15",
+    "2028-11-15",
+    "2029-05-15",
+    "2029-11-15"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-13.11.2024-rom.pdf"
+  },
+  {
    "isin": "MD4004001740",
    "type": "OS",
    "term_label": "10 ani",
@@ -2871,6 +4636,559 @@
    ],
    "source": "Comunicate OS 11.03.2026 / 10.06.2026",
    "note": "Redeschideri: 11.03.2026, 10.06.2026; data emisiei inițiale dedusă din comunicatul din 11.12.2024"
+  },
+  {
+   "isin": "MD4004001757",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2025-01-09",
+   "issue_date": "2025-01-10",
+   "maturity": "2027-01-10",
+   "coupon_rate": 7.0,
+   "coupon_dates": [
+    "2025-07-10",
+    "2026-01-10",
+    "2026-07-10",
+    "2027-01-10"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-09.01.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001765",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1095,
+   "auction_date": "2025-01-09",
+   "issue_date": "2025-01-10",
+   "maturity": "2028-01-10",
+   "coupon_rate": 7.1,
+   "coupon_dates": [
+    "2025-07-10",
+    "2026-01-10",
+    "2026-07-10",
+    "2027-01-10",
+    "2027-07-10",
+    "2028-01-10"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-09.01.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001773",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1826,
+   "auction_date": "2025-02-12",
+   "issue_date": "2025-02-14",
+   "maturity": "2030-02-14",
+   "coupon_rate": 8.5,
+   "coupon_dates": [
+    "2025-08-14",
+    "2026-02-14",
+    "2026-08-14",
+    "2027-02-14",
+    "2027-08-14",
+    "2028-02-14",
+    "2028-08-14",
+    "2029-02-14",
+    "2029-08-14",
+    "2030-02-14"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-12.02.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001807",
+   "type": "OS",
+   "term_label": "7 ani",
+   "term_days": 2557,
+   "auction_date": "2025-03-12",
+   "issue_date": "2025-03-14",
+   "maturity": "2032-03-14",
+   "coupon_rate": 9.0,
+   "coupon_dates": [
+    "2025-09-14",
+    "2026-03-14",
+    "2026-09-14",
+    "2027-03-14",
+    "2027-09-14",
+    "2028-03-14",
+    "2028-09-14",
+    "2029-03-14",
+    "2029-09-14",
+    "2030-03-14",
+    "2030-09-14",
+    "2031-03-14",
+    "2031-09-14",
+    "2032-03-14"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-12.03.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001831",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2025-04-09",
+   "issue_date": "2025-04-11",
+   "maturity": "2027-04-11",
+   "coupon_rate": 8.15,
+   "coupon_dates": [
+    "2025-10-11",
+    "2026-04-11",
+    "2026-10-11",
+    "2027-04-11"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-09.04.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001849",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2025-04-09",
+   "issue_date": "2025-04-11",
+   "maturity": "2028-04-11",
+   "coupon_rate": 8.3,
+   "coupon_dates": [
+    "2025-10-11",
+    "2026-04-11",
+    "2026-10-11",
+    "2027-04-11",
+    "2027-10-11",
+    "2028-04-11"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-09.04.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001872",
+   "type": "OS",
+   "term_label": "7 ani",
+   "term_days": 2557,
+   "auction_date": "2025-05-14",
+   "issue_date": "2025-05-16",
+   "maturity": "2032-05-16",
+   "coupon_rate": 7.5,
+   "coupon_dates": [
+    "2025-11-16",
+    "2026-05-16",
+    "2026-11-16",
+    "2027-05-16",
+    "2027-11-16",
+    "2028-05-16",
+    "2028-11-16",
+    "2029-05-16",
+    "2029-11-16",
+    "2030-05-16",
+    "2030-11-16",
+    "2031-05-16",
+    "2031-11-16",
+    "2032-05-16"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-14.05.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001906",
+   "type": "OS",
+   "term_label": "10 ani",
+   "term_days": 3652,
+   "auction_date": "2025-06-11",
+   "issue_date": "2025-06-13",
+   "maturity": "2035-06-13",
+   "coupon_rate": 8.0,
+   "coupon_dates": [
+    "2025-12-13",
+    "2026-06-13",
+    "2026-12-13",
+    "2027-06-13",
+    "2027-12-13",
+    "2028-06-13",
+    "2028-12-13",
+    "2029-06-13",
+    "2029-12-13",
+    "2030-06-13",
+    "2030-12-13",
+    "2031-06-13",
+    "2031-12-13",
+    "2032-06-13",
+    "2032-12-13",
+    "2033-06-13",
+    "2033-12-13",
+    "2034-06-13",
+    "2034-12-13",
+    "2035-06-13"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.06.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001930",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2025-07-09",
+   "issue_date": "2025-07-11",
+   "maturity": "2027-07-11",
+   "coupon_rate": 6.8,
+   "coupon_dates": [
+    "2026-01-11",
+    "2026-07-11",
+    "2027-01-11",
+    "2027-07-11"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-09.07.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001948",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2025-07-09",
+   "issue_date": "2025-07-11",
+   "maturity": "2028-07-11",
+   "coupon_rate": 7.1,
+   "coupon_dates": [
+    "2026-01-11",
+    "2026-07-11",
+    "2027-01-11",
+    "2027-07-11",
+    "2028-01-11",
+    "2028-07-11"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-09.07.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001971",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1826,
+   "auction_date": "2025-08-13",
+   "issue_date": "2025-08-15",
+   "maturity": "2030-08-15",
+   "coupon_rate": 7.25,
+   "coupon_dates": [
+    "2026-02-15",
+    "2026-08-15",
+    "2027-02-15",
+    "2027-08-15",
+    "2028-02-15",
+    "2028-08-15",
+    "2029-02-15",
+    "2029-08-15",
+    "2030-02-15",
+    "2030-08-15"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-13.08.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004002003",
+   "type": "OS",
+   "term_label": "7 ani",
+   "term_days": 2557,
+   "auction_date": "2025-09-10",
+   "issue_date": "2025-09-12",
+   "maturity": "2032-09-12",
+   "coupon_rate": 7.3,
+   "coupon_dates": [
+    "2026-03-12",
+    "2026-09-12",
+    "2027-03-12",
+    "2027-09-12",
+    "2028-03-12",
+    "2028-09-12",
+    "2029-03-12",
+    "2029-09-12",
+    "2030-03-12",
+    "2030-09-12",
+    "2031-03-12",
+    "2031-09-12",
+    "2032-03-12",
+    "2032-09-12"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-10.09.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004002052",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2025-10-08",
+   "issue_date": "2025-10-10",
+   "maturity": "2027-10-10",
+   "coupon_rate": 6.8,
+   "coupon_dates": [
+    "2026-04-10",
+    "2026-10-10",
+    "2027-04-10",
+    "2027-10-10"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-08.10.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004002060",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2025-10-08",
+   "issue_date": "2025-10-10",
+   "maturity": "2028-10-10",
+   "coupon_rate": 7.0,
+   "coupon_dates": [
+    "2026-04-10",
+    "2026-10-10",
+    "2027-04-10",
+    "2027-10-10",
+    "2028-04-10",
+    "2028-10-10"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-08.10.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004497",
+   "type": "BT",
+   "term_label": "91 zile",
+   "term_days": 91,
+   "auction_date": "2025-10-15",
+   "issue_date": "2025-10-16",
+   "maturity": "2026-01-15",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-15.10.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004505",
+   "type": "BT",
+   "term_label": "182 zile",
+   "term_days": 182,
+   "auction_date": "2025-10-15",
+   "issue_date": "2025-10-16",
+   "maturity": "2026-04-16",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-15.10.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004513",
+   "type": "BT",
+   "term_label": "364 zile",
+   "term_days": 364,
+   "auction_date": "2025-10-15",
+   "issue_date": "2025-10-16",
+   "maturity": "2026-10-15",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-15.10.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004521",
+   "type": "BT",
+   "term_label": "91 zile",
+   "term_days": 91,
+   "auction_date": "2025-11-04",
+   "issue_date": "2025-11-06",
+   "maturity": "2026-02-05",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-04.11.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004539",
+   "type": "BT",
+   "term_label": "182 zile",
+   "term_days": 182,
+   "auction_date": "2025-11-04",
+   "issue_date": "2025-11-06",
+   "maturity": "2026-05-07",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-04.11.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004547",
+   "type": "BT",
+   "term_label": "364 zile",
+   "term_days": 364,
+   "auction_date": "2025-11-04",
+   "issue_date": "2025-11-06",
+   "maturity": "2026-11-05",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-04.11.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004554",
+   "type": "BT",
+   "term_label": "91 zile",
+   "term_days": 91,
+   "auction_date": "2025-11-18",
+   "issue_date": "2025-11-20",
+   "maturity": "2026-02-19",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-18.11.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004562",
+   "type": "BT",
+   "term_label": "182 zile",
+   "term_days": 182,
+   "auction_date": "2025-11-18",
+   "issue_date": "2025-11-20",
+   "maturity": "2026-05-21",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-18.11.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004570",
+   "type": "BT",
+   "term_label": "364 zile",
+   "term_days": 364,
+   "auction_date": "2025-11-18",
+   "issue_date": "2025-11-20",
+   "maturity": "2026-11-19",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-18.11.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004588",
+   "type": "BT",
+   "term_label": "91 zile",
+   "term_days": 91,
+   "auction_date": "2025-12-02",
+   "issue_date": "2025-12-04",
+   "maturity": "2026-03-05",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-02.12.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004596",
+   "type": "BT",
+   "term_label": "182 zile",
+   "term_days": 182,
+   "auction_date": "2025-12-02",
+   "issue_date": "2025-12-04",
+   "maturity": "2026-06-04",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-02.12.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004604",
+   "type": "BT",
+   "term_label": "364 zile",
+   "term_days": 364,
+   "auction_date": "2025-12-02",
+   "issue_date": "2025-12-04",
+   "maturity": "2026-12-03",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-02.12.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004002110",
+   "type": "OS",
+   "term_label": "10 ani",
+   "term_days": 3652,
+   "auction_date": "2025-12-10",
+   "issue_date": "2025-12-12",
+   "maturity": "2035-12-12",
+   "coupon_rate": 7.8,
+   "coupon_dates": [
+    "2026-06-12",
+    "2026-12-12",
+    "2027-06-12",
+    "2027-12-12",
+    "2028-06-12",
+    "2028-12-12",
+    "2029-06-12",
+    "2029-12-12",
+    "2030-06-12",
+    "2030-12-12",
+    "2031-06-12",
+    "2031-12-12",
+    "2032-06-12",
+    "2032-12-12",
+    "2033-06-12",
+    "2033-12-12",
+    "2034-06-12",
+    "2034-12-12",
+    "2035-06-12",
+    "2035-12-12"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-10.12.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004612",
+   "type": "BT",
+   "term_label": "91 zile",
+   "term_days": 91,
+   "auction_date": "2025-12-16",
+   "issue_date": "2025-12-18",
+   "maturity": "2026-03-19",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-16.12.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004620",
+   "type": "BT",
+   "term_label": "182 zile",
+   "term_days": 182,
+   "auction_date": "2025-12-16",
+   "issue_date": "2025-12-18",
+   "maturity": "2026-06-18",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-16.12.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004638",
+   "type": "BT",
+   "term_label": "364 zile",
+   "term_days": 364,
+   "auction_date": "2025-12-16",
+   "issue_date": "2025-12-18",
+   "maturity": "2026-12-17",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-16.12.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004646",
+   "type": "BT",
+   "term_label": "90 zile",
+   "term_days": 90,
+   "auction_date": "2025-12-23",
+   "issue_date": "2025-12-26",
+   "maturity": "2026-03-26",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-23.12.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004653",
+   "type": "BT",
+   "term_label": "181 zile",
+   "term_days": 181,
+   "auction_date": "2025-12-23",
+   "issue_date": "2025-12-26",
+   "maturity": "2026-06-25",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-23.12.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4003004661",
+   "type": "BT",
+   "term_label": "363 zile",
+   "term_days": 363,
+   "auction_date": "2025-12-23",
+   "issue_date": "2025-12-26",
+   "maturity": "2026-12-24",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-23.12.2025-rom.pdf"
   },
   {
    "isin": "MD4003004679",
@@ -3877,9 +6195,296 @@
    "coupon_rate": null,
    "coupon_dates": [],
    "source": "Comunicat plasare BT-03.11.2026"
+  },
+  {
+   "isin": "MD4004002904",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1826,
+   "auction_date": "2026-11-11",
+   "issue_date": "2026-11-13",
+   "maturity": "2031-11-13",
+   "coupon_rate": 8.25,
+   "coupon_dates": [
+    "2027-05-13",
+    "2027-11-13",
+    "2028-05-13",
+    "2028-11-13",
+    "2029-05-13",
+    "2029-11-13",
+    "2030-05-13",
+    "2030-11-13",
+    "2031-05-13",
+    "2031-11-13"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.11.2026-rom.pdf"
+  },
+  {
+   "isin": "MD4003005304",
+   "type": "BT",
+   "term_label": "91 zile",
+   "term_days": 91,
+   "auction_date": "2026-11-17",
+   "issue_date": "2026-11-19",
+   "maturity": "2027-02-18",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-17.11.2026-rom.pdf"
+  },
+  {
+   "isin": "MD4003005312",
+   "type": "BT",
+   "term_label": "182 zile",
+   "term_days": 182,
+   "auction_date": "2026-11-17",
+   "issue_date": "2026-11-19",
+   "maturity": "2027-05-20",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-17.11.2026-rom.pdf"
+  },
+  {
+   "isin": "MD4003005320",
+   "type": "BT",
+   "term_label": "364 zile",
+   "term_days": 364,
+   "auction_date": "2026-11-17",
+   "issue_date": "2026-11-19",
+   "maturity": "2027-11-18",
+   "coupon_rate": null,
+   "coupon_dates": [],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-17.11.2026-rom.pdf"
   }
  ],
  "auctions": [
+  {
+   "auction_date": "2025-10-15",
+   "isin": "MD4003004497",
+   "type": "BT",
+   "term_label": "91 zile",
+   "rate_min": 3.03,
+   "rate_avg": 3.03,
+   "rate_max": 3.03,
+   "settlement_date": "2025-10-16",
+   "maturity": "2026-01-15",
+   "announced": 50000.0,
+   "demand": 22695.9,
+   "placed_nominal": 16695.9,
+   "placed_price": 16570.7,
+   "unit": "mii lei"
+  },
+  {
+   "auction_date": "2025-10-15",
+   "isin": "MD4003004505",
+   "type": "BT",
+   "term_label": "182 zile",
+   "rate_min": 9.16,
+   "rate_avg": 9.38,
+   "rate_max": 9.41,
+   "settlement_date": "2025-10-16",
+   "maturity": "2026-04-16",
+   "announced": 1200000.0,
+   "demand": 1262090.0,
+   "placed_nominal": 1246380.0,
+   "placed_price": 1190710.6,
+   "unit": "mii lei"
+  },
+  {
+   "auction_date": "2025-10-15",
+   "isin": "MD4003004513",
+   "type": "BT",
+   "term_label": "364 zile",
+   "rate_min": 9.0,
+   "rate_avg": 9.3,
+   "rate_max": 9.33,
+   "settlement_date": "2025-10-16",
+   "maturity": "2026-10-15",
+   "announced": 1250000.0,
+   "demand": 873383.4,
+   "placed_nominal": 873383.4,
+   "placed_price": 799226.7,
+   "unit": "mii lei"
+  },
+  {
+   "auction_date": "2025-11-04",
+   "isin": "MD4003004521",
+   "type": "BT",
+   "term_label": "91 zile",
+   "rate_min": 3.03,
+   "rate_avg": 3.03,
+   "rate_max": 3.03,
+   "settlement_date": "2025-11-06",
+   "maturity": "2026-02-05",
+   "announced": 50000.0,
+   "demand": 43598.5,
+   "placed_nominal": 43598.5,
+   "placed_price": 43271.5,
+   "unit": "mii lei"
+  },
+  {
+   "auction_date": "2025-11-04",
+   "isin": "MD4003004539",
+   "type": "BT",
+   "term_label": "182 zile",
+   "rate_min": 9.25,
+   "rate_avg": 9.41,
+   "rate_max": 9.43,
+   "settlement_date": "2025-11-06",
+   "maturity": "2026-05-07",
+   "announced": 1200000.0,
+   "demand": 1118634.0,
+   "placed_nominal": 1114899.4,
+   "placed_price": 1065000.3,
+   "unit": "mii lei"
+  },
+  {
+   "auction_date": "2025-11-04",
+   "isin": "MD4003004547",
+   "type": "BT",
+   "term_label": "364 zile",
+   "rate_min": 9.0,
+   "rate_avg": 9.32,
+   "rate_max": 9.35,
+   "settlement_date": "2025-11-06",
+   "maturity": "2026-11-05",
+   "announced": 1250000.0,
+   "demand": 1003608.3,
+   "placed_nominal": 1003608.3,
+   "placed_price": 918341.7,
+   "unit": "mii lei"
+  },
+  {
+   "auction_date": "2025-11-18",
+   "isin": "MD4003004554",
+   "type": "BT",
+   "term_label": "91 zile",
+   "rate_min": 3.03,
+   "rate_avg": 3.03,
+   "rate_max": 3.03,
+   "settlement_date": "2025-11-20",
+   "maturity": "2026-02-19"
+  },
+  {
+   "auction_date": "2025-11-18",
+   "isin": "MD4003004562",
+   "type": "BT",
+   "term_label": "182 zile",
+   "rate_min": 9.25,
+   "rate_avg": 9.43,
+   "rate_max": 9.49,
+   "settlement_date": "2025-11-20",
+   "maturity": "2026-05-21"
+  },
+  {
+   "auction_date": "2025-11-18",
+   "isin": "MD4003004570",
+   "type": "BT",
+   "term_label": "364 zile",
+   "rate_min": 8.8,
+   "rate_avg": 9.34,
+   "rate_max": 9.4,
+   "settlement_date": "2025-11-20",
+   "maturity": "2026-11-19"
+  },
+  {
+   "auction_date": "2025-12-02",
+   "isin": "MD4003004588",
+   "type": "BT",
+   "term_label": "91 zile",
+   "rate_min": 3.03,
+   "rate_avg": 3.03,
+   "rate_max": 3.03,
+   "settlement_date": "2025-12-04",
+   "maturity": "2026-03-05"
+  },
+  {
+   "auction_date": "2025-12-02",
+   "isin": "MD4003004596",
+   "type": "BT",
+   "term_label": "182 zile",
+   "rate_min": 9.25,
+   "rate_avg": 9.49,
+   "rate_max": 9.54,
+   "settlement_date": "2025-12-04",
+   "maturity": "2026-06-04"
+  },
+  {
+   "auction_date": "2025-12-02",
+   "isin": "MD4003004604",
+   "type": "BT",
+   "term_label": "364 zile",
+   "rate_min": 9.26,
+   "rate_avg": 9.4,
+   "rate_max": 9.45,
+   "settlement_date": "2025-12-04",
+   "maturity": "2026-12-03"
+  },
+  {
+   "auction_date": "2025-12-16",
+   "isin": "MD4003004612",
+   "type": "BT",
+   "term_label": "91 zile",
+   "rate_min": 3.03,
+   "rate_avg": 3.03,
+   "rate_max": 3.03,
+   "settlement_date": "2025-12-18",
+   "maturity": "2026-03-19"
+  },
+  {
+   "auction_date": "2025-12-16",
+   "isin": "MD4003004620",
+   "type": "BT",
+   "term_label": "182 zile",
+   "rate_min": 9.19,
+   "rate_avg": 9.49,
+   "rate_max": 9.54,
+   "settlement_date": "2025-12-18",
+   "maturity": "2026-06-18"
+  },
+  {
+   "auction_date": "2025-12-16",
+   "isin": "MD4003004638",
+   "type": "BT",
+   "term_label": "364 zile",
+   "rate_min": 9.08,
+   "rate_avg": 9.4,
+   "rate_max": 9.5,
+   "settlement_date": "2025-12-18",
+   "maturity": "2026-12-17"
+  },
+  {
+   "auction_date": "2025-12-23",
+   "isin": "MD4003004646",
+   "type": "BT",
+   "term_label": "90 zile",
+   "rate_min": 3.02,
+   "rate_avg": 3.06,
+   "rate_max": 3.06,
+   "settlement_date": "2025-12-26",
+   "maturity": "2026-03-26"
+  },
+  {
+   "auction_date": "2025-12-23",
+   "isin": "MD4003004653",
+   "type": "BT",
+   "term_label": "181 zile",
+   "rate_min": 9.24,
+   "rate_avg": 9.52,
+   "rate_max": 9.55,
+   "settlement_date": "2025-12-26",
+   "maturity": "2026-06-25"
+  },
+  {
+   "auction_date": "2025-12-23",
+   "isin": "MD4003004661",
+   "type": "BT",
+   "term_label": "363 zile",
+   "rate_min": 9.2,
+   "rate_avg": 9.47,
+   "rate_max": 9.56,
+   "settlement_date": "2025-12-26",
+   "maturity": "2026-12-24"
+  },
   {
    "auction_date": "2026-01-13",
    "isin": "MD4003004679",
@@ -4120,7 +6725,12 @@
    "rate_avg": 3.03,
    "rate_max": 3.03,
    "settlement_date": "2026-04-16",
-   "maturity": "2026-07-16"
+   "maturity": "2026-07-16",
+   "announced": 40000.0,
+   "demand": 32879.7,
+   "placed_nominal": 31521.6,
+   "placed_price": 31285.2,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-04-14",
@@ -4131,7 +6741,12 @@
    "rate_avg": 9.54,
    "rate_max": 9.56,
    "settlement_date": "2026-04-16",
-   "maturity": "2026-10-15"
+   "maturity": "2026-10-15",
+   "announced": 1100000.0,
+   "demand": 1610203.1,
+   "placed_nominal": 1609417.6,
+   "placed_price": 1536354.2,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-04-14",
@@ -4142,7 +6757,12 @@
    "rate_avg": 9.54,
    "rate_max": 9.56,
    "settlement_date": "2026-04-16",
-   "maturity": "2027-04-15"
+   "maturity": "2027-04-15",
+   "announced": 1610000.0,
+   "demand": 1207803.9,
+   "placed_nominal": 1205803.9,
+   "placed_price": 1101035.0,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-05-05",
@@ -4153,7 +6773,12 @@
    "rate_avg": 3.03,
    "rate_max": 3.03,
    "settlement_date": "2026-05-07",
-   "maturity": "2026-08-06"
+   "maturity": "2026-08-06",
+   "announced": 40000.0,
+   "demand": 48022.5,
+   "placed_nominal": 47742.5,
+   "placed_price": 47384.4,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-05-05",
@@ -4164,7 +6789,12 @@
    "rate_avg": 9.54,
    "rate_max": 9.56,
    "settlement_date": "2026-05-07",
-   "maturity": "2026-11-05"
+   "maturity": "2026-11-05",
+   "announced": 1100000.0,
+   "demand": 1950090.2,
+   "placed_nominal": 1937167.4,
+   "placed_price": 1849233.9,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-05-05",
@@ -4175,7 +6805,12 @@
    "rate_avg": 9.54,
    "rate_max": 9.56,
    "settlement_date": "2026-05-07",
-   "maturity": "2027-05-06"
+   "maturity": "2027-05-06",
+   "announced": 1610000.0,
+   "demand": 1544581.5,
+   "placed_nominal": 1544581.5,
+   "placed_price": 1410394.8,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-05-19",
@@ -4186,7 +6821,12 @@
    "rate_avg": 3.03,
    "rate_max": 3.03,
    "settlement_date": "2026-05-21",
-   "maturity": "2026-08-20"
+   "maturity": "2026-08-20",
+   "announced": 40000.0,
+   "demand": 43673.0,
+   "placed_nominal": 43673.0,
+   "placed_price": 43345.5,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-05-19",
@@ -4197,7 +6837,12 @@
    "rate_avg": 9.67,
    "rate_max": 9.96,
    "settlement_date": "2026-05-21",
-   "maturity": "2026-11-19"
+   "maturity": "2026-11-19",
+   "announced": 1100000.0,
+   "demand": 1942918.8,
+   "placed_nominal": 1942709.0,
+   "placed_price": 1853261.5,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-05-19",
@@ -4208,7 +6853,12 @@
    "rate_avg": 9.58,
    "rate_max": 9.95,
    "settlement_date": "2026-05-21",
-   "maturity": "2027-05-20"
+   "maturity": "2027-05-20",
+   "announced": 1610000.0,
+   "demand": 1314554.9,
+   "placed_nominal": 1313895.8,
+   "placed_price": 1199267.4,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-06-02",
@@ -4219,7 +6869,12 @@
    "rate_avg": 3.03,
    "rate_max": 3.03,
    "settlement_date": "2026-06-04",
-   "maturity": "2026-09-03"
+   "maturity": "2026-09-03",
+   "announced": 50000.0,
+   "demand": 31795.5,
+   "placed_nominal": 30795.5,
+   "placed_price": 30564.5,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-06-02",
@@ -4230,7 +6885,12 @@
    "rate_avg": 9.91,
    "rate_max": 9.96,
    "settlement_date": "2026-06-04",
-   "maturity": "2026-12-03"
+   "maturity": "2026-12-03",
+   "announced": 1100000.0,
+   "demand": 2302055.0,
+   "placed_nominal": 2119101.5,
+   "placed_price": 2019240.6,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-06-02",
@@ -4241,7 +6901,12 @@
    "rate_avg": 9.88,
    "rate_max": 10.0,
    "settlement_date": "2026-06-04",
-   "maturity": "2027-06-03"
+   "maturity": "2027-06-03",
+   "announced": 1700000.0,
+   "demand": 1030926.9,
+   "placed_nominal": 1028728.7,
+   "placed_price": 936460.0,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-06-16",
@@ -4252,7 +6917,12 @@
    "rate_avg": 3.03,
    "rate_max": 3.03,
    "settlement_date": "2026-06-18",
-   "maturity": "2026-09-17"
+   "maturity": "2026-09-17",
+   "announced": 50000.0,
+   "demand": 38003.3,
+   "placed_nominal": 38003.3,
+   "placed_price": 37718.3,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-06-16",
@@ -4263,7 +6933,12 @@
    "rate_avg": 9.96,
    "rate_max": 9.96,
    "settlement_date": "2026-06-18",
-   "maturity": "2026-12-17"
+   "maturity": "2026-12-17",
+   "announced": 1100000.0,
+   "demand": 1890692.1,
+   "placed_nominal": 1820553.2,
+   "placed_price": 1734502.4,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-06-16",
@@ -4274,7 +6949,12 @@
    "rate_avg": 10.0,
    "rate_max": 10.05,
    "settlement_date": "2026-06-18",
-   "maturity": "2027-06-17"
+   "maturity": "2027-06-17",
+   "announced": 1700000.0,
+   "demand": 798353.7,
+   "placed_nominal": 793553.3,
+   "placed_price": 721587.1,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-06-30",
@@ -4285,7 +6965,12 @@
    "rate_avg": 3.03,
    "rate_max": 3.03,
    "settlement_date": "2026-07-02",
-   "maturity": "2026-10-01"
+   "maturity": "2026-10-01",
+   "announced": 50000.0,
+   "demand": 32612.4,
+   "placed_nominal": 32612.4,
+   "placed_price": 32367.8,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-06-30",
@@ -4296,7 +6981,12 @@
    "rate_avg": 9.97,
    "rate_max": 9.97,
    "settlement_date": "2026-07-02",
-   "maturity": "2026-12-24"
+   "maturity": "2026-12-24",
+   "announced": 900000.0,
+   "demand": 1416910.5,
+   "placed_nominal": 1126525.1,
+   "placed_price": 1075205.5,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-06-30",
@@ -4307,7 +6997,12 @@
    "rate_avg": 10.05,
    "rate_max": 10.1,
    "settlement_date": "2026-07-02",
-   "maturity": "2027-07-01"
+   "maturity": "2027-07-01",
+   "announced": 1700000.0,
+   "demand": 777518.3,
+   "placed_nominal": 766808.3,
+   "placed_price": 696961.4,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-07-14",
@@ -4318,7 +7013,12 @@
    "rate_avg": 3.03,
    "rate_max": 3.03,
    "settlement_date": "2026-07-16",
-   "maturity": "2026-10-15"
+   "maturity": "2026-10-15",
+   "announced": 50000.0,
+   "demand": 54422.4,
+   "placed_nominal": 54422.4,
+   "placed_price": 54014.2,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-07-14",
@@ -4329,7 +7029,12 @@
    "rate_avg": 9.96,
    "rate_max": 9.98,
    "settlement_date": "2026-07-16",
-   "maturity": "2027-01-14"
+   "maturity": "2027-01-14",
+   "announced": 1300000.0,
+   "demand": 1821697.3,
+   "placed_nominal": 1718647.4,
+   "placed_price": 1637320.3,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-07-14",
@@ -4340,7 +7045,12 @@
    "rate_avg": 10.1,
    "rate_max": 10.15,
    "settlement_date": "2026-07-16",
-   "maturity": "2027-07-15"
+   "maturity": "2027-07-15",
+   "announced": 1700000.0,
+   "demand": 1160007.4,
+   "placed_nominal": 1120007.4,
+   "placed_price": 1017514.7,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-08-04",
@@ -4399,7 +7109,12 @@
    "rate_avg": 3.03,
    "rate_max": 3.03,
    "settlement_date": "2026-08-20",
-   "maturity": "2026-11-19"
+   "maturity": "2026-11-19",
+   "announced": 50000.0,
+   "demand": 23098.5,
+   "placed_nominal": 23027.5,
+   "placed_price": 22854.8,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-08-18",
@@ -4410,7 +7125,12 @@
    "rate_avg": 9.93,
    "rate_max": 9.96,
    "settlement_date": "2026-08-20",
-   "maturity": "2027-02-18"
+   "maturity": "2027-02-18",
+   "announced": 1300000.0,
+   "demand": 1614941.6,
+   "placed_nominal": 786000.4,
+   "placed_price": 748872.8,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-08-18",
@@ -4421,7 +7141,12 @@
    "rate_avg": 10.14,
    "rate_max": 10.15,
    "settlement_date": "2026-08-20",
-   "maturity": "2027-08-19"
+   "maturity": "2027-08-19",
+   "announced": 1700000.0,
+   "demand": 1085859.0,
+   "placed_nominal": 1070970.3,
+   "placed_price": 972617.9,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-09-01",
@@ -4432,7 +7157,12 @@
    "rate_avg": 3.03,
    "rate_max": 3.03,
    "settlement_date": "2026-09-03",
-   "maturity": "2026-12-03"
+   "maturity": "2026-12-03",
+   "announced": 50000.0,
+   "demand": 27171.2,
+   "placed_nominal": 27131.2,
+   "placed_price": 26927.7,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-09-01",
@@ -4443,7 +7173,12 @@
    "rate_avg": 9.93,
    "rate_max": 9.96,
    "settlement_date": "2026-09-03",
-   "maturity": "2027-03-04"
+   "maturity": "2027-03-04",
+   "announced": 1300000.0,
+   "demand": 1849265.6,
+   "placed_nominal": 1849265.6,
+   "placed_price": 1761972.0,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-09-01",
@@ -4454,7 +7189,12 @@
    "rate_avg": 10.14,
    "rate_max": 10.15,
    "settlement_date": "2026-09-03",
-   "maturity": "2027-09-02"
+   "maturity": "2027-09-02",
+   "announced": 1700000.0,
+   "demand": 1217770.6,
+   "placed_nominal": 1217770.6,
+   "placed_price": 1106035.5,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-09-15",
@@ -4465,7 +7205,12 @@
    "rate_avg": 3.03,
    "rate_max": 3.03,
    "settlement_date": "2026-09-17",
-   "maturity": "2026-12-17"
+   "maturity": "2026-12-17",
+   "announced": 50000.0,
+   "demand": 41068.5,
+   "placed_nominal": 39900.9,
+   "placed_price": 39601.6,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-09-15",
@@ -4476,7 +7221,12 @@
    "rate_avg": 9.93,
    "rate_max": 9.96,
    "settlement_date": "2026-09-17",
-   "maturity": "2027-03-18"
+   "maturity": "2027-03-18",
+   "announced": 1300000.0,
+   "demand": 1513098.6,
+   "placed_nominal": 1500079.1,
+   "placed_price": 1429267.6,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-09-15",
@@ -4487,7 +7237,12 @@
    "rate_avg": 10.14,
    "rate_max": 10.15,
    "settlement_date": "2026-09-17",
-   "maturity": "2027-09-16"
+   "maturity": "2027-09-16",
+   "announced": 1700000.0,
+   "demand": 1318284.5,
+   "placed_nominal": 1313284.5,
+   "placed_price": 1192707.7,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-09-29",
@@ -4498,7 +7253,12 @@
    "rate_avg": 3.06,
    "rate_max": 3.06,
    "settlement_date": "2026-10-01",
-   "maturity": "2026-12-24"
+   "maturity": "2026-12-24",
+   "announced": 50000.0,
+   "demand": 30857.0,
+   "placed_nominal": 30857.0,
+   "placed_price": 30641.1,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-09-29",
@@ -4509,7 +7269,12 @@
    "rate_avg": 10.13,
    "rate_max": 11.0,
    "settlement_date": "2026-10-01",
-   "maturity": "2027-04-01"
+   "maturity": "2027-04-01",
+   "announced": 1350000.0,
+   "demand": 839497.8,
+   "placed_nominal": 791497.8,
+   "placed_price": 753456.8,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-09-29",
@@ -4520,7 +7285,40 @@
    "rate_avg": 10.32,
    "rate_max": 11.65,
    "settlement_date": "2026-10-01",
-   "maturity": "2027-09-30"
+   "maturity": "2027-09-30",
+   "announced": 1800000.0,
+   "demand": 1206760.8,
+   "placed_nominal": 1196760.8,
+   "placed_price": 1085103.7,
+   "unit": "mii lei"
+  },
+  {
+   "auction_date": "2026-10-07",
+   "isin": "MD4004002763",
+   "type": "OS",
+   "term_label": "2 ani",
+   "announced": 30000.0,
+   "demand": 13515.0,
+   "placed_nominal": 13515.0,
+   "placed_price": 13515.0,
+   "rate_avg": 7.75,
+   "settlement_date": "2026-10-09",
+   "maturity": "2028-10-09",
+   "unit": "mii lei"
+  },
+  {
+   "auction_date": "2026-10-07",
+   "isin": "MD4004002771",
+   "type": "OS",
+   "term_label": "3 ani",
+   "announced": 30000.0,
+   "demand": 707.6,
+   "placed_nominal": 707.6,
+   "placed_price": 707.6,
+   "rate_avg": 7.85,
+   "settlement_date": "2026-10-09",
+   "maturity": "2029-10-09",
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-10-13",
@@ -4531,7 +7329,12 @@
    "rate_avg": 3.07,
    "rate_max": 3.11,
    "settlement_date": "2026-10-15",
-   "maturity": "2027-01-14"
+   "maturity": "2027-01-14",
+   "announced": 50000.0,
+   "demand": 32071.0,
+   "placed_nominal": 31431.0,
+   "placed_price": 31193.4,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-10-13",
@@ -4542,7 +7345,12 @@
    "rate_avg": 11.07,
    "rate_max": 11.49,
    "settlement_date": "2026-10-15",
-   "maturity": "2027-04-15"
+   "maturity": "2027-04-15",
+   "announced": 1350000.0,
+   "demand": 1561338.5,
+   "placed_nominal": 1539086.8,
+   "placed_price": 1458518.2,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-10-13",
@@ -4553,7 +7361,12 @@
    "rate_avg": 11.7,
    "rate_max": 12.49,
    "settlement_date": "2026-10-15",
-   "maturity": "2027-10-14"
+   "maturity": "2027-10-14",
+   "announced": 1800000.0,
+   "demand": 1133576.7,
+   "placed_nominal": 1133576.7,
+   "placed_price": 1015154.2,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-11-03",
@@ -4601,6 +7414,20 @@
    "demand": 1622749.8,
    "placed_nominal": 1602059.7,
    "placed_price": 1423055.43,
+   "unit": "mii lei"
+  },
+  {
+   "auction_date": "2026-11-11",
+   "isin": "MD4004002904",
+   "type": "OS",
+   "term_label": "5 ani",
+   "announced": 50000.0,
+   "demand": 210.0,
+   "placed_nominal": 210.0,
+   "placed_price": 210.0,
+   "rate_avg": 8.25,
+   "settlement_date": "2026-11-13",
+   "maturity": "2031-11-13",
    "unit": "mii lei"
   }
  ],
@@ -4802,5 +7629,5 @@
    ]
   }
  ],
- "generated_at": "2026-11-12T09:42:43+00:00"
+ "generated_at": "2026-11-12T15:27:24+00:00"
 }

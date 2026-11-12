@@ -74,7 +74,6 @@ class _HoldingFormState extends State<HoldingForm> {
   // ---------------------------------------------------------------- draft
   DateTime? get _issue => _manual ? _manualIssue : _security?.issueDate;
   DateTime? get _maturity => _manual ? _manualMaturity : _security?.maturity;
-  String get _type => _manual ? _manualType : (_security?.type ?? 'BT');
 
   /// Poziția construită din câmpurile curente (null dacă lipsesc date).
   Holding? _draft() {

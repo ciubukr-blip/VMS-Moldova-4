@@ -88,7 +88,9 @@ void main() {
     final j = jsonDecode(File('assets/data/vms_data.json').readAsStringSync()) as Map<String, dynamic>;
     final d = VmsDataset.fromJson(j);
     expect(DataRepository.validate(d), isNull);
-    expect(d.lastAuction.length, 3);
+    // ultima licitație: cel puțin un termen, toate din aceeași zi (BT are 3 termene, OS de regulă unul)
+    expect(d.lastAuction, isNotEmpty);
+    expect(d.lastAuction.map((a) => a.auctionDate).toSet().length, 1);
     expect(d.calendar, isNotEmpty);
   });
 
