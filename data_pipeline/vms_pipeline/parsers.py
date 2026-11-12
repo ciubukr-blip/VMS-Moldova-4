@@ -25,7 +25,7 @@ def parse_date(s: str) -> dt.date:
 
 def parse_number(s: str) -> float:
     """'1.400.000,00' -> 1400000.0 ; '11,63' -> 11.63 ; '11,63%' -> 11.63"""
-    s = s.strip().replace("%", "").replace(" ", "").replace(" ", "")
+    s = s.strip().replace("%", "").replace("\u00a0", "").replace(" ", "")
     if not s:
         raise ValueError("empty number")
     return float(s.replace(".", "").replace(",", "."))
@@ -100,8 +100,11 @@ def parse_placement(text: str, auction_date: dt.date, source: str) -> list[dict[
             "source": source,
         }
         if "redeschid" in flat.lower() and is_bond:
-            rec["note"] = "Redeschidere – verifică data emisiei inițiale"
-            issues.append("redeschidere: data emisiei inițiale trebuie confirmată")
+            # la redeschidere comunicatul conține maturitatea reziduală și dobânda acumulată,
+            # nu datele emisiunii inițiale: nu actualizăm automat titlul
+            rec["note"] = "Redeschidere – se confirmă manual"
+            rec["issue_date"] = rec["maturity"] = rec["term_days"] = None
+            issues.append("redeschidere: datele emisiunii inițiale se confirmă manual")
         if issues:
             rec["_issues"] = issues
         out.append(rec)
@@ -114,23 +117,32 @@ def parse_placement(text: str, auction_date: dt.date, source: str) -> list[dict[
 def parse_results_bt(text: str, auction_date: dt.date, source: str) -> list[dict[str, Any]]:
     """Parse BT results rows.
 
-    pdf text flattens the table as:
-      term announced demand placed_nominal placed_price MIN ISIN MAX AVG maturity
-      "182 zile 1.300.000,0 1.901.551,6 1.300.000,4 1.238.431,5 9,47 MD4003005106 9,98 9,98 04.02.2027"
     Every row is cross-checked: min <= avg <= max and the average rate implied
     by the volumes (Regulament pct. 72) must be within 0.15 p.p. of AVG.
     """
     out = []
-    row_re = re.compile(
-        r"(\d{1,3})\s*zile\s+([\d.,]+)\s+([\d.,]+)\s+([\d.,]+)\s+([\d.,]+)\s+([\d.,]+)\s+"
-        r"(MD\d{10})\s+([\d.,]+)\s+([\d.,]+)\s+(\d{2}\.\d{2}\.\d{4})"
+    flat = re.sub(r"\s+", " ", text)
+    num = r"([\d.,]+)"
+    # format actual MF: termen ISIN anunțat cerere nominal preț MIN MAX MEDIE scadență
+    current = re.compile(
+        rf"(\d{{1,3}})\s*zile\s+(MD\d{{10}})\s+{num}\s+{num}\s+{num}\s+{num}\s+{num}\s+{num}\s+{num}\s+(\d{{2}}\.\d{{2}}\.\d{{4}})"
     )
-    for m in row_re.finditer(re.sub(r"\s+", " ", text)):
-        days = int(m.group(1))
-        ann, dem, nom, pr, rmin = (parse_number(m.group(k)) for k in range(2, 7))
-        isin = m.group(7)
-        rmax, ravg = parse_number(m.group(8)), parse_number(m.group(9))
-        mat = parse_date(m.group(10))
+    # format vechi (text extras altfel): termen anunțat cerere nominal preț MIN ISIN MAX MEDIE scadență
+    legacy = re.compile(
+        rf"(\d{{1,3}})\s*zile\s+{num}\s+{num}\s+{num}\s+{num}\s+{num}\s+(MD\d{{10}})\s+{num}\s+{num}\s+(\d{{2}}\.\d{{2}}\.\d{{4}})"
+    )
+    rows = []
+    for m in current.finditer(flat):
+        g = m.groups()
+        rows.append((int(g[0]), g[1], g[2], g[3], g[4], g[5], g[6], g[7], g[8], g[9]))
+    if not rows:
+        for m in legacy.finditer(flat):
+            g = m.groups()
+            rows.append((int(g[0]), g[6], g[1], g[2], g[3], g[4], g[5], g[7], g[8], g[9]))
+    for days, isin, ann_s, dem_s, nom_s, pr_s, min_s, max_s, avg_s, mat_s in rows:
+        ann, dem, nom, pr = (parse_number(x) for x in (ann_s, dem_s, nom_s, pr_s))
+        rmin, rmax, ravg = parse_number(min_s), parse_number(max_s), parse_number(avg_s)
+        mat = parse_date(mat_s)
         rec = {
             "auction_date": auction_date.isoformat(), "isin": isin, "type": "BT",
             "term_label": f"{days} zile", "announced": ann, "demand": dem,
