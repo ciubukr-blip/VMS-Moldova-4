@@ -3540,7 +3540,22 @@
     "2025-01-13"
    ],
    "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.01.2023-rom.pdf",
-   "coupon_type": "flotant"
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2024-07-13",
+     "rate": 5.87,
+     "base": 5.77,
+     "margin": 0.1
+    },
+    {
+     "date": "2025-01-13",
+     "rate": 4.2,
+     "base": 4.1,
+     "margin": 0.1
+    }
+   ],
+   "margin": 0.1
   },
   {
    "isin": "MD4004001187",
@@ -3560,7 +3575,34 @@
     "2026-01-13"
    ],
    "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.01.2023-rom.pdf",
-   "coupon_type": "flotant"
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2024-07-13",
+     "rate": 5.92,
+     "base": 5.77,
+     "margin": 0.15
+    },
+    {
+     "date": "2025-01-13",
+     "rate": 4.25,
+     "base": 4.1,
+     "margin": 0.15
+    },
+    {
+     "date": "2025-07-13",
+     "rate": 5.92,
+     "base": 5.77,
+     "margin": 0.15
+    },
+    {
+     "date": "2026-01-13",
+     "rate": 9.59,
+     "base": 9.44,
+     "margin": 0.15
+    }
+   ],
+   "margin": 0.15
   },
   {
    "isin": "MD4004001195",
@@ -4138,7 +4180,40 @@
     "2031-03-15"
    ],
    "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-13.03.2024-rom.pdf",
-   "coupon_type": "flotant"
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2025-03-15",
+     "rate": 5.3,
+     "base": 4.3,
+     "margin": 1.0
+    },
+    {
+     "date": "2025-09-15",
+     "rate": 9.15,
+     "base": 8.15,
+     "margin": 1.0
+    },
+    {
+     "date": "2026-03-15",
+     "rate": 10.32,
+     "base": 9.32,
+     "margin": 1.0
+    },
+    {
+     "date": "2026-09-15",
+     "rate": 10.54,
+     "base": 9.54,
+     "margin": 1.0
+    },
+    {
+     "date": "2027-03-15",
+     "rate": 10.95,
+     "base": 9.95,
+     "margin": 1.0
+    }
+   ],
+   "margin": 1.0
   },
   {
    "isin": "MD4004001591",
@@ -7344,5 +7419,5 @@
    ]
   }
  ],
- "generated_at": "2026-11-12T15:15:00+00:00"
+ "generated_at": "2026-11-12T15:20:46+00:00"
 }

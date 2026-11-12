@@ -12,6 +12,31 @@
   "https://mf.gov.md/ro/content/licita%C8%9Bie-vms-29092026-termenul-182",
   "https://mf.gov.md/ro/content/licita%C8%9Bie-vms-29092026-termenul-364",
   "https://mf.gov.md/ro/content/licita%C8%9Bie-vms-29092026-termenul-91",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001013%20_ro.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001047_ro.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001054%20r.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001054_ro.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001088_ro.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001096_ro%20%281%29.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001138_ro.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001146.ro_.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001146_ro.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001179_ro.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001187_ro%20%281%29.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001187_ro.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001583%20ro.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001583_ro%20%281%29.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001583_ro%20%281%29_0.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001583_ro.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001583_ro_0.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001054_ro.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001096_ro.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001146_ro.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001187_ro.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20IISIN%20MD4004000981.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20IISIN%20MD4004001179%20ro.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004000957%20%20ro.pdf",
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001187%20ro.pdf",
   "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-01.09.2026-rom.pdf",
   "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-02.06.2026-rom.pdf",
   "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20BT-02.12.2025-rom.pdf",
@@ -173,12 +198,219 @@
   "https://mf.gov.md/sites/default/files/Rezultatele%20licitatie%2016-06-2026%20-%20rom.pdf": 1,
   "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-10.06.2026-rom.pdf": 1,
   "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.03.2026-rom.pdf": 1,
-  "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-12.11.2025-rom.pdf": 1
+  "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-12.11.2025-rom.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001096_ro.pdf": 1
  },
  "calendar_hash": {
   "2026-Q4": "bfaefe7e41da7d8203735e14c98fc9fad1c3c00d7a29fde1d3fce0e62275f6ea"
  },
  "results_parser": 2,
  "placement_retry": [],
- "placement_parser": 2
+ "placement_parser": 2,
+ "coupon_notices": [
+  {
+   "isin": "MD4004001583",
+   "date": "2027-03-15",
+   "rate": 10.95,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001583_ro%20%281%29_0.pdf",
+   "base": 9.95,
+   "margin": 1.0
+  },
+  {
+   "isin": "MD4004001583",
+   "date": "2026-09-15",
+   "rate": 10.54,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001583_ro%20%281%29.pdf",
+   "base": 9.54,
+   "margin": 1.0
+  },
+  {
+   "isin": "MD4004001583",
+   "date": "2026-03-15",
+   "rate": 10.32,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001583_ro_0.pdf",
+   "base": 9.32,
+   "margin": 1.0
+  },
+  {
+   "isin": "MD4004001187",
+   "date": "2026-01-13",
+   "rate": 9.59,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001187_ro%20%281%29.pdf",
+   "base": 9.44,
+   "margin": 0.15
+  },
+  {
+   "isin": "MD4004001146",
+   "date": "2025-12-09",
+   "rate": 9.74,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001146.ro_.pdf",
+   "base": 9.59,
+   "margin": 0.15
+  },
+  {
+   "isin": "MD4004001096",
+   "date": "2025-11-11",
+   "rate": 9.88,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001096_ro%20%281%29.pdf",
+   "base": 9.63,
+   "margin": 0.25
+  },
+  {
+   "isin": "MD4004001054",
+   "date": "2025-10-13",
+   "rate": 9.96,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001054%20r.pdf",
+   "base": 9.21,
+   "margin": 0.75
+  },
+  {
+   "isin": "MD4004001583",
+   "date": "2025-09-15",
+   "rate": 9.15,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001583%20ro.pdf",
+   "base": 8.15,
+   "margin": 1.0
+  },
+  {
+   "isin": "MD4004001187",
+   "date": "2025-07-13",
+   "rate": 5.92,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001187_ro.pdf",
+   "base": 5.77,
+   "margin": 0.15
+  },
+  {
+   "isin": "MD4004001146",
+   "date": "2025-06-09",
+   "rate": 5.71,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001146_ro.pdf",
+   "base": 5.56,
+   "margin": 0.15
+  },
+  {
+   "isin": "MD4004001096",
+   "date": "2025-05-11",
+   "rate": 5.4,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001096_ro.pdf",
+   "base": 5.15,
+   "margin": 0.25
+  },
+  {
+   "isin": "MD4004001054",
+   "date": "2025-04-13",
+   "rate": 5.33,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001054_ro.pdf",
+   "base": 4.58,
+   "margin": 0.75
+  },
+  {
+   "isin": "MD4004001583",
+   "date": "2025-03-15",
+   "rate": 5.3,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001583_ro.pdf",
+   "base": 4.3,
+   "margin": 1.0
+  },
+  {
+   "isin": "MD4004001187",
+   "date": "2025-01-13",
+   "rate": 4.25,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001187_ro.pdf",
+   "base": 4.1,
+   "margin": 0.15
+  },
+  {
+   "isin": "MD4004001179",
+   "date": "2025-01-13",
+   "rate": 4.2,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001179_ro.pdf",
+   "base": 4.1,
+   "margin": 0.1
+  },
+  {
+   "isin": "MD4004001146",
+   "date": "2024-12-09",
+   "rate": 4.1,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001146_ro.pdf",
+   "base": 3.95,
+   "margin": 0.15
+  },
+  {
+   "isin": "MD4004001138",
+   "date": "2024-12-09",
+   "rate": 4.05,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001138_ro.pdf",
+   "base": 3.95,
+   "margin": 0.1
+  },
+  {
+   "isin": "MD4004001088",
+   "date": "2024-11-11",
+   "rate": 4.22,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001088_ro.pdf",
+   "base": 4.07,
+   "margin": 0.15
+  },
+  {
+   "isin": "MD4004001054",
+   "date": "2024-10-13",
+   "rate": 5.01,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001054_ro.pdf",
+   "base": 4.26,
+   "margin": 0.75
+  },
+  {
+   "isin": "MD4004001047",
+   "date": "2024-10-13",
+   "rate": 4.76,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001047_ro.pdf",
+   "base": 4.26,
+   "margin": 0.5
+  },
+  {
+   "isin": "MD4004001013",
+   "date": "2024-09-09",
+   "rate": 5.52,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001013%20_ro.pdf",
+   "base": 4.52,
+   "margin": 1.0
+  },
+  {
+   "isin": "MD4004000981",
+   "date": "2024-08-12",
+   "rate": 6.32,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20IISIN%20MD4004000981.pdf",
+   "base": 5.06,
+   "margin": 1.26
+  },
+  {
+   "isin": "MD4004001187",
+   "date": "2024-07-13",
+   "rate": 5.92,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001187%20ro.pdf",
+   "base": 5.77,
+   "margin": 0.15
+  },
+  {
+   "isin": "MD4004000957",
+   "date": "2024-07-15",
+   "rate": 7.77,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004000957%20%20ro.pdf",
+   "base": 5.77,
+   "margin": 2.0
+  },
+  {
+   "isin": "MD4004001179",
+   "date": "2024-07-13",
+   "rate": 5.87,
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20IISIN%20MD4004001179%20ro.pdf",
+   "base": 5.77,
+   "margin": 0.1
+  }
+ ],
+ "notice_guess_day": "2026-11-12",
+ "floating_isins": [
+  "MD4004001583"
+ ]
 }
