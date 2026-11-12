@@ -14,6 +14,7 @@ import datetime as dt
 import hashlib
 import json
 import sys
+import time
 import traceback
 from pathlib import Path
 from typing import Any
@@ -47,64 +48,110 @@ def bucket(days: int) -> int:
 
 
 # --------------------------------------------------------------------------
-def scrape(state: dict, log: list) -> dict[str, list]:
-    """Download new publications. Returns parsed (unvalidated) records."""
+def scrape(state: dict, log: list, budget_s: float = 420) -> dict[str, list]:
+    """Download new publications. Returns parsed (unvalidated) records.
+
+    Limits that keep every run short (GitHub stops the job after 15 minutes):
+      * a time budget: when it runs out we stop and continue on the next run;
+      * at most MAX_NEW documents per run, newest first;
+      * treasury bills and results older than BT_WINDOW days are skipped
+        (they are already matured); bonds are fetched for the whole archive;
+      * a document that fails 3 times is skipped and reported in the log.
+    """
     from . import sources
 
+    MAX_NEW = 15
+    BT_WINDOW = 400
+    deadline = time.monotonic() + budget_s
     got: dict[str, list] = {"securities": [], "results": [], "details": [], "calendar": []}
     processed: set[str] = set(state.setdefault("processed", []))
+    attempts: dict[str, int] = state.setdefault("attempts", {})
+    today = dt.date.today()
+    cutoff = today - dt.timedelta(days=BT_WINDOW)
+    budget_hit = False
+
+    def out_of_time() -> bool:
+        nonlocal budget_hit
+        if time.monotonic() > deadline:
+            if not budget_hit:
+                log.append({"level": "info", "msg": "buget de timp atins – continuă la rularea următoare"})
+            budget_hit = True
+        return budget_hit
+
+    def failed(url: str, msg: str) -> None:
+        attempts[url] = attempts.get(url, 0) + 1
+        log.append({"level": "error", "url": url, "msg": msg, "attempt": attempts[url]})
+
+    def dated(items: list[tuple[str, str]]) -> list[tuple[dt.date, str, str]]:
+        out = []
+        for url, title in items:
+            m = sources.DATE_IN_NAME.search(title) or sources.DATE_IN_NAME.search(url)
+            if not m:
+                continue
+            try:
+                d = dt.date(int(m.group(3)), int(m.group(2)), int(m.group(1)))
+            except ValueError:
+                continue
+            out.append((d, url, title))
+        return sorted(out, reverse=True)  # cele mai noi întâi
 
     placements, results = sources.placement_and_result_pdfs()
-    for url, title in placements:
-        if url in processed:
-            continue
-        m = sources.DATE_IN_NAME.search(title) or sources.DATE_IN_NAME.search(url)
-        if not m:
-            log.append({"level": "warn", "url": url, "msg": "data licitației negăsită în titlu"})
-            continue
-        auction = dt.date(int(m.group(3)), int(m.group(2)), int(m.group(1)))
+    todo = [(d, u, t) for d, u, t in dated(placements)
+            if u not in processed and attempts.get(u, 0) < 3
+            and (d >= cutoff or "os-" in u.lower() or "os-" in t.lower())]
+    for auction, url, _ in todo[:MAX_NEW]:
+        if out_of_time():
+            break
         try:
             recs = parsers.parse_placement(sources.pdf_text(sources.pdf_bytes(url)), auction, url)
             got["securities"].extend(recs)
             processed.add(url)
         except Exception as e:  # keep going, record the problem
-            log.append({"level": "error", "url": url, "msg": f"plasare: {e}"})
+            failed(url, f"plasare: {e}")
+    if len(todo) > MAX_NEW:
+        log.append({"level": "info", "msg": f"{len(todo) - MAX_NEW} comunicate de plasare rămase pentru rulările următoare"})
 
-    for url, title in results:
-        if url in processed:
-            continue
-        m = sources.DATE_IN_NAME.search(url) or sources.DATE_IN_NAME.search(title)
-        if not m:
-            continue
-        auction = dt.date(int(m.group(3)), int(m.group(2)), int(m.group(1)))
+    todo = [(d, u, t) for d, u, t in dated(results) if u not in processed and attempts.get(u, 0) < 3 and d >= cutoff]
+    for auction, url, _ in todo[:MAX_NEW]:
+        if out_of_time():
+            break
         try:
             text = sources.pdf_text(sources.pdf_bytes(url))
             recs = parsers.parse_results_bt(text, auction, url)
             got["results"].extend(recs)
-            if recs or "obliga" in text.lower():
-                processed.add(url)  # bond-only results carry no min/max; detail pages cover them
+            processed.add(url)  # bond-only results carry no min/max; detail pages cover them
         except Exception as e:
-            log.append({"level": "error", "url": url, "msg": f"rezultate: {e}"})
+            failed(url, f"rezultate: {e}")
 
-    for url in sources.auction_detail_links():
-        if url in processed:
-            continue
-        try:
-            rec = parsers.parse_auction_detail(sources.page_text(url))
-            rec["source"] = url
-            if "auction_date" in rec and "rate_avg" in rec:
-                got["details"].append(rec)
-                processed.add(url)
-        except Exception as e:
-            log.append({"level": "error", "url": url, "msg": f"detaliu: {e}"})
+    if not out_of_time():
+        for url in sources.auction_detail_links(limit=12):
+            if url in processed or attempts.get(url, 0) >= 3:
+                continue
+            if out_of_time():
+                break
+            try:
+                rec = parsers.parse_auction_detail(sources.page_text(url))
+                rec["source"] = url
+                if "auction_date" in rec and "rate_avg" in rec:
+                    got["details"].append(rec)
+                    processed.add(url)
+                else:
+                    failed(url, "detaliu: câmpuri lipsă")
+            except Exception as e:
+                failed(url, f"detaliu: {e}")
 
-    today = dt.date.today()
     q = (today.month - 1) // 3 + 1
-    for year, quarter in {(today.year, q), (today.year + (q == 4), 1 if q == 4 else q + 1)}:
+    for year, quarter in sorted({(today.year, q), (today.year + (q == 4), 1 if q == 4 else q + 1)}):
+        if out_of_time():
+            break
         for url in (parsers.calendar_url(year, quarter), parsers.calendar_url(year, quarter, www=True)):
             if not sources.exists(url):
                 continue
-            data = sources.pdf_bytes(url)
+            try:
+                data = sources.pdf_bytes(url)
+            except Exception as e:
+                failed(url, f"calendar: {e}")
+                break
             digest = hashlib.sha256(data).hexdigest()
             key = f"{year}-Q{quarter}"
             if state.setdefault("calendar_hash", {}).get(key) == digest:
@@ -113,10 +160,10 @@ def scrape(state: dict, log: list) -> dict[str, list]:
             entries = parsers.parse_calendar_rows(rows, key, url)
             if entries:
                 got["calendar"].append({"quarter": key, "source_url": url, "entries": entries})
-                state["calendar_hash"][key] = digest
             else:
                 log.append({"level": "warn", "url": url,
                             "msg": "calendar găsit dar tabelul nu a putut fi citit – completează manual/calendar.json"})
+            state["calendar_hash"][key] = digest
             break
 
     state["processed"] = sorted(processed)
