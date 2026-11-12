@@ -1,5 +1,59 @@
 [
  {
+  "id": "launch:2024-08-07",
+  "kind": "launch",
+  "title": "Licitație anunțată 2024-08-07",
+  "at": "2026-11-12T15:11:14+00:00"
+ },
+ {
+  "id": "launch:2024-09-11",
+  "kind": "launch",
+  "title": "Licitație anunțată 2024-09-11",
+  "at": "2026-11-12T15:11:14+00:00"
+ },
+ {
+  "id": "launch:2024-11-13",
+  "kind": "launch",
+  "title": "Licitație anunțată 2024-11-13",
+  "at": "2026-11-12T15:11:14+00:00"
+ },
+ {
+  "id": "launch:2025-01-09",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-01-09",
+  "at": "2026-11-12T15:11:14+00:00"
+ },
+ {
+  "id": "launch:2025-02-12",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-02-12",
+  "at": "2026-11-12T15:11:14+00:00"
+ },
+ {
+  "id": "launch:2025-03-12",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-03-12",
+  "at": "2026-11-12T15:11:14+00:00"
+ },
+ {
+  "id": "launch:2025-04-09",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-04-09",
+  "at": "2026-11-12T15:11:14+00:00"
+ },
+ {
+  "id": "launch:2025-05-14",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-05-14",
+  "at": "2026-11-12T15:11:14+00:00"
+ },
+ {
+  "id": "launch:2025-06-11",
+  "kind": "launch",
+  "title": "Licitație anunțată 2025-06-11",
+  "at": "2026-11-12T15:11:14+00:00"
+ },
+ {
   "id": "integrated:2025-10-15",
   "kind": "integrated",
   "title": "Rezultate integrate 2025-10-15",

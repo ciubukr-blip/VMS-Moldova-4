@@ -2839,6 +2839,88 @@
  ],
  "securities": [
   {
+   "isin": "MD4004001658",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2024-08-07",
+   "issue_date": "2024-08-09",
+   "maturity": "2026-08-09",
+   "coupon_rate": 4.8,
+   "coupon_dates": [
+    "2025-02-09",
+    "2025-08-09",
+    "2026-02-09",
+    "2026-08-09"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-07.08.2024-rom.pdf"
+  },
+  {
+   "isin": "MD4004001666",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1095,
+   "auction_date": "2024-08-07",
+   "issue_date": "2024-08-09",
+   "maturity": "2027-08-09",
+   "coupon_rate": 5.1,
+   "coupon_dates": [
+    "2025-02-09",
+    "2025-08-09",
+    "2026-02-09",
+    "2026-08-09",
+    "2027-02-09",
+    "2027-08-09"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-07.08.2024-rom.pdf"
+  },
+  {
+   "isin": "MD4004001674",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1826,
+   "auction_date": "2024-09-11",
+   "issue_date": "2024-09-13",
+   "maturity": "2029-09-13",
+   "coupon_rate": 5.7,
+   "coupon_dates": [
+    "2025-03-13",
+    "2025-09-13",
+    "2026-03-13",
+    "2026-09-13",
+    "2027-03-13",
+    "2027-09-13",
+    "2028-03-13",
+    "2028-09-13",
+    "2029-03-13",
+    "2029-09-13"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.09.2024-rom.pdf"
+  },
+  {
+   "isin": "MD4004001716",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1826,
+   "auction_date": "2024-11-13",
+   "issue_date": "2024-11-15",
+   "maturity": "2029-11-15",
+   "coupon_rate": 6.1,
+   "coupon_dates": [
+    "2025-05-15",
+    "2025-11-15",
+    "2026-05-15",
+    "2026-11-15",
+    "2027-05-15",
+    "2027-11-15",
+    "2028-05-15",
+    "2028-11-15",
+    "2029-05-15",
+    "2029-11-15"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-13.11.2024-rom.pdf"
+  },
+  {
    "isin": "MD4004001740",
    "type": "OS",
    "term_label": "10 ani",
@@ -2871,6 +2953,188 @@
    ],
    "source": "Comunicate OS 11.03.2026 / 10.06.2026",
    "note": "Redeschideri: 11.03.2026, 10.06.2026; data emisiei inițiale dedusă din comunicatul din 11.12.2024"
+  },
+  {
+   "isin": "MD4004001757",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2025-01-09",
+   "issue_date": "2025-01-10",
+   "maturity": "2027-01-10",
+   "coupon_rate": 7.0,
+   "coupon_dates": [
+    "2025-07-10",
+    "2026-01-10",
+    "2026-07-10",
+    "2027-01-10"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-09.01.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001765",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1095,
+   "auction_date": "2025-01-09",
+   "issue_date": "2025-01-10",
+   "maturity": "2028-01-10",
+   "coupon_rate": 7.1,
+   "coupon_dates": [
+    "2025-07-10",
+    "2026-01-10",
+    "2026-07-10",
+    "2027-01-10",
+    "2027-07-10",
+    "2028-01-10"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-09.01.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001773",
+   "type": "OS",
+   "term_label": "5 ani",
+   "term_days": 1826,
+   "auction_date": "2025-02-12",
+   "issue_date": "2025-02-14",
+   "maturity": "2030-02-14",
+   "coupon_rate": 8.5,
+   "coupon_dates": [
+    "2025-08-14",
+    "2026-02-14",
+    "2026-08-14",
+    "2027-02-14",
+    "2027-08-14",
+    "2028-02-14",
+    "2028-08-14",
+    "2029-02-14",
+    "2029-08-14",
+    "2030-02-14"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-12.02.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001807",
+   "type": "OS",
+   "term_label": "7 ani",
+   "term_days": 2557,
+   "auction_date": "2025-03-12",
+   "issue_date": "2025-03-14",
+   "maturity": "2032-03-14",
+   "coupon_rate": 9.0,
+   "coupon_dates": [
+    "2025-09-14",
+    "2026-03-14",
+    "2026-09-14",
+    "2027-03-14",
+    "2027-09-14",
+    "2028-03-14",
+    "2028-09-14",
+    "2029-03-14",
+    "2029-09-14",
+    "2030-03-14",
+    "2030-09-14",
+    "2031-03-14",
+    "2031-09-14",
+    "2032-03-14"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-12.03.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001831",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2025-04-09",
+   "issue_date": "2025-04-11",
+   "maturity": "2027-04-11",
+   "coupon_rate": 8.15,
+   "coupon_dates": [
+    "2025-10-11",
+    "2026-04-11",
+    "2026-10-11",
+    "2027-04-11"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-09.04.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001849",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1096,
+   "auction_date": "2025-04-09",
+   "issue_date": "2025-04-11",
+   "maturity": "2028-04-11",
+   "coupon_rate": 8.3,
+   "coupon_dates": [
+    "2025-10-11",
+    "2026-04-11",
+    "2026-10-11",
+    "2027-04-11",
+    "2027-10-11",
+    "2028-04-11"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-09.04.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001872",
+   "type": "OS",
+   "term_label": "7 ani",
+   "term_days": 2557,
+   "auction_date": "2025-05-14",
+   "issue_date": "2025-05-16",
+   "maturity": "2032-05-16",
+   "coupon_rate": 7.5,
+   "coupon_dates": [
+    "2025-11-16",
+    "2026-05-16",
+    "2026-11-16",
+    "2027-05-16",
+    "2027-11-16",
+    "2028-05-16",
+    "2028-11-16",
+    "2029-05-16",
+    "2029-11-16",
+    "2030-05-16",
+    "2030-11-16",
+    "2031-05-16",
+    "2031-11-16",
+    "2032-05-16"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-14.05.2025-rom.pdf"
+  },
+  {
+   "isin": "MD4004001906",
+   "type": "OS",
+   "term_label": "10 ani",
+   "term_days": 3652,
+   "auction_date": "2025-06-11",
+   "issue_date": "2025-06-13",
+   "maturity": "2035-06-13",
+   "coupon_rate": 8.0,
+   "coupon_dates": [
+    "2025-12-13",
+    "2026-06-13",
+    "2026-12-13",
+    "2027-06-13",
+    "2027-12-13",
+    "2028-06-13",
+    "2028-12-13",
+    "2029-06-13",
+    "2029-12-13",
+    "2030-06-13",
+    "2030-12-13",
+    "2031-06-13",
+    "2031-12-13",
+    "2032-06-13",
+    "2032-12-13",
+    "2033-06-13",
+    "2033-12-13",
+    "2034-06-13",
+    "2034-12-13",
+    "2035-06-13"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.06.2025-rom.pdf"
   },
   {
    "isin": "MD4004001930",
@@ -5682,5 +5946,5 @@
    ]
   }
  ],
- "generated_at": "2026-11-12T15:09:35+00:00"
+ "generated_at": "2026-11-12T15:11:14+00:00"
 }
