@@ -1,5 +1,168 @@
 [
  {
+  "run": "2026-11-12T12:47:04+00:00",
+  "offline": false,
+  "errors": [],
+  "warnings": [
+   {
+    "level": "info",
+    "msg": "78 comunicate de plasare rămase pentru rulările următoare"
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Rezultatele%20licitatie%2003-11-2026%20-%20rom.pdf",
+    "msg": "rezultate: niciun rând recunoscut (text salvat în data/debug)",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Rezultatele%20licitatie%2013-10-2026%20-%20rom.pdf",
+    "msg": "rezultate: niciun rând recunoscut (text salvat în data/debug)",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Rezultatele%20licitatie%2029-09-2026%20-%20rom.pdf",
+    "msg": "rezultate: niciun rând recunoscut (text salvat în data/debug)",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Rezultatele%20licitatie%2015-09-2026%20-%20rom.pdf",
+    "msg": "rezultate: niciun rând recunoscut (text salvat în data/debug)",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Rezultatele%20licitatie%2001-09-2026%20-%20rom.pdf",
+    "msg": "rezultate: niciun rând recunoscut (text salvat în data/debug)",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Rezultatele%20licitatie%2018-08-2026%20-%20rom.pdf",
+    "msg": "rezultate: niciun rând recunoscut (text salvat în data/debug)",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Rezultatele%20licitatie%2004-08-2026%20-%20rom.pdf",
+    "msg": "rezultate: niciun rând recunoscut (text salvat în data/debug)",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Rezultatele%20licitatie%2014-07-2026%20-%20rom.pdf",
+    "msg": "rezultate: niciun rând recunoscut (text salvat în data/debug)",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Rezultatele%20licitatie%2030-06-2026%20-%20rom.pdf",
+    "msg": "rezultate: niciun rând recunoscut (text salvat în data/debug)",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Rezultatele%20licitatie%2016-06-2026%20-%20rom.pdf",
+    "msg": "rezultate: niciun rând recunoscut (text salvat în data/debug)",
+    "attempt": 1
+   },
+   {
+    "level": "warn",
+    "isin": "MD4004001740",
+    "msg": "termen negăsit; date emitere/scadență lipsă; rata cuponului lipsă; redeschidere: data emisiei inițiale trebuie confirmată",
+    "record": {
+     "isin": "MD4004001740",
+     "type": "OS",
+     "term_label": "0 zile",
+     "term_days": null,
+     "auction_date": "2026-06-10",
+     "issue_date": null,
+     "maturity": null,
+     "coupon_rate": null,
+     "coupon_dates": [],
+     "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-10.06.2026-rom.pdf",
+     "note": "Redeschidere – verifică data emisiei inițiale",
+     "_issues": [
+      "termen negăsit",
+      "date emitere/scadență lipsă",
+      "rata cuponului lipsă",
+      "redeschidere: data emisiei inițiale trebuie confirmată"
+     ]
+    }
+   },
+   {
+    "level": "warn",
+    "isin": "MD4004001740",
+    "msg": "termen negăsit; redeschidere: data emisiei inițiale trebuie confirmată",
+    "record": {
+     "isin": "MD4004001740",
+     "type": "OS",
+     "term_label": "0 zile",
+     "term_days": 546,
+     "auction_date": "2026-06-10",
+     "issue_date": "2024-12-13",
+     "maturity": "2026-06-12",
+     "coupon_rate": 8.0,
+     "coupon_dates": [],
+     "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-10.06.2026-rom.pdf",
+     "note": "Redeschidere – verifică data emisiei inițiale",
+     "_issues": [
+      "termen negăsit",
+      "redeschidere: data emisiei inițiale trebuie confirmată"
+     ]
+    }
+   },
+   {
+    "level": "warn",
+    "isin": "MD4004001740",
+    "msg": "termen negăsit; date emitere/scadență lipsă; rata cuponului lipsă; redeschidere: data emisiei inițiale trebuie confirmată",
+    "record": {
+     "isin": "MD4004001740",
+     "type": "OS",
+     "term_label": "0 zile",
+     "term_days": null,
+     "auction_date": "2026-03-11",
+     "issue_date": null,
+     "maturity": null,
+     "coupon_rate": null,
+     "coupon_dates": [],
+     "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.03.2026-rom.pdf",
+     "note": "Redeschidere – verifică data emisiei inițiale",
+     "_issues": [
+      "termen negăsit",
+      "date emitere/scadență lipsă",
+      "rata cuponului lipsă",
+      "redeschidere: data emisiei inițiale trebuie confirmată"
+     ]
+    }
+   },
+   {
+    "level": "warn",
+    "isin": "MD4004001740",
+    "msg": "termen negăsit; redeschidere: data emisiei inițiale trebuie confirmată",
+    "record": {
+     "isin": "MD4004001740",
+     "type": "OS",
+     "term_label": "0 zile",
+     "term_days": 455,
+     "auction_date": "2026-03-11",
+     "issue_date": "2024-12-13",
+     "maturity": "2026-03-13",
+     "coupon_rate": 8.0,
+     "coupon_dates": [],
+     "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.03.2026-rom.pdf",
+     "note": "Redeschidere – verifică data emisiei inițiale",
+     "_issues": [
+      "termen negăsit",
+      "redeschidere: data emisiei inițiale trebuie confirmată"
+     ]
+    }
+   }
+  ]
+ },
+ {
   "run": "2026-11-12T12:39:54+00:00",
   "offline": false,
   "errors": [],

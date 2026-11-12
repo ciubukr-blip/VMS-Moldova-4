@@ -4630,10 +4630,15 @@
    "type": "BT",
    "term_label": "91 zile",
    "rate_min": 3.03,
-   "rate_avg": 3.07,
+   "rate_avg": 3.11,
    "rate_max": 3.11,
    "settlement_date": "2026-10-15",
-   "maturity": "2027-01-14"
+   "maturity": "2027-01-14",
+   "announced": 50000.0,
+   "demand": 32071.0,
+   "placed_nominal": 31431.0,
+   "placed_price": 31193.42,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-10-13",
@@ -4644,7 +4649,12 @@
    "rate_avg": 11.07,
    "rate_max": 11.49,
    "settlement_date": "2026-10-15",
-   "maturity": "2027-04-15"
+   "maturity": "2027-04-15",
+   "announced": 1350000.0,
+   "demand": 1561338.5,
+   "placed_nominal": 1539086.8,
+   "placed_price": 1458518.2,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-10-13",
@@ -4655,7 +4665,12 @@
    "rate_avg": 11.7,
    "rate_max": 12.49,
    "settlement_date": "2026-10-15",
-   "maturity": "2027-10-14"
+   "maturity": "2027-10-14",
+   "announced": 1800000.0,
+   "demand": 1133576.7,
+   "placed_nominal": 1133576.7,
+   "placed_price": 1015154.16,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2026-11-03",
@@ -4918,5 +4933,5 @@
    ]
   }
  ],
- "generated_at": "2026-11-12T12:39:54+00:00"
+ "generated_at": "2026-11-12T12:47:04+00:00"
 }
