@@ -1,5 +1,187 @@
 [
  {
+  "run": "2026-11-12T15:09:35+00:00",
+  "offline": false,
+  "errors": [],
+  "warnings": [
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-10.06.2026-rom.pdf",
+    "msg": "plasare: cupon necitit pentru MD4004001740 (text salvat în data/debug)",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.03.2026-rom.pdf",
+    "msg": "plasare: cupon necitit pentru MD4004001740 (text salvat în data/debug)",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-12.11.2025-rom.pdf",
+    "msg": "plasare: cupon necitit pentru MD4004001500 (text salvat în data/debug)",
+    "attempt": 1
+   },
+   {
+    "level": "info",
+    "msg": "65 comunicate de plasare rămase pentru rulările următoare"
+   },
+   {
+    "level": "info",
+    "isin": "MD4004001740",
+    "msg": "cupon completat automat (8.0%) din altă sursă pentru același ISIN"
+   },
+   {
+    "level": "warn",
+    "isin": "MD4004001740",
+    "msg": "termen negăsit; date emitere/scadență lipsă; redeschidere: datele emisiunii inițiale se confirmă manual",
+    "record": {
+     "isin": "MD4004001740",
+     "type": "OS",
+     "term_label": "0 zile",
+     "term_days": null,
+     "auction_date": "2026-06-10",
+     "issue_date": null,
+     "maturity": null,
+     "coupon_rate": 8.0,
+     "coupon_dates": [],
+     "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-10.06.2026-rom.pdf",
+     "note": "Redeschidere – se confirmă manual",
+     "_issues": [
+      "termen negăsit",
+      "date emitere/scadență lipsă",
+      "rata cuponului lipsă",
+      "redeschidere: datele emisiunii inițiale se confirmă manual"
+     ]
+    }
+   },
+   {
+    "level": "warn",
+    "isin": "MD4004001740",
+    "msg": "termen negăsit; redeschidere: datele emisiunii inițiale se confirmă manual",
+    "record": {
+     "isin": "MD4004001740",
+     "type": "OS",
+     "term_label": "0 zile",
+     "term_days": null,
+     "auction_date": "2026-06-10",
+     "issue_date": null,
+     "maturity": null,
+     "coupon_rate": 8.0,
+     "coupon_dates": [],
+     "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-10.06.2026-rom.pdf",
+     "note": "Redeschidere – se confirmă manual",
+     "_issues": [
+      "termen negăsit",
+      "redeschidere: datele emisiunii inițiale se confirmă manual"
+     ]
+    }
+   },
+   {
+    "level": "info",
+    "isin": "MD4004001740",
+    "msg": "cupon completat automat (8.0%) din altă sursă pentru același ISIN"
+   },
+   {
+    "level": "warn",
+    "isin": "MD4004001740",
+    "msg": "termen negăsit; date emitere/scadență lipsă; redeschidere: datele emisiunii inițiale se confirmă manual",
+    "record": {
+     "isin": "MD4004001740",
+     "type": "OS",
+     "term_label": "0 zile",
+     "term_days": null,
+     "auction_date": "2026-03-11",
+     "issue_date": null,
+     "maturity": null,
+     "coupon_rate": 8.0,
+     "coupon_dates": [],
+     "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.03.2026-rom.pdf",
+     "note": "Redeschidere – se confirmă manual",
+     "_issues": [
+      "termen negăsit",
+      "date emitere/scadență lipsă",
+      "rata cuponului lipsă",
+      "redeschidere: datele emisiunii inițiale se confirmă manual"
+     ]
+    }
+   },
+   {
+    "level": "warn",
+    "isin": "MD4004001740",
+    "msg": "termen negăsit; redeschidere: datele emisiunii inițiale se confirmă manual",
+    "record": {
+     "isin": "MD4004001740",
+     "type": "OS",
+     "term_label": "0 zile",
+     "term_days": null,
+     "auction_date": "2026-03-11",
+     "issue_date": null,
+     "maturity": null,
+     "coupon_rate": 8.0,
+     "coupon_dates": [],
+     "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.03.2026-rom.pdf",
+     "note": "Redeschidere – se confirmă manual",
+     "_issues": [
+      "termen negăsit",
+      "redeschidere: datele emisiunii inițiale se confirmă manual"
+     ]
+    }
+   },
+   {
+    "level": "info",
+    "isin": "MD4004001500",
+    "msg": "cupon completat automat (7.5%) din altă sursă pentru același ISIN"
+   },
+   {
+    "level": "warn",
+    "isin": "MD4004001500",
+    "msg": "termen negăsit; date emitere/scadență lipsă; redeschidere: datele emisiunii inițiale se confirmă manual",
+    "record": {
+     "isin": "MD4004001500",
+     "type": "OS",
+     "term_label": "0 zile",
+     "term_days": null,
+     "auction_date": "2025-11-12",
+     "issue_date": null,
+     "maturity": null,
+     "coupon_rate": 7.5,
+     "coupon_dates": [],
+     "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-12.11.2025-rom.pdf",
+     "note": "Redeschidere – se confirmă manual",
+     "_issues": [
+      "termen negăsit",
+      "date emitere/scadență lipsă",
+      "rata cuponului lipsă",
+      "redeschidere: datele emisiunii inițiale se confirmă manual"
+     ]
+    }
+   },
+   {
+    "level": "warn",
+    "isin": "MD4004001500",
+    "msg": "termen negăsit; redeschidere: datele emisiunii inițiale se confirmă manual",
+    "record": {
+     "isin": "MD4004001500",
+     "type": "OS",
+     "term_label": "0 zile",
+     "term_days": null,
+     "auction_date": "2025-11-12",
+     "issue_date": null,
+     "maturity": null,
+     "coupon_rate": 7.5,
+     "coupon_dates": [],
+     "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-12.11.2025-rom.pdf",
+     "note": "Redeschidere – se confirmă manual",
+     "_issues": [
+      "termen negăsit",
+      "redeschidere: datele emisiunii inițiale se confirmă manual"
+     ]
+    }
+   }
+  ]
+ },
+ {
   "run": "2026-11-12T14:28:57+00:00",
   "offline": false,
   "errors": [

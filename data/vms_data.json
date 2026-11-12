@@ -4319,7 +4319,12 @@
    "rate_avg": 3.03,
    "rate_max": 3.03,
    "settlement_date": "2025-10-16",
-   "maturity": "2026-01-15"
+   "maturity": "2026-01-15",
+   "announced": 50000.0,
+   "demand": 22695.9,
+   "placed_nominal": 16695.9,
+   "placed_price": 16570.7,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2025-10-15",
@@ -4330,7 +4335,12 @@
    "rate_avg": 9.38,
    "rate_max": 9.41,
    "settlement_date": "2025-10-16",
-   "maturity": "2026-04-16"
+   "maturity": "2026-04-16",
+   "announced": 1200000.0,
+   "demand": 1262090.0,
+   "placed_nominal": 1246380.0,
+   "placed_price": 1190710.6,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2025-10-15",
@@ -4341,7 +4351,12 @@
    "rate_avg": 9.3,
    "rate_max": 9.33,
    "settlement_date": "2025-10-16",
-   "maturity": "2026-10-15"
+   "maturity": "2026-10-15",
+   "announced": 1250000.0,
+   "demand": 873383.4,
+   "placed_nominal": 873383.4,
+   "placed_price": 799226.7,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2025-11-04",
@@ -4352,7 +4367,12 @@
    "rate_avg": 3.03,
    "rate_max": 3.03,
    "settlement_date": "2025-11-06",
-   "maturity": "2026-02-05"
+   "maturity": "2026-02-05",
+   "announced": 50000.0,
+   "demand": 43598.5,
+   "placed_nominal": 43598.5,
+   "placed_price": 43271.5,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2025-11-04",
@@ -4363,7 +4383,12 @@
    "rate_avg": 9.41,
    "rate_max": 9.43,
    "settlement_date": "2025-11-06",
-   "maturity": "2026-05-07"
+   "maturity": "2026-05-07",
+   "announced": 1200000.0,
+   "demand": 1118634.0,
+   "placed_nominal": 1114899.4,
+   "placed_price": 1065000.3,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2025-11-04",
@@ -4374,7 +4399,12 @@
    "rate_avg": 9.32,
    "rate_max": 9.35,
    "settlement_date": "2025-11-06",
-   "maturity": "2026-11-05"
+   "maturity": "2026-11-05",
+   "announced": 1250000.0,
+   "demand": 1003608.3,
+   "placed_nominal": 1003608.3,
+   "placed_price": 918341.7,
+   "unit": "mii lei"
   },
   {
    "auction_date": "2025-11-18",
@@ -5652,5 +5682,5 @@
    ]
   }
  ],
- "generated_at": "2026-11-12T13:05:31+00:00"
+ "generated_at": "2026-11-12T15:09:35+00:00"
 }
