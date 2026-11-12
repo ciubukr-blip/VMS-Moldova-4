@@ -7,6 +7,7 @@
 //  3. permisiunea INTERNET (necesară sincronizării datelor) și numele „VMS Moldova”
 //  4. <queries> pentru deschiderea linkurilor https (url_launcher, Android 11+)
 //  5. .gitignore pentru cheie și parole
+//  6. core library desugaring (necesar pentru flutter_local_notifications)
 import 'dart:io';
 
 const appId = 'md.vmsmoldova.app';
@@ -88,6 +89,16 @@ if (keystorePropertiesFile.exists()) {
       debugLine,
       'signingConfig = if (keystorePropertiesFile.exists()) signingConfigs.getByName("release") else signingConfigs.getByName("debug")',
     );
+  }
+
+  // 3. core library desugaring (cerut de flutter_local_notifications)
+  if (!s.contains('isCoreLibraryDesugaringEnabled')) {
+    final co = RegExp(r'compileOptions\s*\{');
+    if (!co.hasMatch(s)) _fail('nu găsesc compileOptions { } în ${f.path}');
+    s = s.replaceFirstMapped(co, (m) => '${m[0]}\n        isCoreLibraryDesugaringEnabled = true');
+  }
+  if (!s.contains('desugar_jdk_libs')) {
+    s = '${s.trimRight()}\n\ndependencies {\n    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")\n}\n';
   }
 
   if (s != original) {
