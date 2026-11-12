@@ -2980,7 +2980,16 @@
     "2023-07-02"
    ],
    "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-30.06.2021-rom.pdf",
-   "coupon_type": "flotant"
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2023-07-02",
+     "rate": 20.93,
+     "base": 20.68,
+     "margin": 0.25
+    }
+   ],
+   "margin": 0.25
   },
   {
    "isin": "MD4004000536",
@@ -3034,7 +3043,16 @@
     "2023-08-06"
    ],
    "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-04.08.2021-rom.pdf",
-   "coupon_type": "flotant"
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2023-08-06",
+     "rate": 16.69,
+     "base": 16.44,
+     "margin": 0.25
+    }
+   ],
+   "margin": 0.25
   },
   {
    "isin": "MD4004000593",
@@ -3052,7 +3070,16 @@
     "2023-09-03"
    ],
    "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-02.09.2021-rom.pdf",
-   "coupon_type": "flotant"
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2023-09-03",
+     "rate": 19.9,
+     "base": 19.65,
+     "margin": 0.25
+    }
+   ],
+   "margin": 0.25
   },
   {
    "isin": "MD4004000601",
@@ -3129,7 +3156,22 @@
     "2023-10-08"
    ],
    "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-06.10.2021-rom.pdf",
-   "coupon_type": "flotant"
+   "coupon_type": "flotant",
+   "coupon_history": [
+    {
+     "date": "2023-04-08",
+     "rate": 21.22,
+     "base": 20.97,
+     "margin": 0.25
+    },
+    {
+     "date": "2023-10-08",
+     "rate": 12.35,
+     "base": 12.1,
+     "margin": 0.25
+    }
+   ],
+   "margin": 0.25
   },
   {
    "isin": "MD4004000643",
@@ -3213,6 +3255,12 @@
    "coupon_type": "flotant",
    "coupon_history": [
     {
+     "date": "2023-05-05",
+     "rate": 22.37,
+     "base": 21.97,
+     "margin": 0.4
+    },
+    {
      "date": "2023-11-05",
      "rate": 10.75,
      "base": 10.35,
@@ -3282,6 +3330,12 @@
    "coupon_type": "flotant",
    "coupon_history": [
     {
+     "date": "2023-06-03",
+     "rate": 22.25,
+     "base": 21.95,
+     "margin": 0.3
+    },
+    {
      "date": "2023-12-03",
      "rate": 10.49,
      "base": 10.19,
@@ -3344,6 +3398,12 @@
    "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-12.01.2022-rom.pdf",
    "coupon_type": "flotant",
    "coupon_history": [
+    {
+     "date": "2023-07-14",
+     "rate": 20.05,
+     "base": 19.85,
+     "margin": 0.2
+    },
     {
      "date": "2024-01-14",
      "rate": 9.12,
@@ -3435,6 +3495,12 @@
    "coupon_type": "flotant",
    "coupon_history": [
     {
+     "date": "2023-08-11",
+     "rate": 16.84,
+     "base": 16.44,
+     "margin": 0.4
+    },
+    {
      "date": "2024-02-11",
      "rate": 7.95,
      "base": 7.55,
@@ -3501,6 +3567,12 @@
    "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-09.03.2022-rom.pdf",
    "coupon_type": "flotant",
    "coupon_history": [
+    {
+     "date": "2023-09-11",
+     "rate": 15.07,
+     "base": 13.07,
+     "margin": 2.0
+    },
     {
      "date": "2024-03-11",
      "rate": 8.93,
@@ -7476,5 +7548,5 @@
    ]
   }
  ],
- "generated_at": "2026-11-12T15:21:49+00:00"
+ "generated_at": "2026-11-12T15:25:22+00:00"
 }
