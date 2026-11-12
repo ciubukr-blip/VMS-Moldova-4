@@ -1,5 +1,21 @@
 [
  {
+  "run": "2026-11-12T11:06:56+00:00",
+  "offline": false,
+  "errors": [],
+  "warnings": [
+   {
+    "level": "info",
+    "msg": "93 comunicate de plasare rămase pentru rulările următoare"
+   },
+   {
+    "level": "error",
+    "msg": "scrape eșuat",
+    "trace": "Traceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/pdfplumber/pdf.py\", line 50, in __init__\n    self.doc = PDFDocument(PDFParser(stream), password=password or \"\")\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/pdfminer/pdfdocument.py\", line 744, in __init__\n    raise PDFSyntaxError(\"No /Root object! - Is this really a PDF?\")\npdfminer.pdfparser.PDFSyntaxError: No /Root object! - Is this really a PDF?\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/VMS-Moldova-4/VMS-Moldova-4/data_pipeline/vms_pipeline/build.py\", line 335, in main\n    scraped = scrape(state, log)\n              ^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/VMS-Moldova-4/VMS-Moldova-4/data_pipeline/vms_pipeline/build.py\", line 159, in scrape\n    rows = [r for t in sources.pdf_tables(data) for r in t]\n                       ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/VMS-Moldova-4/VMS-Moldova-4/data_pipeline/vms_pipeline/sources.py\", line 108, in pdf_tables\n    with pdfplumber.open(io.BytesIO(data)) as pdf:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/pdfplumber/pdf.py\", line 107, in open\n    return cls(\n           ^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/site-packages/pdfplumber/pdf.py\", line 52, in __init__\n    raise PdfminerException(e)\npdfplumber.utils.exceptions.PdfminerException: No /Root object! - Is this really a PDF?\n"
+   }
+  ]
+ },
+ {
   "run": "2026-11-12T09:42:43+00:00",
   "offline": true,
   "errors": [],
