@@ -1,7 +1,7 @@
 name: vms_moldova
 description: VMS Moldova - grafice, licitatii si portofoliu
 publish_to: none
-version: 3.0.0+3
+version: 3.1.0+4
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -16,6 +16,10 @@ dependencies:
   intl: any            # versiunea este fixată de flutter_localizations
   url_launcher: ^6.3.1
   http: ^1.2.2
+  firebase_core: any
+  firebase_messaging: any
+  flutter_local_notifications: ^19.4.0
+  timezone: any
 
 dev_dependencies:
   flutter_test:

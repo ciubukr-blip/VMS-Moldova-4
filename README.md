@@ -1,4 +1,4 @@
-# VMS Moldova – versiunea 3.0
+# VMS Moldova – versiunea 3.1
 
 Aplicație Android (Flutter) pentru valorile mobiliare de stat ale Republicii Moldova:
 rate la licitații, calendarul MF, rezultatele licitațiilor și portofoliul personal
@@ -14,6 +14,23 @@ calculat conform Regulamentului VMS.
 | Licitații | Calendar lunar cu zilele de licitație (BT/OS), cardul „Următoarea licitație”, detaliile fiecărei zile și rezultatele ultimei licitații (ISIN, volume, rate min/medie/max, cerere/ofertă, preț mediu). Linkurile spre calendarul trimestrial MF sunt actualizate. |
 | Date | Un singur fișier `vms_data.json` (rate, ISIN-uri, rezultate, calendar), inclus în APK și actualizat automat online. |
 | Publicare | `applicationId` definitiv, semnare release cu cheia ta, permisiune INTERNET, versiune 3.0.0+3, migrare automată a portofoliului din v2, ecran de confidențialitate și avertisment. |
+
+## Notificări (3.1)
+
+- **Scadențe:** programate pe telefon la 09:00 (ora Chișinăului), cu 14 zile, 7 zile și o zi înainte. Funcționează fără server și fără internet.
+- **Licitații:** robotul de date generează evenimente cu id stabil și le trimite prin Firebase Cloud Messaging pe trei subiecte:
+  - `licitatii`: comunicat de plasare nou;
+  - `rezultate`: rezultatele licitației, rata medie pe fiecare termen;
+  - `calendar`: calendar trimestrial nou.
+
+  Aplicația se abonează la aceste subiecte după comutatoarele din ecranul Alerte.
+- **Fără spam:** se notifică doar licitațiile viitoare, rezultatele din ultimele 3 zile și calendarele cu licitații viitoare. Arhiva recuperată nu trimite nimic.
+- **Configurare:** două secrete în GitHub (Settings → Secrets and variables → Actions):
+  - `GOOGLE_SERVICES_JSON`: conținutul fișierului `google-services.json` din Firebase, pentru aplicația Android `md.vmsmoldova.app`;
+  - `FIREBASE_SERVICE_ACCOUNT`: cheia JSON a contului de serviciu Firebase, cu care robotul trimite notificările.
+
+  Fără aceste secrete, aplicația și robotul funcționează normal, doar fără notificări despre licitații.
+- **Calendarul din aplicație:** afișează și licitațiile anunțate prin comunicatele de plasare, nu doar pe cele din calendarul trimestrial.
 
 ## Formule (Regulamentul VMS, ed. 2025)
 
