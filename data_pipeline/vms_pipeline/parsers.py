@@ -134,7 +134,14 @@ def parse_placement(text: str, auction_date: dt.date, source: str) -> list[dict[
         if issues:
             rec["_issues"] = issues
         out.append(rec)
-    return out
+    # același ISIN poate apărea și în textul introductiv („redeschiderea emisiunii ... cu codul ISIN X”):
+    # păstrăm doar rândul cel mai complet pentru fiecare ISIN
+    best: dict[str, dict[str, Any]] = {}
+    for rec in out:
+        cur = best.get(rec["isin"])
+        if cur is None or len(rec.get("_issues", [])) < len(cur.get("_issues", [])):
+            best[rec["isin"]] = rec
+    return list(best.values())
 
 
 # --------------------------------------------------------------------------

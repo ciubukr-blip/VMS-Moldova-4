@@ -114,6 +114,22 @@ class CouponFormatTests(unittest.TestCase):
         self.assertNotIn("rata cuponului lipsă", r.get("_issues", []))
 
 
+REOPENING_OS = """Ministerul Finanţelor anunță redeschiderea emisiunii de valori mobiliare de stat cu codul ISIN MD4004001740 în sumă de 50.000.000 (cincizeci
+milioane ) lei.
+Valorile mobiliare de stat vor fi plasate pe piaţa primară la licitaţiile, care vor fi desfăşurate la Banca Naţională a Moldovei la 11 martie 2026.
+Tipul VMS Maturitatea Codul ISIN Data Valoarea Volumul Condițiile Rata anuală a Dobînda Data Data Termenele de
+Obligațiuni de stat 8,76 MD4004001740 13.12.2024 100 50,0 la valoarea 8,00 la sută anual 1,9726027 13.03.2026 13.12.2034 La datele
+cu dobândă fixă nominală către valoarea specificate în"""
+
+
+class ReopeningTests(unittest.TestCase):
+    def test_isin_in_intro_does_not_hide_coupon(self):
+        recs = parsers.parse_placement(REOPENING_OS, dt.date(2026, 3, 11), "x")
+        self.assertEqual(len(recs), 1)
+        self.assertEqual(recs[0]["coupon_rate"], 8.0)
+        self.assertNotIn("rata cuponului lipsă", recs[0]["_issues"])
+
+
 class MergeTests(unittest.TestCase):
     def setUp(self):
         from vms_pipeline import build
