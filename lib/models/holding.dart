@@ -18,6 +18,9 @@ class Holding {
   final double price; // preț net pentru o VMS de 100 lei
   final int quantity; // număr de unități
   final bool manual; // ISIN introdus manual (nu din baza de date)
+  final String? couponType; // 'flotant' = dobândă flotantă
+  final double? margin; // p.p. peste rata medie BT 182 zile
+  final Map<DateTime, double> couponHistory; // ratele cupoanelor anunțate (copie la salvare)
 
   Holding({
     required this.id,
@@ -32,9 +35,13 @@ class Holding {
     this.couponRate,
     this.couponDates = const [],
     this.manual = false,
+    this.couponType,
+    this.margin,
+    this.couponHistory = const {},
   });
 
   bool get isBill => type == 'BT';
+  bool get isFloating => !isBill && couponType == 'flotant';
   String get typeName => isBill ? 'Bon de trezorerie' : 'Obligațiune de stat';
   bool isMatured(DateTime today) => !dayOnly(maturity).isAfter(dayOnly(today));
 
@@ -50,6 +57,9 @@ class Holding {
     double? price,
     int? quantity,
     bool? manual,
+    String? couponType,
+    double? margin,
+    Map<DateTime, double>? couponHistory,
   }) =>
       Holding(
         id: id,
@@ -64,6 +74,9 @@ class Holding {
         price: price ?? this.price,
         quantity: quantity ?? this.quantity,
         manual: manual ?? this.manual,
+        couponType: couponType ?? this.couponType,
+        margin: margin ?? this.margin,
+        couponHistory: couponHistory ?? this.couponHistory,
       );
 
   static String _ds(DateTime d) =>
@@ -82,6 +95,9 @@ class Holding {
         'price': price,
         'quantity': quantity,
         'manual': manual,
+        if (couponType != null) 'couponType': couponType,
+        if (margin != null) 'margin': margin,
+        if (couponHistory.isNotEmpty) 'couponHistory': {for (final e in couponHistory.entries) _ds(e.key): e.value},
       };
 
   factory Holding.fromJson(Map<String, dynamic> j) => Holding(
@@ -97,6 +113,12 @@ class Holding {
         price: (j['price'] as num).toDouble(),
         quantity: (j['quantity'] as num).toInt(),
         manual: (j['manual'] as bool?) ?? false,
+        couponType: j['couponType'] as String?,
+        margin: (j['margin'] as num?)?.toDouble(),
+        couponHistory: {
+          for (final e in ((j['couponHistory'] as Map?) ?? const {}).entries)
+            dayOnly(DateTime.parse(e.key as String)): (e.value as num).toDouble(),
+        },
       );
 
   /// Migrare din formatul v2 (nominal total + cost total, fără ISIN).
@@ -140,5 +162,8 @@ class Holding {
         purchaseDate: purchaseDate,
         price: price,
         quantity: quantity,
+        couponType: s.couponType,
+        margin: s.margin,
+        couponHistory: s.couponHistory,
       );
 }

@@ -348,6 +348,7 @@ def parse_margin(text: str) -> float | None:
 def parse_coupon_notice(text: str, source: str) -> dict[str, Any] | None:
     """Rata anunțată pentru un cupon al unei obligațiuni cu dobândă flotantă."""
     flat = re.sub(r"\s+", " ", text)
+    flat = re.sub(r"\bMD\s+(\d{10})\b", r"MD\1", flat)  # „MD 4004001096”
     isin = ISIN_RE.search(flat)
     pay = re.search(r"pl[ăa]tit\w*\s+la\s+data\s+de\s+" + _RO_DATE, flat, re.I)
     rate = re.search(r"constituie\s+(\d{1,2}(?:[.,]\d{1,4})?)\s*%", flat, re.I)

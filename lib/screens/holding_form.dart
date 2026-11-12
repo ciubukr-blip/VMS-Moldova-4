@@ -302,9 +302,18 @@ class _HoldingFormState extends State<HoldingForm> {
           KV('Data scadenței', date(s.maturity)),
           KV('Termen', '${s.termDays} zile'),
           if (s.couponRate != null) KV('Rata cuponului', pct(s.couponRate!)),
+          if (s.isFloating) ...[
+            KV('Cupon', 'flotant: BT 182 zile${s.margin != null ? ' + ${priceFmt(s.margin!)} p.p.' : ''}'),
+            if (s.couponHistory.isNotEmpty) KV('Ultima rată anunțată', _lastAnnounced(s)),
+          ],
           if (s.unverified) const InfoNote('Date preluate automat, încă neconfirmate manual.', icon: Icons.warning_amber_rounded, color: AppColors.amber),
         ]),
       );
+
+  String _lastAnnounced(Security s) {
+    final last = (s.couponHistory.keys.toList()..sort()).last;
+    return '${pct(s.couponHistory[last]!)} (cupon ${date(last)})';
+  }
 
   List<Widget> _manualFields() => [
         TextFormField(
@@ -366,6 +375,15 @@ class _HoldingFormState extends State<HoldingForm> {
           const Padding(
             padding: EdgeInsets.only(top: 6),
             child: InfoNote('Cumpărare la emitere: cele două rate coincid.'),
+          ),
+        if (m.hasEstimates)
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: InfoNote(
+                'Dobândă flotantă: cupoanele neanunțate încă de MF sunt estimate cu ultima rată medie la BT de 182 zile'
+                '${FloatingRates.reference != null ? ' (${pct(FloatingRates.reference!)})' : ''}'
+                '${m.margin != null ? ' + marja ${priceFmt(m.margin!)} p.p.' : ''}. '
+                'Calculul se actualizează automat pe măsură ce MF anunță ratele.'),
           ),
         const SizedBox(height: 10),
         const Divider(),
@@ -450,7 +468,8 @@ class _IsinPickerState extends State<_IsinPicker> {
                       leading: TypePill(s.type),
                       title: Text(s.isin, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
                       subtitle: Text('${s.termLabel} · emis ${date(s.issueDate)} · scadență ${date(s.maturity)}'
-                          '${s.couponRate != null ? ' · cupon ${pct(s.couponRate!)}' : ''}'),
+                          '${s.couponRate != null ? ' · cupon ${pct(s.couponRate!)}' : ''}'
+                          '${s.isFloating ? ' · cupon flotant' : ''}'),
                     );
                   },
                 ),

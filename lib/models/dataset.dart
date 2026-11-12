@@ -38,6 +38,9 @@ class Security {
   final List<DateTime> couponDates;
   final String? note;
   final bool unverified;
+  final String? couponType; // 'flotant' = dobândă flotantă (rata medie BT 182 zile + marja)
+  final double? margin; // marja în p.p. (doar la dobânda flotantă)
+  final Map<DateTime, double> couponHistory; // ratele anunțate de MF, pe data plății cuponului
 
   Security({
     required this.isin,
@@ -50,9 +53,13 @@ class Security {
     this.couponDates = const [],
     this.note,
     this.unverified = false,
+    this.couponType,
+    this.margin,
+    this.couponHistory = const {},
   });
 
   bool get isBill => type == 'BT';
+  bool get isFloating => !isBill && couponType == 'flotant';
   int get termDays => dayOnly(maturity).difference(dayOnly(issueDate)).inDays;
   String get typeName => isBill ? 'Bon de trezorerie' : 'Obligațiune de stat';
 
@@ -67,6 +74,12 @@ class Security {
         couponDates: ((m['coupon_dates'] as List?) ?? const []).map((e) => DateTime.parse(e as String)).toList()..sort(),
         note: m['note'] as String?,
         unverified: (m['unverified'] as bool?) ?? false,
+        couponType: m['coupon_type'] as String?,
+        margin: _num(m['margin']),
+        couponHistory: {
+          for (final h in ((m['coupon_history'] as List?) ?? const []).cast<Map<String, dynamic>>())
+            dayOnly(DateTime.parse(h['date'] as String)): (h['rate'] as num).toDouble(),
+        },
       );
 }
 
@@ -197,6 +210,14 @@ class VmsDataset {
       calendar: cal,
       calendarSources: sources,
     );
+  }
+
+  /// Ultima rată medie la BT de 182 zile – referința cupoanelor cu dobândă flotantă.
+  RateRecord? get latestBt182 {
+    for (final r in rates.reversed) {
+      if (r.days == 182) return r;
+    }
+    return null;
   }
 
   /// Rezultatele ultimei licitații (toate termenele din aceeași zi).

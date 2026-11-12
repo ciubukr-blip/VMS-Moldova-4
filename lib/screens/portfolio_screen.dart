@@ -335,7 +335,16 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
               Expanded(child: Stat('Rentabilitate', pct(m.investmentReturn), valueSize: 13.5, valueColor: AppColors.primary)),
               Expanded(child: Stat('Dobândă', '+${money(m.interest)}', valueSize: 13.5, valueColor: AppColors.green)),
             ]),
-            if (h.couponRate != null && !h.isBill)
+            if (m.floating)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                    'Cupon flotant: BT 182 zile${m.margin != null ? ' + ${priceFmt(m.margin!)} p.p.' : ''}'
+                    '${m.nextCouponRate != null ? ' · următorul ${pct(m.nextCouponRate!)}${m.nextCouponEstimated ? ' (estimat)' : ''}' : ''}'
+                    ' · cupoane de încasat ${lei(m.couponsTotal)}${m.hasEstimates ? ' (estimat)' : ''}',
+                    style: const TextStyle(fontSize: 11.5, color: AppColors.textMuted)),
+              )
+            else if (h.couponRate != null && !h.isBill)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text('Cupon ${pct(h.couponRate!)} · cupoane de încasat ${lei(m.couponsTotal)}',

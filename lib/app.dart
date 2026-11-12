@@ -10,6 +10,7 @@ import 'screens/more_screen.dart';
 import 'screens/portfolio_screen.dart';
 import 'screens/rates_screen.dart';
 import 'services/data_repository.dart';
+import 'services/finance.dart';
 import 'services/portfolio_store.dart';
 import 'theme/app_theme.dart';
 
@@ -84,6 +85,7 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
       }
       final lc = await _repo.lastChecked();
       if (!mounted) return;
+      FloatingRates.load(d);
       setState(() {
         data = d;
         holdings = h;
@@ -106,7 +108,10 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
       syncing = false;
       lastChecked = lc;
       if (force || r.status == SyncStatus.updated) syncMessage = r.message;
-      if (r.dataset != null) data = r.dataset;
+      if (r.dataset != null) {
+        data = r.dataset;
+        FloatingRates.load(r.dataset!);
+      }
     });
   }
 

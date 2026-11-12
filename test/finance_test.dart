@@ -89,4 +89,54 @@ void main() {
     expect(d.lastAuction.length, 3);
     expect(d.calendar, isNotEmpty);
   });
+
+  group('Dobândă flotantă (MD4004001583: BT 182 zile + 1,00 p.p.)', () {
+    final issue = DateTime.utc(2024, 3, 15);
+    final mat = DateTime.utc(2031, 3, 15);
+    final announced = {DateTime.utc(2026, 3, 15): 10.32, DateTime.utc(2026, 9, 15): 10.54, DateTime.utc(2027, 3, 15): 10.95};
+    final h = Holding(
+      id: 'f',
+      isin: 'MD4004001583',
+      type: 'OS',
+      termLabel: '7 ani',
+      issueDate: issue,
+      maturity: mat,
+      purchaseDate: DateTime.utc(2026, 3, 15),
+      price: 100,
+      quantity: 10,
+      couponType: 'flotant',
+      margin: 1.0,
+      couponHistory: announced,
+    );
+
+    test('cupoanele anunțate folosesc rata publicată de MF', () {
+      final c = bondCouponsWith(issue, mat, CouponRates.floating(announced, 1.0), const []);
+      final sep = c.firstWhere((x) => x.date == DateTime.utc(2026, 9, 15));
+      expect(sep.amount, closeTo(couponAmount(10.54, 184), 1e-9));
+      expect(sep.estimated, isFalse);
+    });
+
+    test('următorul cupon și estimările', () {
+      final m = computeMetrics(h, today: DateTime.utc(2026, 11, 12));
+      expect(m.floating, isTrue);
+      expect(m.nextCouponDate, DateTime.utc(2027, 3, 15));
+      expect(m.nextCouponRate, closeTo(10.95, 1e-9));
+      expect(m.nextCouponEstimated, isFalse);
+      expect(m.hasEstimates, isTrue);
+      expect(m.couponsTotal, greaterThan(0));
+    });
+
+    test('cupon neanunțat = ultima rată BT 182 zile + marja', () {
+      FloatingRates.reference = 9.0;
+      expect(const CouponRates.floating({}, 1.0).rateFor(DateTime.utc(2028, 3, 15)), 10.0);
+      FloatingRates.reference = null;
+    });
+
+    test('poziția flotantă se salvează și se reîncarcă', () {
+      final back = Holding.fromJson(h.toJson());
+      expect(back.isFloating, isTrue);
+      expect(back.margin, 1.0);
+      expect(back.couponHistory[DateTime.utc(2027, 3, 15)], 10.95);
+    });
+  });
 }

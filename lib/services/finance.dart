@@ -26,7 +26,63 @@ class CashFlow {
   final DateTime date;
   final double amount; // pentru o VMS de 100 lei
   final bool isCoupon;
-  const CashFlow(this.date, this.amount, {this.isCoupon = true});
+  final bool estimated; // cupon flotant a cărui rată nu a fost încă anunțată de MF
+  const CashFlow(this.date, this.amount, {this.isCoupon = true, this.estimated = false});
+}
+
+/// Obligațiuni cu dobândă flotantă: cuponul = rata medie la BT de 182 zile + marja.
+/// Ratele anunțate de MF vin din setul de date (actualizat automat); cupoanele încă
+/// neanunțate se estimează cu ultima rată medie BT 182 zile + marja.
+class FloatingRates {
+  static Map<String, Security> _byIsin = const {};
+  static double? reference; // ultima rată medie BT 182 zile
+  static DateTime? referenceDate;
+
+  static void load(VmsDataset d) {
+    _byIsin = {for (final s in d.securities) if (s.isFloating) s.isin: s};
+    final r = d.latestBt182;
+    reference = r?.avgRate;
+    referenceDate = r?.date;
+  }
+
+  static Security? of(String isin) => _byIsin[isin];
+}
+
+/// Rata aplicabilă fiecărui cupon (fixă sau flotantă).
+class CouponRates {
+  final double? fixed;
+  final Map<DateTime, double> announced;
+  final double? margin;
+
+  const CouponRates.fixed(double rate)
+      : fixed = rate,
+        announced = const {},
+        margin = null;
+  const CouponRates.floating(this.announced, this.margin) : fixed = null;
+
+  bool get isFloating => fixed == null;
+
+  /// Rata folosită pentru cupoanele neanunțate.
+  double get estimate {
+    final ref = FloatingRates.reference;
+    if (ref != null && margin != null) return ref + margin!;
+    if (announced.isNotEmpty) return announced[(announced.keys.toList()..sort()).last]!;
+    return (ref ?? 0) + (margin ?? 0);
+  }
+
+  bool isAnnounced(DateTime pay) => fixed != null || announced.containsKey(dayOnly(pay));
+  double rateFor(DateTime pay) => fixed ?? announced[dayOnly(pay)] ?? estimate;
+}
+
+/// Ratele cupoanelor unei poziții; null pentru bonuri și titluri fără cupon.
+CouponRates? couponRatesFor(Holding h) {
+  if (h.isBill) return null;
+  final live = FloatingRates.of(h.isin);
+  if (live != null || h.isFloating) {
+    return CouponRates.floating({...h.couponHistory, ...?live?.couponHistory}, live?.margin ?? h.margin);
+  }
+  final r = h.couponRate;
+  return (r == null || r == 0) ? null : CouponRates.fixed(r);
 }
 
 /// Datele cupoanelor: din baza de date sau, dacă lipsesc, semestrial înapoi de la scadență.
@@ -53,26 +109,33 @@ DateTime _addMonths(DateTime d, int months) {
   return DateTime.utc(y, m, math.min(d.day, lastDay));
 }
 
-/// Cupoanele (cu suma fiecăruia) pentru o obligațiune.
-List<CashFlow> bondCoupons(DateTime issue, DateTime maturity, double rate, List<DateTime> known) {
+/// Cupoanele (cu suma fiecăruia) pentru o obligațiune cu cupon fix.
+List<CashFlow> bondCoupons(DateTime issue, DateTime maturity, double rate, List<DateTime> known) =>
+    bondCouponsWith(issue, maturity, CouponRates.fixed(rate), known);
+
+/// Cupoanele cu rata fiecărei perioade (fixă sau flotantă).
+List<CashFlow> bondCouponsWith(DateTime issue, DateTime maturity, CouponRates rates, List<DateTime> known) {
   final dates = couponSchedule(issue, maturity, known);
   final out = <CashFlow>[];
   var prev = issue;
   for (final d in dates) {
-    out.add(CashFlow(d, couponAmount(rate, daysBetween(prev, d))));
+    out.add(CashFlow(d, couponAmount(rates.rateFor(d), daysBetween(prev, d)), estimated: !rates.isAnnounced(d)));
     prev = d;
   }
   return out;
 }
 
 /// pct. 76 – dobânda acumulată (cuponul curent) la data [on]: D = C × n / t
-double accruedInterest(DateTime issue, DateTime maturity, double rate, List<DateTime> known, DateTime on) {
+double accruedInterest(DateTime issue, DateTime maturity, double rate, List<DateTime> known, DateTime on) =>
+    accruedInterestWith(issue, maturity, CouponRates.fixed(rate), known, on);
+
+double accruedInterestWith(DateTime issue, DateTime maturity, CouponRates rates, List<DateTime> known, DateTime on) {
   final dates = couponSchedule(issue, maturity, known);
   var prev = issue;
   for (final d in dates) {
     if (!dayOnly(on).isBefore(dayOnly(prev)) && dayOnly(on).isBefore(dayOnly(d))) {
       final t = daysBetween(prev, d);
-      return couponAmount(rate, t) * daysBetween(prev, on) / t;
+      return couponAmount(rates.rateFor(d), t) * daysBetween(prev, on) / t;
     }
     prev = d;
   }
@@ -117,6 +180,12 @@ class HoldingMetrics {
   final int daysLeft; // zile până la scadență (de azi)
   final double progress; // 0..1 din perioada deținerii
   final List<CashFlow> futureFlows; // pe întreaga poziție (lei)
+  final bool floating; // dobândă flotantă
+  final double? margin; // p.p. (dobândă flotantă)
+  final DateTime? nextCouponDate;
+  final double? nextCouponRate;
+  final bool nextCouponEstimated; // rata următorului cupon nu e încă anunțată
+  final bool hasEstimates; // există cupoane calculate cu rata estimată
 
   const HoldingMetrics({
     required this.nominalRate,
@@ -131,6 +200,12 @@ class HoldingMetrics {
     required this.daysLeft,
     required this.progress,
     required this.futureFlows,
+    this.floating = false,
+    this.margin,
+    this.nextCouponDate,
+    this.nextCouponRate,
+    this.nextCouponEstimated = false,
+    this.hasEstimates = false,
   });
 
   double get totalReceipts => principalAtMaturity + couponsTotal;
@@ -144,7 +219,8 @@ HoldingMetrics computeMetrics(Holding h, {DateTime? today}) {
   final left = daysBetween(now, h.maturity);
   final progress = (1 - left / held).clamp(0.0, 1.0).toDouble();
 
-  if (h.isBill || h.couponRate == null || h.couponRate == 0) {
+  final rates = couponRatesFor(h);
+  if (rates == null) {
     final interest = q * (kNominal - h.price);
     return HoldingMetrics(
       nominalRate: billRate(h.price, term),
@@ -162,18 +238,19 @@ HoldingMetrics computeMetrics(Holding h, {DateTime? today}) {
     );
   }
 
-  final rate = h.couponRate!;
-  final coupons = bondCoupons(h.issueDate, h.maturity, rate, h.couponDates);
+  final coupons = bondCouponsWith(h.issueDate, h.maturity, rates, h.couponDates);
   final fromIssue = [...coupons, CashFlow(h.maturity, kNominal, isCoupon: false)];
   final afterPurchase = [
     ...coupons.where((c) => dayOnly(c.date).isAfter(dayOnly(h.purchaseDate))),
     CashFlow(h.maturity, kNominal, isCoupon: false),
   ];
-  final accrued = accruedInterest(h.issueDate, h.maturity, rate, h.couponDates, h.purchaseDate);
+  final accrued = accruedInterestWith(h.issueDate, h.maturity, rates, h.couponDates, h.purchaseDate);
   final gross = h.price + accrued;
   final couponsPerUnit = afterPurchase.where((c) => c.isCoupon).fold<double>(0, (s, c) => s + c.amount);
   final cost = q * gross;
   final investmentReturn = bondYield(gross, afterPurchase, h.purchaseDate);
+  final upcoming = coupons.where((c) => dayOnly(c.date).isAfter(dayOnly(now))).toList();
+  final next = upcoming.isEmpty ? null : upcoming.first;
   return HoldingMetrics(
     nominalRate: bondYield(h.price, fromIssue, h.issueDate),
     investmentReturn: investmentReturn,
@@ -188,8 +265,14 @@ HoldingMetrics computeMetrics(Holding h, {DateTime? today}) {
     progress: progress,
     futureFlows: [
       for (final c in afterPurchase)
-        if (dayOnly(c.date).isAfter(dayOnly(now))) CashFlow(c.date, c.amount * q, isCoupon: c.isCoupon),
+        if (dayOnly(c.date).isAfter(dayOnly(now))) CashFlow(c.date, c.amount * q, isCoupon: c.isCoupon, estimated: c.estimated),
     ],
+    floating: rates.isFloating,
+    margin: rates.margin,
+    nextCouponDate: next?.date,
+    nextCouponRate: next == null ? null : rates.rateFor(next.date),
+    nextCouponEstimated: next?.estimated ?? false,
+    hasEstimates: afterPurchase.any((c) => c.estimated),
   );
 }
 
