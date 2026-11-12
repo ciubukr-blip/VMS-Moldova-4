@@ -29,6 +29,8 @@ STATE = OUT_DIR / "state.json"
 LOG = OUT_DIR / "validation_log.json"
 EVENTS = OUT_DIR / "events.json"
 SCRAPED = OUT_DIR / "scraped"                       # raw parsed records, kept for audit
+DEBUG = OUT_DIR / "debug"                           # text of PDFs the parsers could not read
+RESULTS_PARSER_VERSION = 2
 SCHEMA = 1
 
 
@@ -66,6 +68,12 @@ def scrape(state: dict, log: list, budget_s: float = 420) -> dict[str, list]:
     got: dict[str, list] = {"securities": [], "results": [], "details": [], "calendar": []}
     processed: set[str] = set(state.setdefault("processed", []))
     attempts: dict[str, int] = state.setdefault("attempts", {})
+    if state.get("results_parser") != RESULTS_PARSER_VERSION:
+        # parser nou: rezultatele marcate anterior se citesc din nou
+        processed = {u for u in processed if "rezultatele" not in u.lower() and "/content/licita" not in u}
+        for u in [u for u in attempts if "rezultatele" in u.lower()]:
+            del attempts[u]
+        state["results_parser"] = RESULTS_PARSER_VERSION
     today = dt.date.today()
     cutoff = today - dt.timedelta(days=BT_WINDOW)
     budget_hit = False
@@ -104,6 +112,16 @@ def scrape(state: dict, log: list, budget_s: float = 420) -> dict[str, list]:
     return got
 
 
+def save_debug(url: str, text: str) -> None:
+    """Păstrează textul extras dintr-un PDF necitit, pentru ajustarea parserului."""
+    DEBUG.mkdir(parents=True, exist_ok=True)
+    existing = sorted(DEBUG.glob("*.txt"))
+    if len(existing) >= 6:
+        return
+    name = "".join(ch if ch.isalnum() else "_" for ch in url.rsplit("/", 1)[-1])[:80]
+    (DEBUG / f"{name}.txt").write_text(text, encoding="utf-8")
+
+
 def _scrape_steps(sources, state, log, got, processed, attempts, today, cutoff, MAX_NEW, out_of_time, failed, dated) -> None:
     placements, results = sources.placement_and_result_pdfs()
     todo = [(d, u, t) for d, u, t in dated(placements)
@@ -134,8 +152,14 @@ def _scrape_steps(sources, state, log, got, processed, attempts, today, cutoff, 
                 raise ValueError("răspunsul nu este PDF")
             text = sources.pdf_text(data)
             recs = parsers.parse_results_bt(text, auction, url)
-            got["results"].extend(recs)
-            processed.add(url)  # bond-only results carry no min/max; detail pages cover them
+            if recs:
+                got["results"].extend(recs)
+                processed.add(url)
+            elif "zile" not in text:
+                processed.add(url)  # doar obligațiuni: volumele vin din paginile de detaliu
+            else:
+                save_debug(url, text)
+                failed(url, "rezultate: niciun rând recunoscut (text salvat în data/debug)")
         except Exception as e:
             failed(url, f"rezultate: {e}")
 
@@ -243,7 +267,9 @@ def merge(prev: dict, manual: dict, scraped: dict, log: list) -> dict:
                 "max": r["rate_max"], "avg": r["rate_avg"], "min": r["rate_min"]}
     # 3. detail pages (volumes + average) matched to a security by date/type/term
     for d in scraped.get("details", []):
-        cands = [s for s in by_isin.values() if s["auction_date"] == d["auction_date"] and s["type"] == d.get("type")]
+        # MF datează unele pagini cu ziua licitației, altele cu ziua decontării
+        cands = [s for s in by_isin.values()
+                 if d["auction_date"] in (s["auction_date"], s.get("issue_date")) and s["type"] == d.get("type")]
         term_num = "".join(ch for ch in str(d.get("term_raw", "")) if ch.isdigit())
         if d.get("type") == "BT" and term_num:
             cands = [s for s in cands if bucket(s["term_days"]) == bucket(int(term_num))]
@@ -253,7 +279,7 @@ def merge(prev: dict, manual: dict, scraped: dict, log: list) -> dict:
             log.append({"level": "warn", "msg": "detaliu licitație fără ISIN unic", "record": d})
             continue
         s = cands[0]
-        put_result({"auction_date": d["auction_date"], "isin": s["isin"], "type": s["type"],
+        put_result({"auction_date": s["auction_date"], "isin": s["isin"], "type": s["type"],
                     "term_label": s["term_label"], "announced": d.get("announced"), "demand": d.get("demand"),
                     "placed_nominal": d.get("placed_nominal"), "placed_price": d.get("placed_price"),
                     "rate_avg": d.get("rate_avg"), "settlement_date": s["issue_date"], "maturity": s["maturity"],
