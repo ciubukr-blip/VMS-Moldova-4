@@ -11,6 +11,7 @@ import 'screens/portfolio_screen.dart';
 import 'screens/rates_screen.dart';
 import 'services/data_repository.dart';
 import 'services/finance.dart';
+import 'services/notifications.dart';
 import 'services/portfolio_store.dart';
 import 'theme/app_theme.dart';
 
@@ -49,9 +50,8 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
 
   final Map<String, bool> prefs = {
     'launch': true,
+    'results': true,
     'calendar': true,
-    'published': true,
-    'integrated': true,
     'maturity14': true,
     'maturity7': true,
     'maturity1': true,
@@ -83,6 +83,10 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
       for (final k in prefs.keys.toList()) {
         prefs[k] = sp.getBool('alert_$k') ?? prefs[k]!;
       }
+      // v3.0 avea două comutatoare pentru rezultate („publicate” / „validate”)
+      if (!sp.containsKey('alert_results') && sp.containsKey('alert_published')) {
+        prefs['results'] = sp.getBool('alert_published')!;
+      }
       final lc = await _repo.lastChecked();
       if (!mounted) return;
       FloatingRates.load(d);
@@ -92,6 +96,7 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
         lastChecked = lc;
       });
       _sync();
+      _setupNotifications(sp);
     } catch (e) {
       if (mounted) setState(() => loadError = '$e');
     }
@@ -118,6 +123,18 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
   Future<void> _saveHoldings(List<Holding> list) async {
     setState(() => holdings = list);
     await _store.save(list);
+    await NotificationService.instance.scheduleMaturities(list, prefs);
+  }
+
+  Future<void> _setupNotifications(SharedPreferences sp) async {
+    final n = NotificationService.instance;
+    // permisiunea (Android 13+) se cere o singură dată, la prima pornire
+    if (!(sp.getBool('notif_permission_asked') ?? false) && prefs.values.any((v) => v)) {
+      await sp.setBool('notif_permission_asked', true);
+      await n.requestPermission();
+    }
+    await n.scheduleMaturities(holdings, prefs);
+    await n.syncTopics(prefs);
   }
 
   void _upsert(Holding h) {
@@ -135,6 +152,13 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
     setState(() => prefs[key] = value);
     final sp = await SharedPreferences.getInstance();
     await sp.setBool('alert_$key', value);
+    final n = NotificationService.instance;
+    if (value) await n.requestPermission();
+    if (kMaturityOffsets.containsKey(key)) {
+      await n.scheduleMaturities(holdings, prefs);
+    } else {
+      await n.syncTopics(prefs);
+    }
   }
 
   @override
@@ -156,7 +180,7 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
           onReplaceAll: _saveHoldings,
         ),
         AuctionsScreen(key: ValueKey('auctions-${d.generatedAt}'), data: d),
-        AlertsScreen(preferences: prefs, onChange: _setPref),
+        AlertsScreen(preferences: prefs, onChange: _setPref, pushAvailable: NotificationService.instance.pushAvailable),
         MoreScreen(
           data: d,
           lastChecked: lastChecked,

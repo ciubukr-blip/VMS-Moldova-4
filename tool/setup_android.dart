@@ -8,6 +8,7 @@
 //  4. <queries> pentru deschiderea linkurilor https (url_launcher, Android 11+)
 //  5. .gitignore pentru cheie și parole
 //  6. core library desugaring (necesar pentru flutter_local_notifications)
+//  7. notificări: POST_NOTIFICATIONS, RECEIVE_BOOT_COMPLETED și receptoarele pentru alertele programate
 import 'dart:io';
 
 const appId = 'md.vmsmoldova.app';
@@ -116,6 +117,27 @@ void _patchManifest(File f) {
     s = s.replaceFirst(RegExp(r'<application'), '<uses-permission android:name="android.permission.INTERNET"/>\n    <application');
   }
   s = s.replaceFirst(RegExp(r'android:label="[^"]*"'), 'android:label="VMS Moldova"');
+  // notificări: permisiunea Android 13+ și reprogramarea alertelor de scadență după repornirea telefonului
+  for (final perm in ['android.permission.POST_NOTIFICATIONS', 'android.permission.RECEIVE_BOOT_COMPLETED']) {
+    if (!s.contains(perm)) {
+      s = s.replaceFirst(RegExp(r'<application'), '<uses-permission android:name="$perm"/>\n    <application');
+    }
+  }
+  if (!s.contains('ScheduledNotificationReceiver')) {
+    s = s.replaceFirst(
+      '</application>',
+      '    <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />\n'
+          '        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">\n'
+          '            <intent-filter>\n'
+          '                <action android:name="android.intent.action.BOOT_COMPLETED"/>\n'
+          '                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>\n'
+          '                <action android:name="android.intent.action.QUICKBOOT_POWERON" />\n'
+          '                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>\n'
+          '            </intent-filter>\n'
+          '        </receiver>\n'
+          '    </application>',
+    );
+  }
   if (!s.contains('android:scheme="https"')) {
     s = s.replaceFirst(
       '</manifest>',

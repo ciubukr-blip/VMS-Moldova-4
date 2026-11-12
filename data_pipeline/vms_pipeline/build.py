@@ -465,6 +465,10 @@ def events_for(prev: dict, new: dict) -> list[dict]:
     for d in sorted({a["auction_date"] for a in new["auctions"]
                      if a.get("placed_nominal") is not None and (a["auction_date"], a["isin"]) not in prev_res}):
         ev.append({"id": f"integrated:{d}", "kind": "integrated", "title": f"Rezultate integrate {d}"})
+    # rezultate (rata medie publicată) – pentru notificarea „rezultate”
+    prev_rate = {a["auction_date"] for a in prev.get("auctions", []) if a.get("rate_avg") is not None}
+    for d in sorted({a["auction_date"] for a in new["auctions"] if a.get("rate_avg") is not None} - prev_rate):
+        ev.append({"id": f"results:{d}", "kind": "results", "title": f"Rezultate licitație {d}"})
     return ev
 
 
@@ -522,6 +526,15 @@ def main(argv: list[str] | None = None) -> int:
               f"{len(new['auctions'])} rezultate, {len(new['calendar'])} trimestre")
     else:
         print("fără modificări")
+    if not args.offline:
+        # notificări push (doar evenimente relevante, o singură dată fiecare)
+        from . import notify
+        try:
+            notify.run(load(EVENTS, []), load(OUT, {}), state, log_entry["warnings"])
+        except Exception:
+            log_entry["warnings"].append({"level": "error", "msg": "notificări: eroare neprevăzută",
+                                          "trace": traceback.format_exc()[-1500:]})
+        dump(LOG, ([log_entry] + hist)[:200])
     if args.asset:
         dump(args.asset, load(OUT, {}))
     dump(STATE, state)

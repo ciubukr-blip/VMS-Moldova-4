@@ -29,13 +29,8 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
 
   static DateTime _key(DateTime d) => DateTime(d.year, d.month, d.day);
 
-  Map<DateTime, List<CalendarEntry>> get _planned {
-    final m = <DateTime, List<CalendarEntry>>{};
-    for (final e in widget.data.calendar) {
-      (m[_key(e.auctionDate)] ??= []).add(e);
-    }
-    return m;
-  }
+  late final Map<DateTime, List<CalendarEntry>> _plannedCache = plannedAuctions(widget.data, DateTime.now());
+  Map<DateTime, List<CalendarEntry>> get _planned => _plannedCache;
 
   Map<DateTime, List<AuctionResult>> get _results {
     final m = <DateTime, List<AuctionResult>>{};
@@ -50,7 +45,7 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
 
   DateTime? _nextAuctionDay(DateTime now) {
     final today = _key(now);
-    final days = widget.data.calendar.map((e) => _key(e.auctionDate)).where((d) => !d.isBefore(today)).toList()..sort();
+    final days = _planned.keys.where((d) => !d.isBefore(today)).toList()..sort();
     return days.isEmpty ? null : days.first;
   }
 
@@ -280,11 +275,11 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
                 if (e.volume != null) Text('${e.volume} mil. lei', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
               ]),
             ),
-        if (planned.isNotEmpty && planned.first.sourceUrl != null) ...[
+        if (planned.any((e) => e.sourceUrl != null)) ...[
           const SizedBox(height: 4),
           TextButton.icon(
             style: TextButton.styleFrom(padding: EdgeInsets.zero, visualDensity: VisualDensity.compact),
-            onPressed: () => openLink(context, planned.first.sourceUrl!),
+            onPressed: () => openLink(context, planned.firstWhere((e) => e.sourceUrl != null).sourceUrl!),
             icon: const Icon(Icons.picture_as_pdf_outlined, size: 16),
             label: const Text('Calendarul oficial (PDF)'),
           ),
@@ -352,4 +347,38 @@ class _Dot extends StatelessWidget {
   const _Dot(this.color);
   @override
   Widget build(BuildContext context) => Container(width: 5, height: 5, decoration: BoxDecoration(color: color, shape: BoxShape.circle));
+}
+
+/// Licitațiile planificate: calendarul trimestrial MF + licitațiile anunțate prin
+/// comunicatele de plasare (ISIN-uri noi), fără dubluri. Comunicatele vechi (peste 14 zile)
+/// nu se adaugă – pentru trecut contează rezultatele.
+Map<DateTime, List<CalendarEntry>> plannedAuctions(VmsDataset data, DateTime now) {
+  DateTime key(DateTime d) => DateTime(d.year, d.month, d.day);
+  String digits(String s) => s.replaceAll(RegExp(r'[^0-9]'), '');
+  final m = <DateTime, List<CalendarEntry>>{};
+  for (final e in data.calendar) {
+    (m[key(e.auctionDate)] ??= []).add(e);
+  }
+  final from = key(now).subtract(const Duration(days: 14));
+  for (final s in data.securities) {
+    final d = key(s.auctionDate);
+    if (d.isBefore(from)) continue;
+    final day = m[d] ??= [];
+    final dup = day.any((e) => e.type == s.type && digits(e.term) == digits(s.termLabel));
+    if (dup) continue;
+    day.add(CalendarEntry(
+      quarter: '',
+      auctionDate: s.auctionDate,
+      settlementDate: s.issueDate,
+      type: s.type,
+      term: s.termLabel,
+      maturity: s.maturity,
+    ));
+  }
+  for (final l in m.values) {
+    l.sort((a, b) => a.type == b.type
+        ? (int.tryParse(digits(a.term)) ?? 0).compareTo(int.tryParse(digits(b.term)) ?? 0)
+        : a.type.compareTo(b.type));
+  }
+  return m;
 }

@@ -5,7 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:vms_moldova/models/dataset.dart';
 import 'package:vms_moldova/models/holding.dart';
 import 'package:vms_moldova/services/data_repository.dart';
+import 'package:vms_moldova/screens/auctions_screen.dart';
 import 'package:vms_moldova/services/finance.dart';
+import 'package:vms_moldova/services/notifications.dart';
 import 'package:vms_moldova/services/portfolio_store.dart';
 
 void main() {
@@ -138,5 +140,51 @@ void main() {
       expect(back.margin, 1.0);
       expect(back.couponHistory[DateTime.utc(2027, 3, 15)], 10.95);
     });
+  });
+
+  group('Alerte de scadență (notificări locale)', () {
+    Holding bt(String isin, DateTime mat, int qty) => Holding(
+          id: isin,
+          isin: isin,
+          type: 'BT',
+          termLabel: '91 zile',
+          issueDate: mat.subtract(const Duration(days: 91)),
+          maturity: mat,
+          purchaseDate: mat.subtract(const Duration(days: 91)),
+          price: 97,
+          quantity: qty,
+        );
+    final all = {for (final k in kMaturityOffsets.keys) k: true};
+
+    test('14, 7 și 1 zi înainte, grupate pe scadență', () {
+      final now = DateTime(2026, 11, 12, 15);
+      final mat = DateTime(2026, 12, 3);
+      final plan = maturityPlan([bt('MD4003000001', mat, 10), bt('MD4003000002', mat, 5)], all, now);
+      expect(plan.map((p) => p.day).toList(), [DateTime.utc(2026, 11, 19), DateTime.utc(2026, 11, 26), DateTime.utc(2026, 12, 2)]);
+      expect(plan.last.title, 'Scadență mâine: 2 poziții');
+      expect(plan.last.body, contains('1.500,00 lei'));
+      expect(plan.map((p) => p.id).toSet().length, 3);
+    });
+
+    test('respectă comutatoarele și nu programează în trecut', () {
+      final h = [bt('MD4003000001', DateTime(2026, 12, 3), 1)];
+      final noTomorrow = {...all, 'maturity1': false};
+      expect(maturityPlan(h, noTomorrow, DateTime(2026, 11, 20)).map((p) => p.day).toList(), [DateTime.utc(2026, 11, 26)]);
+      expect(maturityPlan(h, noTomorrow, DateTime(2026, 11, 28)), isEmpty);
+    });
+
+    test('titlurile scadente nu generează alerte', () {
+      expect(maturityPlan([bt('MD4003000001', DateTime(2026, 11, 1), 1)], all, DateTime(2026, 11, 12)), isEmpty);
+    });
+  });
+
+  test('calendarul include licitațiile din comunicatele de plasare, fără dubluri', () {
+    final d = VmsDataset.fromJson(jsonDecode(File('assets/data/vms_data.json').readAsStringSync()) as Map<String, dynamic>);
+    final latest = d.securities.map((s) => s.auctionDate).reduce((a, b) => a.isAfter(b) ? a : b);
+    final planned = plannedAuctions(d, latest);
+    final day = planned[DateTime(latest.year, latest.month, latest.day)]!;
+    expect(day, isNotEmpty);
+    final keys = day.map((e) => '${e.type}${e.term.replaceAll(RegExp(r'[^0-9]'), '')}').toList();
+    expect(keys.toSet().length, keys.length);
   });
 }

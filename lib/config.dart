@@ -15,7 +15,17 @@ const int kDataSchema = 1;
 /// Valoarea nominală standard a unei VMS (Regulament VMS, pct. 7).
 const double kNominal = 100;
 
-const String kAppVersion = '3.0.0';
+const String kAppVersion = '3.1.0';
+
+/// Firebase (notificări despre licitații). Valorile vin din google-services.json,
+/// transmise la build prin --dart-define (vezi .github/workflows/build-apk.yml).
+/// Goale = versiune fără Firebase: alertele de scadență funcționează în continuare.
+const String kFirebaseApiKey = String.fromEnvironment('FIREBASE_API_KEY');
+const String kFirebaseAppId = String.fromEnvironment('FIREBASE_APP_ID');
+const String kFirebaseSenderId = String.fromEnvironment('FIREBASE_SENDER_ID');
+const String kFirebaseProjectId = String.fromEnvironment('FIREBASE_PROJECT_ID');
+const bool kFirebaseConfigured =
+    kFirebaseApiKey != '' && kFirebaseAppId != '' && kFirebaseSenderId != '' && kFirebaseProjectId != '';
 
 const String kCalendarCurrentPdf =
     'https://mf.gov.md/sites/default/files/trimestrul%20IV-2026%20web-rom.pdf';

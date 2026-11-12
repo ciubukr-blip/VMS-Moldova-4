@@ -6,14 +6,14 @@ import '../widgets/common.dart';
 class AlertsScreen extends StatelessWidget {
   final Map<String, bool> preferences;
   final void Function(String, bool) onChange;
-  const AlertsScreen({super.key, required this.preferences, required this.onChange});
+  final bool pushAvailable; // Firebase configurat în această versiune
+  const AlertsScreen({super.key, required this.preferences, required this.onChange, this.pushAvailable = false});
 
   static const Map<String, Map<String, (String, String?)>> groups = {
     'Licitații': {
       'launch': ('Licitație nouă anunțată', 'Comunicatul de plasare apare pe mf.gov.md'),
+      'results': ('Rezultatele licitației', 'Rata medie pe fiecare termen, imediat ce sunt preluate'),
       'calendar': ('Calendar trimestrial nou', 'MF publică graficul pentru trimestrul următor'),
-      'published': ('Rezultate publicate de MF', 'Imediat după licitație'),
-      'integrated': ('Rezultate validate în aplicație', 'După verificarea automată a datelor'),
     },
     'Portofoliul meu': {
       'maturity14': ('Scadență peste 14 zile', null),
@@ -25,15 +25,19 @@ class AlertsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListView(padding: const EdgeInsets.fromLTRB(16, 8, 16, 24), children: [
         const PageHeader('Alerte', subtitle: 'Alege ce notificări vrei să primești'),
-        const InfoNote(
-          'Notificările push vor fi activate odată cu serviciul de notificări (Firebase). '
-          'Preferințele tale sunt deja salvate și vor fi folosite automat.',
-          icon: Icons.notifications_paused_outlined,
-          color: AppColors.amber,
-          bg: AppColors.amberSoft,
-        ),
         for (final g in groups.entries) ...[
           SectionHeader(g.key),
+          if (g.key == 'Licitații' && !pushAvailable)
+            const Padding(
+              padding: EdgeInsets.only(bottom: 8),
+              child: InfoNote(
+                'Această versiune nu are serviciul de notificări (Firebase) configurat, așa că alertele despre licitații '
+                'nu pot fi primite. Preferințele se păstrează și vor fi folosite automat.',
+                icon: Icons.notifications_paused_outlined,
+                color: AppColors.amber,
+                bg: AppColors.amberSoft,
+              ),
+            ),
           AppCard(
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: Column(children: [
@@ -49,11 +53,17 @@ class AlertsScreen extends StatelessWidget {
               ],
             ]),
           ),
+          if (g.key == 'Portofoliul meu')
+            const Padding(
+              padding: EdgeInsets.only(top: 8),
+              child: InfoNote('Alertele de scadență sunt programate pe telefon, la 09:00 ora Chișinăului, '
+                  'și funcționează și fără internet.'),
+            ),
         ],
         const SizedBox(height: 12),
         const InfoNote(
-          'Verificarea site-ului MF se face pe server, la fiecare 5 minute în zilele de licitație, '
-          'cu deduplicare: fiecare eveniment generează o singură notificare. Telefonul nu face verificări periodice.',
+          'Site-ul MF este verificat pe server, la fiecare 5 minute în zilele de licitație. Fiecare eveniment '
+          'generează o singură notificare și doar pentru licitații viitoare sau rezultate recente – fără arhivă.',
         ),
       ]);
 }
