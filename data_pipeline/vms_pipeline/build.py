@@ -31,6 +31,7 @@ EVENTS = OUT_DIR / "events.json"
 SCRAPED = OUT_DIR / "scraped"                       # raw parsed records, kept for audit
 DEBUG = OUT_DIR / "debug"                           # text of PDFs the parsers could not read
 RESULTS_PARSER_VERSION = 2
+PLACEMENT_PARSER_VERSION = 2   # crește-l când schimbi parse_placement: comunicatele OS se recitesc
 SCHEMA = 1
 
 
@@ -74,6 +75,15 @@ def scrape(state: dict, log: list, budget_s: float = 420) -> dict[str, list]:
         for u in [u for u in attempts if "rezultatele" in u.lower()]:
             del attempts[u]
         state["results_parser"] = RESULTS_PARSER_VERSION
+    if state.get("placement_parser") != PLACEMENT_PARSER_VERSION:
+        # parser nou de plasare: comunicatele de obligațiuni (OS) se recitesc, ca să recuperăm
+        # cupoanele necitite anterior; titlurile deja publicate nu se pierd (merge păstrează datele vechi)
+        retry = set(state.get("placement_retry", [])) | {u for u in processed if "os-" in u.lower() and "plasare" in u.lower()}
+        processed -= retry
+        for u in retry:
+            attempts.pop(u, None)
+        state["placement_retry"] = sorted(retry & set(state.get("placement_retry", [])))
+        state["placement_parser"] = PLACEMENT_PARSER_VERSION
     today = dt.date.today()
     cutoff = today - dt.timedelta(days=BT_WINDOW)
     budget_hit = False
@@ -115,11 +125,13 @@ def scrape(state: dict, log: list, budget_s: float = 420) -> dict[str, list]:
 def save_debug(url: str, text: str) -> None:
     """Păstrează textul extras dintr-un PDF necitit, pentru ajustarea parserului."""
     DEBUG.mkdir(parents=True, exist_ok=True)
-    existing = sorted(DEBUG.glob("*.txt"))
-    if len(existing) >= 6:
-        return
     name = "".join(ch if ch.isalnum() else "_" for ch in url.rsplit("/", 1)[-1])[:80]
-    (DEBUG / f"{name}.txt").write_text(text, encoding="utf-8")
+    target = DEBUG / f"{name}.txt"
+    target.write_text(text, encoding="utf-8")
+    # păstrăm cele mai recente 20 de fișiere
+    existing = sorted(DEBUG.glob("*.txt"), key=lambda p: p.stat().st_mtime, reverse=True)
+    for old in existing[20:]:
+        old.unlink(missing_ok=True)
 
 
 def _scrape_steps(sources, state, log, got, processed, attempts, today, cutoff, MAX_NEW, out_of_time, failed, dated) -> None:
@@ -134,9 +146,22 @@ def _scrape_steps(sources, state, log, got, processed, attempts, today, cutoff, 
             data = sources.pdf_bytes(url)
             if not data[:1024].lstrip().startswith(b"%PDF"):
                 raise ValueError("răspunsul nu este PDF")
-            recs = parsers.parse_placement(sources.pdf_text(data), auction, url)
+            text = sources.pdf_text(data)
+            recs = parsers.parse_placement(text, auction, url)
             got["securities"].extend(recs)
-            processed.add(url)
+            no_coupon = [r["isin"] for r in recs if "rata cuponului lipsă" in r.get("_issues", [])]
+            if no_coupon:
+                # nu marcăm ca procesat: se reîncearcă (max. 3 ori, resetat la o versiune nouă de parser);
+                # textul rămâne în data/debug pentru diagnostic
+                save_debug(url, text)
+                needs = state.setdefault("placement_retry", [])
+                if url not in needs:
+                    needs.append(url)
+                failed(url, f"plasare: cupon necitit pentru {', '.join(no_coupon)} (text salvat în data/debug)")
+            else:
+                processed.add(url)
+                if url in state.get("placement_retry", []):
+                    state["placement_retry"].remove(url)
         except Exception as e:  # keep going, record the problem
             failed(url, f"plasare: {e}")
     if len(todo) > MAX_NEW:
@@ -217,13 +242,32 @@ def _scrape_steps(sources, state, log, got, processed, attempts, today, cutoff, 
 def merge(prev: dict, manual: dict, scraped: dict, log: list) -> dict:
     # securities: previous published + scraped + manual (manual wins)
     secs: dict[str, dict] = {s["isin"]: s for s in prev.get("securities", [])}
+    # cupoane cunoscute din orice sursă (publicat anterior, manual, alte comunicate – ex. redeschideri)
+    known_coupon: dict[str, float] = {}
+    for s in [*prev.get("securities", []), *scraped.get("securities", []), *manual["securities"]]:
+        if s.get("coupon_rate"):
+            known_coupon[s["isin"]] = s["coupon_rate"]
     for s in scraped.get("securities", []):
         if s.get("_issues"):
-            log.append({"level": "warn", "isin": s["isin"], "msg": "; ".join(s["_issues"]), "record": s})
+            issues = list(s["_issues"])
+            if "rata cuponului lipsă" in issues and s["isin"] in known_coupon:
+                s = {**s, "coupon_rate": known_coupon[s["isin"]]}
+                issues.remove("rata cuponului lipsă")
+                log.append({"level": "info", "isin": s["isin"],
+                            "msg": f"cupon completat automat ({s['coupon_rate']}%) din altă sursă pentru același ISIN"})
+            if issues:
+                log.append({"level": "warn", "isin": s["isin"], "msg": "; ".join(issues), "record": s})
             if not s.get("issue_date") or not s.get("maturity"):
                 continue
+            if s["type"] == "OS" and not s.get("coupon_rate") and s.get("coupon_type") != "flotant":
+                # carantină: titlul nu se publică până nu se află cuponul (reîncercare automată /
+                # manual/securities.json), dar restul datelor se actualizează normal
+                log.append({"level": "warn", "isin": s["isin"],
+                            "msg": "carantină: obligațiune fără cupon – nepublicată până la confirmare"})
+                continue
             s = {k: v for k, v in s.items() if k != "_issues"}
-            s["unverified"] = True
+            if issues:
+                s["unverified"] = True
         old = secs.get(s["isin"])
         if old and s["type"] == "OS" and old.get("issue_date") and old["issue_date"] < s["issue_date"]:
             # reopening of an existing bond: keep the original issue date and schedule
@@ -327,7 +371,7 @@ def validate(data: dict) -> list[str]:
             errs.append(f"ISIN invalid {s['isin']}")
         if s.get("issue_date") and s.get("maturity") and s["issue_date"] >= s["maturity"]:
             errs.append(f"{s['isin']}: emitere după scadență")
-        if s["type"] == "OS" and not s.get("coupon_rate"):
+        if s["type"] == "OS" and not s.get("coupon_rate") and s.get("coupon_type") != "flotant":
             errs.append(f"{s['isin']}: obligațiune fără cupon")
     for a in data["auctions"]:
         mn, av, mx = a.get("rate_min"), a.get("rate_avg"), a.get("rate_max")

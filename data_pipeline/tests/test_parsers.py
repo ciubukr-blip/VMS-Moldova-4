@@ -86,5 +86,56 @@ class ParserTests(unittest.TestCase):
                          "https://mf.gov.md/sites/default/files/trimestrul%20IV-2026%20web-rom.pdf")
 
 
+class CouponFormatTests(unittest.TestCase):
+    """Formulări ale cuponului care apar în comunicate din ani diferiți."""
+
+    ROW = "7 ani MD4004001583 100 50,0 cu scont, la valoarea nominală {c} 13.03.2024 15.03.2024 15.03.2031 15.09.2024 15.03.2025"
+
+    def rate(self, c):
+        recs = parsers.parse_placement(self.ROW.format(c=c), dt.date(2024, 3, 13), "x")
+        return recs[0]
+
+    def test_variants(self):
+        for c, want in [("7,75 la sută anual", 7.75), ("7,75 la suta", 7.75), ("7.75 %", 7.75),
+                        ("7,75% anual", 7.75), ("8 la sută anual", 8.0), ("rata cuponului: 6,5", 6.5),
+                        ("dobânda 6,25 procente", 6.25)]:
+            r = self.rate(c)
+            self.assertEqual(r["coupon_rate"], want, c)
+            self.assertNotIn("_issues", r, c)
+
+    def test_volume_and_price_not_taken_as_coupon(self):
+        r = self.rate("")
+        self.assertIsNone(r["coupon_rate"])
+        self.assertIn("rata cuponului lipsă", r["_issues"])
+
+    def test_floating_rate_bond(self):
+        r = self.rate("dobândă flotantă (rata de bază + 1,0 p.p.)")
+        self.assertEqual(r.get("coupon_type"), "flotant")
+        self.assertNotIn("rata cuponului lipsă", r.get("_issues", []))
+
+
+class MergeTests(unittest.TestCase):
+    def setUp(self):
+        from vms_pipeline import build
+        self.build = build
+        self.manual = {"securities": [], "rates": [], "volumes": [], "calendar": []}
+        self.bad = {"isin": "MD4004001583", "type": "OS", "term_label": "7 ani", "term_days": 2556,
+                    "auction_date": "2024-03-13", "issue_date": "2024-03-15", "maturity": "2031-03-15",
+                    "coupon_rate": None, "coupon_dates": [], "source": "x", "_issues": ["rata cuponului lipsă"]}
+
+    def test_missing_coupon_is_quarantined_not_fatal(self):
+        log = []
+        out = self.build.merge({}, self.manual, {"securities": [self.bad]}, log)
+        self.assertEqual(out["securities"], [])
+        self.assertTrue(any("carantină" in w["msg"] for w in log))
+        self.assertFalse(any("fără cupon" in e for e in self.build.validate({**out, "rates": [{"min": 1, "avg": 2, "max": 3}] * 100})))
+
+    def test_missing_coupon_filled_from_same_isin(self):
+        reopening = {**self.bad, "auction_date": "2024-08-07", "issue_date": None, "maturity": None,
+                     "coupon_rate": 6.5, "_issues": ["redeschidere"]}
+        out = self.build.merge({}, self.manual, {"securities": [self.bad, reopening]}, [])
+        self.assertEqual(out["securities"][0]["coupon_rate"], 6.5)
+
+
 if __name__ == "__main__":
     unittest.main()

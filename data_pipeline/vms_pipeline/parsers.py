@@ -46,6 +46,31 @@ def term_label(n: int, unit: str) -> str:
     return f"{n} zile" if unit.startswith("zil") else f"{n} ani"
 
 
+# Coupon wording seen (or plausible) in MF communiqués across years:
+#   "7,75 la sută anual", "7,75 la suta", "7.75 %", "7,75% anual", "8 la sută",
+#   "rata dobânzii/cuponului: 7,75", "dobânda 7,75 procente"
+_PCT = r"(\d{1,2}(?:[.,]\d{1,4})?)"
+COUPON_RES = [
+    re.compile(_PCT + r"\s*(?:la\s*sut|procent|%)", re.IGNORECASE),
+    re.compile(r"(?:cupon\w*|dob[aâ]nd\w*|dobinz\w*)[^\d]{0,40}?" + _PCT + r"(?!\d)(?![.,]\d)(?!\s*(?:zile|ani|an)\b)",
+               re.IGNORECASE),
+]
+FLOATING_RE = re.compile(r"flotant|variabil|rata\s+de\s+baz", re.IGNORECASE)
+
+
+def parse_coupon(text: str) -> float | None:
+    """First plausible annual coupon (0 < x < 40) in the text after an ISIN."""
+    for rx in COUPON_RES:
+        for m in rx.finditer(text):
+            try:
+                v = float(m.group(1).replace(",", "."))
+            except ValueError:
+                continue
+            if 0 < v < 40 and v != 100:
+                return v
+    return None
+
+
 # --------------------------------------------------------------------------
 # Placement communiqués ("Comunicat plasare BT-03.11.2026-rom.pdf")
 # --------------------------------------------------------------------------
@@ -74,10 +99,9 @@ def parse_placement(text: str, auction_date: dt.date, source: str) -> list[dict[
             n, unit = int(terms[-1][0]), terms[-1][1]
         is_bond = isin.startswith("MD4004") or unit.lower().startswith("an")
         ds = [d for d in dates_in(after) if d > auction_date - dt.timedelta(days=3650 * 2)]
-        coupon = None
-        cm = re.search(r"(\d{1,2},\d{1,2})\s*la\s*sut", after)
-        if cm:
-            coupon = parse_number(cm.group(1))
+        # la dobânda flotantă cifra din rând e marja, nu cuponul – nu o citim drept cupon
+        floating = is_bond and bool(FLOATING_RE.search(before[-60:] + " " + after))
+        coupon = None if floating else parse_coupon(after)
         if len(ds) < 2:
             issues.append("date emitere/scadență lipsă")
             issue_d = mat = None
@@ -85,7 +109,7 @@ def parse_placement(text: str, auction_date: dt.date, source: str) -> list[dict[
         else:
             issue_d, mat = ds[0], ds[1]
             coupon_dates = sorted({d.isoformat() for d in ds[2:] if issue_d < d <= mat}) if is_bond else []
-        if is_bond and coupon is None:
+        if is_bond and coupon is None and not floating:
             issues.append("rata cuponului lipsă")
         rec: dict[str, Any] = {
             "isin": isin,
@@ -99,6 +123,8 @@ def parse_placement(text: str, auction_date: dt.date, source: str) -> list[dict[
             "coupon_dates": coupon_dates,
             "source": source,
         }
+        if is_bond and floating:
+            rec["coupon_type"] = "flotant"
         if "redeschid" in flat.lower() and is_bond:
             # la redeschidere comunicatul conține maturitatea reziduală și dobânda acumulată,
             # nu datele emisiunii inițiale: nu actualizăm automat titlul
