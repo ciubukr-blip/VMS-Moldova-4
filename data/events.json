@@ -1,5 +1,23 @@
 [
  {
+  "id": "launch:2020-09-16",
+  "kind": "launch",
+  "title": "Licitație anunțată 2020-09-16",
+  "at": "2026-11-12T15:15:00+00:00"
+ },
+ {
+  "id": "launch:2020-09-30",
+  "kind": "launch",
+  "title": "Licitație anunțată 2020-09-30",
+  "at": "2026-11-12T15:15:00+00:00"
+ },
+ {
+  "id": "launch:2020-10-15",
+  "kind": "launch",
+  "title": "Licitație anunțată 2020-10-15",
+  "at": "2026-11-12T15:15:00+00:00"
+ },
+ {
   "id": "launch:2021-06-16",
   "kind": "launch",
   "title": "Licitație anunțată 2021-06-16",

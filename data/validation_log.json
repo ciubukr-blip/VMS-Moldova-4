@@ -1,5 +1,54 @@
 [
  {
+  "run": "2026-11-12T15:15:00+00:00",
+  "offline": false,
+  "errors": [],
+  "warnings": [
+   {
+    "level": "warn",
+    "isin": "MD4004000189",
+    "msg": "redeschidere: datele emisiunii inițiale se confirmă manual",
+    "record": {
+     "isin": "MD4004000189",
+     "type": "OS",
+     "term_label": "93 ani",
+     "term_days": null,
+     "auction_date": "2020-09-16",
+     "issue_date": null,
+     "maturity": null,
+     "coupon_rate": 6.2,
+     "coupon_dates": [],
+     "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-16.09.2020-rom%20R_0.pdf",
+     "note": "Redeschidere – se confirmă manual",
+     "_issues": [
+      "redeschidere: datele emisiunii inițiale se confirmă manual"
+     ]
+    }
+   },
+   {
+    "level": "warn",
+    "isin": "MD4004000189",
+    "msg": "redeschidere: datele emisiunii inițiale se confirmă manual",
+    "record": {
+     "isin": "MD4004000189",
+     "type": "OS",
+     "term_label": "93 ani",
+     "term_days": null,
+     "auction_date": "2020-09-16",
+     "issue_date": null,
+     "maturity": null,
+     "coupon_rate": 6.2,
+     "coupon_dates": [],
+     "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-16.09.2020-rom%20R.pdf",
+     "note": "Redeschidere – se confirmă manual",
+     "_issues": [
+      "redeschidere: datele emisiunii inițiale se confirmă manual"
+     ]
+    }
+   }
+  ]
+ },
+ {
   "run": "2026-11-12T15:14:13+00:00",
   "offline": false,
   "errors": [],

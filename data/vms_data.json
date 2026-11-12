@@ -2839,6 +2839,96 @@
  ],
  "securities": [
   {
+   "isin": "MD4004000205",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2020-09-16",
+   "issue_date": "2020-09-18",
+   "maturity": "2022-09-18",
+   "coupon_rate": 5.7,
+   "coupon_dates": [
+    "2021-03-18",
+    "2021-09-18",
+    "2022-03-18",
+    "2022-09-18"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-16.09.2020-rom.pdf"
+  },
+  {
+   "isin": "MD4004000213",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1095,
+   "auction_date": "2020-09-16",
+   "issue_date": "2020-09-18",
+   "maturity": "2023-09-18",
+   "coupon_rate": 5.9,
+   "coupon_dates": [
+    "2021-03-18",
+    "2021-09-18",
+    "2022-03-18",
+    "2022-09-18",
+    "2023-03-18",
+    "2023-09-18"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-16.09.2020-rom.pdf"
+  },
+  {
+   "isin": "MD4004000221",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2020-09-30",
+   "issue_date": "2020-10-02",
+   "maturity": "2022-10-02",
+   "coupon_rate": null,
+   "coupon_dates": [
+    "2021-04-02",
+    "2021-10-02",
+    "2022-04-02",
+    "2022-10-02"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-30.09.2020-rom.pdf",
+   "coupon_type": "flotant"
+  },
+  {
+   "isin": "MD4004000239",
+   "type": "OS",
+   "term_label": "2 ani",
+   "term_days": 730,
+   "auction_date": "2020-10-15",
+   "issue_date": "2020-10-16",
+   "maturity": "2022-10-16",
+   "coupon_rate": 5.7,
+   "coupon_dates": [
+    "2021-04-16",
+    "2021-10-16",
+    "2022-04-16",
+    "2022-10-16"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-15.10.2020-rom.pdf"
+  },
+  {
+   "isin": "MD4004000247",
+   "type": "OS",
+   "term_label": "3 ani",
+   "term_days": 1095,
+   "auction_date": "2020-10-15",
+   "issue_date": "2020-10-16",
+   "maturity": "2023-10-16",
+   "coupon_rate": 5.9,
+   "coupon_dates": [
+    "2021-04-16",
+    "2021-10-16",
+    "2022-04-16",
+    "2022-10-16",
+    "2023-04-16",
+    "2023-10-16"
+   ],
+   "source": "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-15.10.2020-rom.pdf"
+  },
+  {
    "isin": "MD4004000502",
    "type": "OS",
    "term_label": "2 ani",
@@ -7254,5 +7344,5 @@
    ]
   }
  ],
- "generated_at": "2026-11-12T15:14:13+00:00"
+ "generated_at": "2026-11-12T15:15:00+00:00"
 }
