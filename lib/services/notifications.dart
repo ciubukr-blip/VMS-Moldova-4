@@ -8,6 +8,8 @@
 ///   doar această parte lipsește – restul aplicației funcționează normal.
 library;
 
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -18,6 +20,7 @@ import 'package:timezone/timezone.dart' as tz;
 import '../config.dart';
 import '../models/dataset.dart';
 import '../models/holding.dart';
+import 'data_repository.dart';
 import 'finance.dart';
 import 'format.dart';
 
@@ -73,6 +76,13 @@ List<PlannedNotification> maturityPlan(List<Holding> holdings, Map<String, bool>
   return out;
 }
 
+/// Notificare primită cu aplicația în fundal sau închisă: ținem minte că au apărut
+/// date noi, ca aplicația să le descarce imediat ce este deschisă.
+@pragma('vm:entry-point')
+Future<void> vmsBackgroundMessage(RemoteMessage m) async {
+  await DataRepository.rememberEvent(m.data);
+}
+
 class NotificationService {
   NotificationService._();
   static final NotificationService instance = NotificationService._();
@@ -83,6 +93,11 @@ class NotificationService {
 
   /// Firebase este configurat și inițializat în această versiune.
   bool pushAvailable = false;
+
+  final StreamController<void> _dataEvents = StreamController<void>.broadcast();
+
+  /// Emite când o notificare a anunțat date noi (aplicația forțează sincronizarea).
+  Stream<void> get dataEvents => _dataEvents.stream;
 
   static const List<AndroidNotificationChannel> _channels = [
     AndroidNotificationChannel('scadente', 'Scadențe',
@@ -122,11 +137,28 @@ class NotificationService {
         ),
       );
       // cu aplicația deschisă, Android nu afișează singur notificarea: o afișăm noi
-      FirebaseMessaging.onMessage.listen(_showForeground);
+      FirebaseMessaging.onMessage.listen((m) {
+        _showForeground(m);
+        _onDataMessage(m);
+      });
+      // aplicația în fundal / închisă: handler separat; la atingerea notificării – din nou aici
+      FirebaseMessaging.onBackgroundMessage(vmsBackgroundMessage);
+      FirebaseMessaging.onMessageOpenedApp.listen(_onDataMessage);
+      final initial = await FirebaseMessaging.instance.getInitialMessage();
+      if (initial != null) await _onDataMessage(initial);
       pushAvailable = true;
     } catch (e) {
       debugPrint('Firebase indisponibil: $e');
     }
+  }
+
+  Future<void> _onDataMessage(RemoteMessage m) async {
+    try {
+      await DataRepository.rememberEvent(m.data);
+    } catch (e) {
+      debugPrint('Notificare: $e');
+    }
+    _dataEvents.add(null);
   }
 
   void _showForeground(RemoteMessage m) {

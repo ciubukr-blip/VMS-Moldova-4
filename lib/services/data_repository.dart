@@ -27,6 +27,45 @@ class DataRepository {
   static const _cacheKey = 'vms_data_cache_v1';
   static const _checkedKey = 'vms_data_checked_at';
 
+  /// Versiunea datelor anunțată de o notificare push (generated_at), încă neprimită.
+  static const _expectedKey = 'vms_data_expected';
+
+  /// Notificare fără versiune (robot mai vechi): o singură sincronizare forțată.
+  static const _forceKey = 'vms_data_force_sync';
+
+  /// O notificare mai veche de atât nu mai forțează sincronizarea.
+  static const _expectedMaxAge = Duration(hours: 24);
+
+  /// Ține minte că o notificare a anunțat date noi. Rulează și în fundal
+  /// (handler-ul FCM are propriul isolate), deci folosește doar SharedPreferences.
+  static Future<void> rememberEvent(Map<String, dynamic> data) async {
+    final prefs = await SharedPreferences.getInstance();
+    final v = DateTime.tryParse('${data['generated_at'] ?? ''}');
+    if (v == null) {
+      await prefs.setBool(_forceKey, true);
+      return;
+    }
+    final old = DateTime.tryParse(prefs.getString(_expectedKey) ?? '');
+    if (old == null || v.isAfter(old)) await prefs.setString(_expectedKey, v.toIso8601String());
+  }
+
+  /// true dacă o notificare a anunțat date pe care [current] încă nu le are.
+  Future<bool> pendingUpdate(VmsDataset current) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.reload(); // valoarea poate fi scrisă de handler-ul din fundal
+    if (prefs.getBool(_forceKey) ?? false) return true;
+    final expected = DateTime.tryParse(prefs.getString(_expectedKey) ?? '');
+    if (expected == null) return false;
+    final have = current.generatedAt;
+    final reached = have != null && !have.isBefore(expected);
+    final stale = DateTime.now().difference(expected) > _expectedMaxAge;
+    if (reached || stale) {
+      await prefs.remove(_expectedKey);
+      return false;
+    }
+    return true;
+  }
+
   Future<VmsDataset> loadLocal() async {
     final bundled = VmsDataset.fromJson(jsonDecode(await rootBundle.loadString('assets/data/vms_data.json')) as Map<String, dynamic>);
     final prefs = await SharedPreferences.getInstance();
@@ -80,7 +119,12 @@ class DataRepository {
       return const SyncResult(SyncStatus.upToDate, 'Verificat recent.');
     }
     try {
-      final resp = await http.get(Uri.parse(kRemoteDataUrl)).timeout(const Duration(seconds: 20));
+      var uri = Uri.parse(kRemoteDataUrl);
+      if (force) {
+        // raw.githubusercontent.com păstrează fișierul în cache ~5 minute; parametrul ocolește cache-ul
+        uri = uri.replace(queryParameters: {...uri.queryParameters, 't': '${DateTime.now().millisecondsSinceEpoch}'});
+      }
+      final resp = await http.get(uri).timeout(const Duration(seconds: 20));
       await prefs.setString(_checkedKey, DateTime.now().toIso8601String());
       if (resp.statusCode != 200) {
         return SyncResult(SyncStatus.offline, 'Serverul a răspuns ${resp.statusCode}.');
@@ -89,6 +133,7 @@ class DataRepository {
       final remote = VmsDataset.fromJson(jsonDecode(body) as Map<String, dynamic>);
       final problem = validate(remote);
       if (problem != null) return SyncResult(SyncStatus.invalid, 'Date respinse: $problem');
+      await prefs.remove(_forceKey); // sincronizarea cerută de notificare a avut loc
       if (!_newer(remote, current)) return const SyncResult(SyncStatus.upToDate, 'Datele sunt la zi.');
       await prefs.setString(_cacheKey, body);
       return SyncResult(SyncStatus.updated, 'Date actualizate.', remote);

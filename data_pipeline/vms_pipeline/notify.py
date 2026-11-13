@@ -127,7 +127,8 @@ def _fcm_sender(info: dict) -> Callable[[dict, str], None]:
             "topic": msg["topic"],
             "notification": {"title": msg["title"], "body": msg["body"]},
             "android": {"priority": "high", "notification": {"channel_id": msg["topic"], "tag": event_id}},
-            "data": {"event": event_id},
+            # generated_at: versiunea datelor care conține evenimentul – aplicația o așteaptă
+            "data": {"event": event_id, "generated_at": msg.get("generated_at", "")},
         }}
         r = requests.post(url, json=payload, timeout=30, headers={"Authorization": f"Bearer {token}"})
         if r.status_code != 200:
@@ -155,7 +156,9 @@ def run(ledger: list[dict], data: dict, state: dict, log: list,
             log.append({"level": "error", "msg": f"notificări: autentificare Firebase eșuată: {e}"})
             return 0
     sent = 0
+    generated_at = str(data.get("generated_at") or "")
     for event, msg in todo:
+        msg = {**msg, "generated_at": generated_at}
         try:
             sender(msg, event["id"])
         except Exception as e:

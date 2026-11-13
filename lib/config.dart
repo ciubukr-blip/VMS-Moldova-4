@@ -27,13 +27,20 @@ const String kFirebaseProjectId = String.fromEnvironment('FIREBASE_PROJECT_ID');
 const bool kFirebaseConfigured =
     kFirebaseApiKey != '' && kFirebaseAppId != '' && kFirebaseSenderId != '' && kFirebaseProjectId != '';
 
-const String kCalendarCurrentPdf =
-    'https://mf.gov.md/sites/default/files/trimestrul%20IV-2026%20web-rom.pdf';
+/// Calendarul trimestrial MF pentru trimestrul datei [now] (implicit: azi).
+/// Denumirea folosită de MF: „trimestrul IV-2026 web-rom.pdf”. La schimbarea anului
+/// linkul trece singur la noul an (ex. „trimestrul I-2027 web-rom.pdf”).
+String calendarPdfUrl([DateTime? now]) {
+  final d = now ?? DateTime.now();
+  const roman = ['I', 'II', 'III', 'IV'];
+  final q = roman[(d.month - 1) ~/ 3];
+  return 'https://mf.gov.md/sites/default/files/trimestrul%20$q-${d.year}%20web-rom.pdf';
+}
 const String kCalendarsPage =
     'https://mf.gov.md/ro/datoria-sectorului-public/pia%C8%9Ba-primar%C4%83-a-vms/comunicate-privind-plasarea-vms';
 
-const Map<String, String> kSourceLinks = {
-  'Calendarul licitațiilor (trim. curent)': kCalendarCurrentPdf,
+Map<String, String> get kSourceLinks => {
+  'Calendarul licitațiilor (trim. curent)': calendarPdfUrl(),
   'Calendare și comunicate de plasare': kCalendarsPage,
   'Rezultatele licitațiilor': 'https://mf.gov.md/ro/datoria-sectorului-public/pia%C8%9Ba-primar%C4%83-a-vms/licita%C8%9Bii-vms',
   'Rate bonuri de trezorerie': 'https://mf.gov.md/ro/datoria-sectorului-public/ratele-dob%C3%A2nzii-bonuri-de-trezorerie',

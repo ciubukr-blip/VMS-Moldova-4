@@ -66,6 +66,13 @@ class NotifyTests(unittest.TestCase):
         self.assertEqual(notify.run(LEDGER, DATA, state, log, sender=sender, today=TODAY), 0)  # nimic de două ori
         self.assertEqual(sorted(sent), ["calendar:2027-Q1", "launch:2026-11-17", "results:2026-11-11"])
 
+    def test_message_carries_dataset_version(self):
+        # aplicația forțează sincronizarea până primește cel puțin această versiune a datelor
+        got = []
+        data = {**DATA, "generated_at": "2026-11-12T14:05:00+00:00"}
+        notify.run(LEDGER, data, {}, [], sender=lambda msg, eid: got.append(msg["generated_at"]), today=TODAY)
+        self.assertEqual(set(got), {"2026-11-12T14:05:00+00:00"})
+
     def test_without_secret_nothing_sent(self):
         import os
         os.environ.pop("FIREBASE_SERVICE_ACCOUNT", None)
