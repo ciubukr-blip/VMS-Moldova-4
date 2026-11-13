@@ -1,5 +1,16 @@
 [
  {
+  "run": "2026-11-13T14:27:09+00:00",
+  "offline": false,
+  "errors": [],
+  "warnings": [
+   {
+    "level": "info",
+    "msg": "cupoane flotante: 124 link-uri pe paginile MF, 124 comunicate candidate, 0 noi, 122 în total"
+   }
+  ]
+ },
+ {
   "run": "2026-11-13T07:42:03+00:00",
   "offline": false,
   "errors": [],
