@@ -4,6 +4,8 @@ Aplicație Android (Flutter) pentru valorile mobiliare de stat ale Republicii Mo
 rate la licitații, calendarul MF, rezultatele licitațiilor și portofoliul personal
 calculat conform Regulamentului VMS.
 
+**Autor:** Craciun Radu · © 2026 Craciun Radu. Toate drepturile rezervate – vezi [LICENSE](LICENSE).
+
 ## Ce este nou în 3.0
 
 | Zonă | Schimbare |
@@ -144,3 +146,7 @@ python -m vms_pipeline.build --offline --asset ../assets/data/vms_data.json   # 
 - Rezultatele licitației OS din 11.11.2026 nu sunt încă în setul inclus. Le aduce sincronizarea.
 - Notificările push (FCM) nu sunt încă active: preferințele se salvează, iar `events.json` pregătește deduplicarea.
 - Impozitarea și comisioanele nu sunt incluse în calcule.
+
+## Licență
+
+© 2026 Craciun Radu. Toate drepturile rezervate. Codul este public doar pentru vizualizare; copierea, modificarea sau publicarea lui (inclusiv în magazine de aplicații) nu sunt permise fără acordul scris al autorului. Detalii în [LICENSE](LICENSE).
