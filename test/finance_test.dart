@@ -7,6 +7,7 @@ import 'package:vms_moldova/models/holding.dart';
 import 'package:vms_moldova/services/data_repository.dart';
 import 'package:vms_moldova/screens/auctions_screen.dart';
 import 'package:vms_moldova/screens/bond_rates_section.dart';
+import 'package:vms_moldova/widgets/rate_chart.dart';
 import 'package:vms_moldova/services/finance.dart';
 import 'package:vms_moldova/services/notifications.dart';
 import 'package:vms_moldova/services/portfolio_store.dart';
@@ -199,5 +200,10 @@ void main() {
     // redeschiderea de 4,93 ani (MD3RM2002947, 17.10.2018) aparține obligațiunii de 5 ani
     expect(pts.where((p) => p.date == DateTime.parse('2018-10-17') && p.years == 5), isNotEmpty);
     expect(pts.any((p) => p.floating), isTrue);
+  });
+  test('axa graficului: ani fracționari cu lunile egale', () {
+    expect(yearFrac(DateTime(2015, 1, 1)), 2015.0);
+    expect(yearFrac(DateTime(2015, 7, 1)), 2015.5);
+    expect(yearFrac(DateTime(2015, 12, 31)), lessThan(2016.0));
   });
 }

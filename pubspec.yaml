@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  fl_chart: ^0.69.2
+  fl_chart: ^1.1.1
   shared_preferences: ^2.3.2
   intl: any            # versiunea este fixată de flutter_localizations
   url_launcher: ^6.3.1

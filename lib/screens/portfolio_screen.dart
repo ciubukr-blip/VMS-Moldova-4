@@ -209,7 +209,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
               barTouchData: BarTouchData(
                 touchTooltipData: BarTouchTooltipData(
                   getTooltipColor: (_) => AppColors.text,
-                  tooltipRoundedRadius: 10,
+                  tooltipBorderRadius: BorderRadius.circular(10),
                   fitInsideHorizontally: true,
                   getTooltipItem: (group, gi, rod, ri) => BarTooltipItem(
                     '${monthYear(months[group.x])}\n${lei(rod.toY)}',
@@ -226,7 +226,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                     showTitles: true,
                     reservedSize: 22,
                     getTitlesWidget: (v, meta) => SideTitleWidget(
-                      axisSide: meta.axisSide,
+                      meta: meta,
                       space: 4,
                       child: Text(shortMonth(months[v.toInt()]), style: const TextStyle(fontSize: 9.5, color: AppColors.textMuted)),
                     ),

@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -8,6 +7,7 @@ import '../models/dataset.dart';
 import '../services/format.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
+import '../widgets/rate_chart.dart';
 import 'bond_rates_section.dart';
 
 class RatesScreen extends StatefulWidget {
@@ -28,7 +28,7 @@ class _RatesScreenState extends State<RatesScreen> {
   @override
   void initState() {
     super.initState();
-    year = widget.data.rates.isEmpty ? null : widget.data.rates.last.date.year;
+    year = null; // implicit toți anii: graficul se mărește cu zoom
   }
 
   List<RateRecord> _series(int d) => widget.data.rates.where((r) => r.days == d && (year == null || r.date.year == year)).toList();
@@ -163,130 +163,11 @@ class _RatesScreenState extends State<RatesScreen> {
     ]);
   }
 
-  Widget _chart(List<int> terms) {
-    final series = {for (final d in terms) d: _series(d)}..removeWhere((_, v) => v.isEmpty);
-    if (series.isEmpty) {
-      return const SizedBox(height: 220, child: Center(child: Text('Nu există date pentru selecție.', style: TextStyle(color: AppColors.textMuted))));
-    }
-    final pts = series.values.expand((e) => e).toList();
-    final xs = pts.map((r) => r.date.millisecondsSinceEpoch.toDouble());
-    final ys = pts.map((r) => r.rate(metric));
-    final start = xs.reduce(math.min), end0 = xs.reduce(math.max);
-    final end = end0 == start ? start + 86400000.0 : end0;
-    final lo = ys.reduce(math.min), hi = ys.reduce(math.max);
-    final range = hi - lo;
-    final step = range <= 3 ? 1.0 : range <= 8 ? 2.0 : range <= 16 ? 4.0 : 5.0;
-    final minY = math.max(0.0, ((lo - step * 0.3) / step).floorToDouble() * step);
-    final maxY = ((hi + step * 0.3) / step).ceilToDouble() * step;
-    final single = series.length == 1;
-    final lastRate = single ? series.values.first.last.rate(metric) : null;
-    final lastColor = single ? AppColors.forTerm(series.keys.first) : AppColors.primary;
-    final dateLabel = year == null ? DateFormat('yyyy') : DateFormat('MM.yy');
-
-    return SizedBox(
-      height: 230,
-      child: LineChart(
-        LineChartData(
-          minX: start,
-          maxX: end,
-          minY: minY,
-          maxY: maxY,
-          clipData: FlClipData.all(),
-          lineTouchData: LineTouchData(
-            touchTooltipData: LineTouchTooltipData(
-              getTooltipColor: (_) => AppColors.text,
-              tooltipRoundedRadius: 10,
-              fitInsideHorizontally: true,
-              fitInsideVertically: true,
-              getTooltipItems: (spots) => spots.map((s) {
-                final d = DateTime.fromMillisecondsSinceEpoch(s.x.toInt());
-                final first = s == spots.first;
-                return LineTooltipItem(
-                  '${first ? '${date(d)}\n' : ''}${pct(s.y)}',
-                  TextStyle(color: s.bar.color ?? Colors.white, fontSize: 11.5, fontWeight: FontWeight.w600),
-                );
-              }).toList(),
-            ),
-          ),
-          lineBarsData: [
-            for (final e in series.entries)
-              LineChartBarData(
-                spots: [for (final r in e.value) FlSpot(r.date.millisecondsSinceEpoch.toDouble(), r.rate(metric))],
-                color: AppColors.forTerm(e.key),
-                barWidth: 2,
-                isCurved: false,
-                dotData: FlDotData(
-                  show: single,
-                  checkToShowDot: (spot, bar) => spot == bar.spots.last,
-                  getDotPainter: (spot, p, bar, i) => FlDotCirclePainter(radius: 3.5, color: bar.color ?? AppColors.primary, strokeWidth: 2, strokeColor: Colors.white),
-                ),
-                belowBarData: BarAreaData(
-                  show: single,
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [AppColors.forTerm(e.key).withValues(alpha: 0.14), AppColors.forTerm(e.key).withValues(alpha: 0.0)],
-                  ),
-                ),
-              ),
-          ],
-          extraLinesData: ExtraLinesData(horizontalLines: [
-            if (lastRate != null)
-              HorizontalLine(
-                y: lastRate,
-                color: lastColor.withValues(alpha: 0.45),
-                strokeWidth: 1,
-                dashArray: const [3, 4],
-                label: HorizontalLineLabel(
-                  show: true,
-                  alignment: Alignment.topLeft,
-                  padding: const EdgeInsets.only(left: 2, bottom: 2),
-                  style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w600, color: lastColor),
-                  labelResolver: (l) => 'ultima: ${pct(l.y)}',
-                ),
-              ),
-          ]),
-          titlesData: FlTitlesData(
-            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            leftTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                reservedSize: 34,
-                interval: step,
-                getTitlesWidget: (v, meta) => SideTitleWidget(
-                  axisSide: meta.axisSide,
-                  space: 4,
-                  child: Text('${v.toStringAsFixed(0)}%', style: const TextStyle(fontSize: 10, color: AppColors.textMuted)),
-                ),
-              ),
-            ),
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                reservedSize: 24,
-                interval: math.max(86400000.0, (end - start) / 4),
-                getTitlesWidget: (v, meta) {
-                  if (v == meta.max && v != meta.min) return const SizedBox.shrink();
-                  return SideTitleWidget(
-                    axisSide: meta.axisSide,
-                    space: 6,
-                    child: Text(dateLabel.format(DateTime.fromMillisecondsSinceEpoch(v.toInt())),
-                        style: const TextStyle(fontSize: 10, color: AppColors.textMuted)),
-                  );
-                },
-              ),
-            ),
-          ),
-          borderData: FlBorderData(show: false),
-          gridData: FlGridData(
-            show: true,
-            drawVerticalLine: false,
-            horizontalInterval: step,
-            getDrawingHorizontalLine: (_) => FlLine(color: AppColors.divider, strokeWidth: 1),
-          ),
-        ),
-      ),
-    );
-  }
+  Widget _chart(List<int> terms) => ZoomableRateChart(
+        key: ValueKey('bt-$term-$year'),
+        series: [
+          for (final d in terms)
+            RateSeries(AppColors.forTerm(d), [for (final r in _series(d)) RatePoint(r.date, r.rate(metric))]),
+        ],
+      );
 }
