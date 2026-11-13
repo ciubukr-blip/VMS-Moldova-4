@@ -1,8 +1,8 @@
 # Politica de confidențialitate – VMS Moldova
 
-*Ultima actualizare: noiembrie 2026 · Proiect de text, de completat cu datele dezvoltatorului înainte de publicare.*
+*Ultima actualizare: noiembrie 2026*
 
-**Cine suntem.** VMS Moldova este dezvoltată de [NUME / ENTITATE], [e-mail de contact].
+**Cine suntem.** VMS Moldova este dezvoltată de Radu Craciun, radu.craciun1982@gmail.com.
 
 **Ce date colectăm.** Niciuna. Aplicația nu cere cont, nu folosește instrumente de analiză sau publicitate
 și nu are acces la contacte, locație, cameră sau alte date de pe telefon.
@@ -12,8 +12,8 @@ aplicației de pe dispozitivul tău. Nu sunt trimise pe niciun server. Le poți 
 în clipboard) și le poți șterge oricând. Dezinstalarea aplicației le șterge definitiv.
 
 **Conexiunea la internet.** Aplicația descarcă un fișier cu date publice (rate, ISIN-uri, calendarul
-licitațiilor) de la [adresa serverului de date]. Cererea nu conține date despre tine. Serverul poate
-înregistra tehnic adresa IP, conform politicii furnizorului de găzduire ([GitHub / alt furnizor]).
+licitațiilor) de la GitHub (raw.githubusercontent.com). Cererea nu conține date despre tine. Serverul poate
+înregistra tehnic adresa IP, conform politicii furnizorului de găzduire (GitHub).
 
 **Linkuri externe.** Linkurile spre mf.gov.md și bnm.md se deschid în browser și sunt supuse
 politicilor acelor site-uri.
@@ -24,4 +24,4 @@ de activare.
 
 **Legislație.** Legea nr. 133/2011 privind protecția datelor cu caracter personal (Republica Moldova).
 
-**Contact.** [e-mail]
+**Contact.** radu.craciun1982@gmail.com
