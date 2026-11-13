@@ -1,4 +1,4 @@
-# VMS Moldova – versiunea 3.2
+# VMS Moldova – versiunea 3.3
 
 Aplicație Android (Flutter) pentru valorile mobiliare de stat ale Republicii Moldova:
 rate la licitații, calendarul MF, rezultatele licitațiilor și portofoliul personal
@@ -14,6 +14,11 @@ calculat conform Regulamentului VMS.
 | Licitații | Calendar lunar cu zilele de licitație (BT/OS), cardul „Următoarea licitație”, detaliile fiecărei zile și rezultatele ultimei licitații (ISIN, volume, rate min/medie/max, cerere/ofertă, preț mediu). Linkurile spre calendarul trimestrial MF sunt actualizate. |
 | Date | Un singur fișier `vms_data.json` (rate, ISIN-uri, rezultate, calendar), inclus în APK și actualizat automat online. |
 | Publicare | `applicationId` definitiv, semnare release cu cheia ta, permisiune INTERNET, versiune 3.0.0+3, migrare automată a portofoliului din v2, ecran de confidențialitate și avertisment. |
+
+## Ce este nou în 3.3
+
+- **Grafice cu deplasare și zoom (Dobânzi, BT și OS):** tragere stânga–dreapta, ciupire cu două degete și butoanele −/+/„Toți anii”. Micșorat: toți anii, cu etichete scurte (09, 10 …); mărit: semestre, trimestre, luni. Axa procentelor se adaptează perioadei vizibile, iar la zoom (≤ ~2,5 ani, un singur termen) procentele apar lângă puncte, fără suprapunere. Graficul BT pornește pe „Toți anii”.
+- `fl_chart` actualizat la 1.x (zoom nativ).
 
 ## Ce este nou în 3.2
 

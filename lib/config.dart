@@ -15,7 +15,7 @@ const int kDataSchema = 1;
 /// Valoarea nominală standard a unei VMS (Regulament VMS, pct. 7).
 const double kNominal = 100;
 
-const String kAppVersion = '3.2.0';
+const String kAppVersion = '3.3.0';
 
 /// Firebase (notificări despre licitații). Valorile vin din google-services.json,
 /// transmise la build prin --dart-define (vezi .github/workflows/build-apk.yml).
