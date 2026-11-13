@@ -24,8 +24,20 @@ class SyncResult {
 /// O copie descărcată înlocuiește datele doar dacă trece validarea și este
 /// mai nouă decât cea existentă; altfel rămân datele anterioare.
 class DataRepository {
+  DataRepository({http.Client? client, String? remoteUrl})
+      : _client = client,
+        _remoteUrl = remoteUrl ?? kRemoteDataUrl;
+
+  final http.Client? _client;
+  final String _remoteUrl;
+
   static const _cacheKey = 'vms_data_cache_v1';
   static const _checkedKey = 'vms_data_checked_at';
+
+  /// Amprenta (ETag) ultimei versiuni primite de la server, cu adresa și versiunea
+  /// datelor (generated_at) la care se referă. Cu ea, serverul răspunde „304 – nemodificat”
+  /// (câteva sute de bytes) în loc să trimită din nou tot fișierul.
+  static const _etagKey = 'vms_data_etag_v1';
 
   /// Versiunea datelor anunțată de o notificare push (generated_at), încă neprimită.
   static const _expectedKey = 'vms_data_expected';
@@ -110,7 +122,7 @@ class DataRepository {
   }
 
   Future<SyncResult> sync(VmsDataset current, {bool force = false}) async {
-    if (kRemoteDataUrl.isEmpty) {
+    if (_remoteUrl.isEmpty) {
       return const SyncResult(SyncStatus.disabled, 'Sincronizarea online nu este configurată în această versiune.');
     }
     final prefs = await SharedPreferences.getInstance();
@@ -119,26 +131,75 @@ class DataRepository {
       return const SyncResult(SyncStatus.upToDate, 'Verificat recent.');
     }
     try {
-      var uri = Uri.parse(kRemoteDataUrl);
+      var uri = Uri.parse(_remoteUrl);
       if (force) {
         // raw.githubusercontent.com păstrează fișierul în cache ~5 minute; parametrul ocolește cache-ul
         uri = uri.replace(queryParameters: {...uri.queryParameters, 't': '${DateTime.now().millisecondsSinceEpoch}'});
       }
-      final resp = await http.get(uri).timeout(const Duration(seconds: 20));
+      final etag = _usableEtag(prefs, current);
+      final headers = <String, String>{if (etag != null) 'If-None-Match': etag};
+      final client = _client ?? http.Client();
+      final http.Response resp;
+      try {
+        resp = await client.get(uri, headers: headers).timeout(const Duration(seconds: 20));
+      } finally {
+        if (_client == null) client.close();
+      }
       await prefs.setString(_checkedKey, DateTime.now().toIso8601String());
+      if (resp.statusCode == 304) {
+        // serverul confirmă că avem deja ultima versiune
+        await prefs.remove(_forceKey);
+        return const SyncResult(SyncStatus.upToDate, 'Datele sunt la zi.');
+      }
       if (resp.statusCode != 200) {
         return SyncResult(SyncStatus.offline, 'Serverul a răspuns ${resp.statusCode}.');
       }
       final body = utf8.decode(resp.bodyBytes);
       final remote = VmsDataset.fromJson(jsonDecode(body) as Map<String, dynamic>);
       final problem = validate(remote);
-      if (problem != null) return SyncResult(SyncStatus.invalid, 'Date respinse: $problem');
+      if (problem != null) {
+        await prefs.remove(_etagKey); // nu reținem amprenta unui fișier respins
+        return SyncResult(SyncStatus.invalid, 'Date respinse: $problem');
+      }
       await prefs.remove(_forceKey); // sincronizarea cerută de notificare a avut loc
-      if (!_newer(remote, current)) return const SyncResult(SyncStatus.upToDate, 'Datele sunt la zi.');
-      await prefs.setString(_cacheKey, body);
+      final newer = _newer(remote, current);
+      if (newer) await prefs.setString(_cacheKey, body);
+      await _saveEtag(prefs, resp.headers['etag'], newer ? remote : current);
+      if (!newer) return const SyncResult(SyncStatus.upToDate, 'Datele sunt la zi.');
       return SyncResult(SyncStatus.updated, 'Date actualizate.', remote);
     } catch (e) {
       return const SyncResult(SyncStatus.offline, 'Fără conexiune – folosim datele salvate.');
     }
+  }
+
+  /// Adresa fără parametri (fără `?t=...`), ca amprenta să fie valabilă și la sincronizarea forțată.
+  String get _baseUrl => _remoteUrl.split('?').first;
+
+  /// Amprenta se trimite doar dacă e pentru aceeași adresă și dacă datele afișate
+  /// sunt cel puțin la fel de noi ca versiunea la care se referă. Altfel (cache șters,
+  /// adresă schimbată, date mai vechi) descărcăm fișierul complet, ca înainte.
+  String? _usableEtag(SharedPreferences prefs, VmsDataset current) {
+    final raw = prefs.getString(_etagKey);
+    if (raw == null) return null;
+    try {
+      final j = jsonDecode(raw) as Map<String, dynamic>;
+      final etag = j['etag'] as String?;
+      final version = DateTime.tryParse('${j['version'] ?? ''}');
+      final have = current.generatedAt;
+      if (etag == null || etag.isEmpty || j['url'] != _baseUrl) return null;
+      if (version == null || have == null || have.isBefore(version)) return null;
+      return etag;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> _saveEtag(SharedPreferences prefs, String? etag, VmsDataset content) async {
+    final version = content.generatedAt;
+    if (etag == null || etag.isEmpty || version == null) {
+      await prefs.remove(_etagKey);
+      return;
+    }
+    await prefs.setString(_etagKey, jsonEncode({'url': _baseUrl, 'etag': etag, 'version': version.toIso8601String()}));
   }
 }
