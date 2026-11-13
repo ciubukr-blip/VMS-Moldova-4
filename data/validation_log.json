@@ -1,5 +1,148 @@
 [
  {
+  "run": "2026-11-13T07:42:03+00:00",
+  "offline": false,
+  "errors": [],
+  "warnings": [
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001583_ro.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001583_ro_0.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001583_ro_1.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001583_ro_2.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001583_ro%20%281%29.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001583_ro_1.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001583_ro_2.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583.rom_.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583.rom__0.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583.rom__1.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583.rom__2.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583.rom_%20%281%29.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20.rom_.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20.rom__0.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20.rom__1.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20.rom__2.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20.rom_%20%281%29.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20rom.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20rom_0.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20rom_1.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20rom_2.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "error",
+    "url": "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20rom%20%281%29.pdf",
+    "msg": "cupon flotant: răspunsul nu este PDF",
+    "attempt": 1
+   },
+   {
+    "level": "info",
+    "msg": "cupoane flotante: 124 link-uri pe paginile MF, 146 comunicate candidate, 0 noi, 122 în total"
+   }
+  ]
+ },
+ {
   "run": "2026-11-12T16:19:55+00:00",
   "offline": false,
   "errors": [],

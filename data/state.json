@@ -298,7 +298,29 @@
   "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-11.03.2026-rom.pdf": 1,
   "https://mf.gov.md/sites/default/files/Comunicat%20plasare%20OS-12.11.2025-rom.pdf": 1,
   "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001096_ro.pdf": 2,
-  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004000817%20rom.pdf": 3
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004000817%20rom.pdf": 3,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001583_ro.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001583_ro_0.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001583_ro_1.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001583_ro_2.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupon%20ISIN%20MD4004001583_ro%20%281%29.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001583_ro_1.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20cupo%20ISIN%20MD4004001583_ro_2.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583.rom_.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583.rom__0.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583.rom__1.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583.rom__2.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583.rom_%20%281%29.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20.rom_.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20.rom__0.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20.rom__1.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20.rom__2.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20.rom_%20%281%29.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20rom.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20rom_0.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20rom_1.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20rom_2.pdf": 1,
+  "https://mf.gov.md/sites/default/files/Comunicat%20oficial%20privind%20rata%20dob%C3%A2nzii%20cu%20codul%20ISIN%20MD4004001583%20rom%20%281%29.pdf": 1
  },
  "calendar_hash": {
   "2026-Q4": "bfaefe7e41da7d8203735e14c98fc9fad1c3c00d7a29fde1d3fce0e62275f6ea"
@@ -1284,7 +1306,7 @@
    "margin": 0.04
   }
  ],
- "notice_guess_day": "2026-11-12",
+ "notice_guess_day": "2026-11-13",
  "floating_isins": [
   "MD4004001583"
  ],
