@@ -62,7 +62,7 @@ class AlertsScreen extends StatelessWidget {
         ],
         const SizedBox(height: 12),
         const InfoNote(
-          'Site-ul MF este verificat pe server, la fiecare 5 minute în zilele de licitație. Fiecare eveniment '
+          'Site-ul MF este verificat pe server, la fiecare 30 de minute în zilele de licitație. Fiecare eveniment '
           'generează o singură notificare și doar pentru licitații viitoare sau rezultate recente – fără arhivă.',
         ),
       ]);

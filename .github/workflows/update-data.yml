@@ -2,10 +2,11 @@ name: Actualizare date MF
 
 on:
   schedule:
-    # Zilele de licitație (marți = BT, miercuri = OS): la fiecare 5 minute, 09:00–18:55 ora Chișinăului
-    - cron: "*/5 6-15 * * 2,3"
-    # Restul zilelor: de două ori pe zi (calendare noi, comunicate de plasare)
-    - cron: "23 6,13 * * 0,1,4,5,6"
+    # Orele cron sunt în UTC; ora Chișinăului = UTC+2 iarna, UTC+3 vara (vara totul vine cu o oră mai târziu).
+    # Zilele de licitație (marți = BT, miercuri = OS): la fiecare 30 de minute, 12:07–18:37 ora Chișinăului (iarna)
+    - cron: "7,37 10-16 * * 2,3"
+    # Restul zilelor: de două ori pe zi, 14:23 și 17:23 ora Chișinăului (iarna) – calendare noi, comunicate de plasare
+    - cron: "23 12,15 * * 0,1,4,5,6"
   workflow_dispatch: {}
 
 permissions:
