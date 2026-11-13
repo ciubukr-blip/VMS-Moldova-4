@@ -43,6 +43,8 @@ calculat conform Regulamentului VMS.
 
   Fără aceste secrete, aplicația și robotul funcționează normal, doar fără notificări despre licitații.
 - **Calendarul din aplicație:** afișează și licitațiile anunțate prin comunicatele de plasare, nu doar pe cele din calendarul trimestrial.
+- **Date la zi după notificare:** fiecare notificare poartă versiunea datelor (`generated_at`). La primirea ei, sau la deschiderea aplicației după ea, aplicația descarcă imediat fișierul, fără limita de 30 de minute și ocolind cache-ul GitHub. Reîncearcă timp de ~12 minute până primește versiunea anunțată, pentru că robotul face commit după trimitere, iar GitHub poate servi câteva minute copia veche.
+- **Linkul „Calendar MF”** se calculează după trimestrul curent (de ex. „trimestrul I-2027”), deci nu mai trebuie schimbat manual la fiecare trimestru.
 
 ## Formule (Regulamentul VMS, ed. 2025)
 

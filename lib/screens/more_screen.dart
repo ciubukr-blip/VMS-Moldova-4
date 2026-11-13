@@ -35,7 +35,7 @@ class MoreScreen extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           childAspectRatio: 0.82,
           children: [
-            IconTile(icon: Icons.event_note_outlined, label: 'Calendar MF', onTap: () => openLink(context, kCalendarCurrentPdf)),
+            IconTile(icon: Icons.event_note_outlined, label: 'Calendar MF', onTap: () => openLink(context, calendarPdfUrl())),
             IconTile(icon: Icons.fact_check_outlined, label: 'Rezultate MF', onTap: () => openLink(context, kSourceLinks['Rezultatele licitațiilor']!)),
             IconTile(icon: Icons.gavel_outlined, label: 'Regulament VMS', onTap: () => openLink(context, kSourceLinks['Regulamentul VMS (BNM)']!)),
             IconTile(icon: Icons.account_balance_outlined, label: 'BNM', onTap: () => openLink(context, kSourceLinks['BNM – rapoarte VMS']!)),

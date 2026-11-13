@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,6 +49,19 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
   bool syncing = false;
   String? syncMessage;
   String? loadError;
+  StreamSubscription<void>? _dataEventsSub;
+  bool _catchingUp = false;
+
+  /// După o notificare, fișierul nou poate ajunge pe server cu câteva minute întârziere
+  /// (robotul face commit după trimitere, iar GitHub ține fișierul în cache ~5 minute).
+  static const List<Duration> _catchUpWaits = [
+    Duration.zero,
+    Duration(seconds: 30),
+    Duration(minutes: 1),
+    Duration(minutes: 2),
+    Duration(minutes: 3),
+    Duration(minutes: 5),
+  ];
 
   final Map<String, bool> prefs = {
     'launch': true,
@@ -61,18 +76,49 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _dataEventsSub = NotificationService.instance.dataEvents.listen((_) => _catchUp());
     _load();
   }
 
   @override
   void dispose() {
+    _dataEventsSub?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) _sync();
+    if (state == AppLifecycleState.resumed) _refresh();
+  }
+
+  /// La pornire și la revenire: dacă o notificare a anunțat date noi, sincronizare forțată
+  /// (fără limita de 30 de minute); altfel verificarea obișnuită.
+  Future<void> _refresh() async {
+    final current = data;
+    if (current != null && await _repo.pendingUpdate(current)) {
+      await _catchUp();
+    } else {
+      await _sync();
+    }
+  }
+
+  /// Sincronizare forțată, reîncercată până sosesc datele anunțate de notificare.
+  Future<void> _catchUp() async {
+    if (_catchingUp) return;
+    _catchingUp = true;
+    try {
+      for (final wait in _catchUpWaits) {
+        if (wait > Duration.zero) await Future<void>.delayed(wait);
+        final current = data;
+        if (!mounted || current == null) return;
+        if (!await _repo.pendingUpdate(current)) return;
+        if (syncing) continue; // o verificare este deja în curs; reîncercăm după pauză
+        await _sync(force: true, quiet: true);
+      }
+    } finally {
+      _catchingUp = false;
+    }
   }
 
   Future<void> _load() async {
@@ -95,14 +141,14 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
         holdings = h;
         lastChecked = lc;
       });
-      _sync();
+      _refresh();
       _setupNotifications(sp);
     } catch (e) {
       if (mounted) setState(() => loadError = '$e');
     }
   }
 
-  Future<void> _sync({bool force = false}) async {
+  Future<void> _sync({bool force = false, bool quiet = false}) async {
     final current = data;
     if (current == null || syncing) return;
     setState(() => syncing = true);
@@ -112,7 +158,7 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
     setState(() {
       syncing = false;
       lastChecked = lc;
-      if (force || r.status == SyncStatus.updated) syncMessage = r.message;
+      if ((force && !quiet) || r.status == SyncStatus.updated) syncMessage = r.message;
       if (r.dataset != null) {
         data = r.dataset;
         FloatingRates.load(r.dataset!);
