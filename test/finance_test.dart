@@ -6,6 +6,7 @@ import 'package:vms_moldova/models/dataset.dart';
 import 'package:vms_moldova/models/holding.dart';
 import 'package:vms_moldova/services/data_repository.dart';
 import 'package:vms_moldova/screens/auctions_screen.dart';
+import 'package:vms_moldova/screens/bond_rates_section.dart';
 import 'package:vms_moldova/services/finance.dart';
 import 'package:vms_moldova/services/notifications.dart';
 import 'package:vms_moldova/services/portfolio_store.dart';
@@ -188,5 +189,15 @@ void main() {
     expect(day, isNotEmpty);
     final keys = day.map((e) => '${e.type}${e.term.replaceAll(RegExp(r'[^0-9]'), '')}').toList();
     expect(keys.toSet().length, keys.length);
+  });
+  test('arhiva 2009–2026: rate BT și statistica OS', () {
+    final d = VmsDataset.fromJson(jsonDecode(File('assets/data/vms_data.json').readAsStringSync()) as Map<String, dynamic>);
+    expect(d.rates.first.date.year, 2009);
+    final pts = bondPoints(d);
+    expect(pts.length, greaterThan(300));
+    expect(pts.map((p) => p.years).toSet(), containsAll(<int>[2, 3, 5, 7, 10]));
+    // redeschiderea de 4,93 ani (MD3RM2002947, 17.10.2018) aparține obligațiunii de 5 ani
+    expect(pts.where((p) => p.date == DateTime.parse('2018-10-17') && p.years == 5), isNotEmpty);
+    expect(pts.any((p) => p.floating), isTrue);
   });
 }

@@ -8,6 +8,7 @@ import '../models/dataset.dart';
 import '../services/format.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
+import 'bond_rates_section.dart';
 
 class RatesScreen extends StatefulWidget {
   final VmsDataset data;
@@ -38,7 +39,7 @@ class _RatesScreenState extends State<RatesScreen> {
     final years = rates.map((e) => e.date.year).toSet().toList()..sort();
     final terms = term == 0 ? const [91, 182, 364] : [term];
     return ListView(padding: const EdgeInsets.fromLTRB(16, 8, 16, 24), children: [
-      PageHeader('Dobânzi', subtitle: 'Bonuri de trezorerie · rate la licitațiile MF'),
+      PageHeader('Dobânzi', subtitle: 'Bonuri de trezorerie și obligațiuni · licitațiile MF 2009–2026'),
       _latestCard(),
       const SizedBox(height: 12),
       AppCard(
@@ -82,13 +83,10 @@ class _RatesScreenState extends State<RatesScreen> {
       const SizedBox(height: 12),
       const InfoNote(
         'Rate nominale anuale (Regulament VMS, pct. 72). Datele sunt indexate după data emiterii. '
-        'Istoricul 2021–2026 a fost importat din arhivă și se completează automat după fiecare licitație.',
+        'Istoricul 2009–2026 (fără bonurile de 21 de zile) a fost importat din arhiva MF și se completează automat după fiecare licitație.',
       ),
       const SectionHeader('Obligațiuni de stat'),
-      const AppCard(
-        child: InfoNote('Pentru obligațiuni (2, 3, 5, 7, 10 ani) rata cuponului se vede la fiecare ISIN în Portofoliu și în rezultatele licitațiilor. '
-            'Graficul istoric pentru obligațiuni va fi adăugat după importul complet al arhivei.'),
-      ),
+      BondRatesSection(data: widget.data),
     ]);
   }
 

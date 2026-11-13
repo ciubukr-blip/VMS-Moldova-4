@@ -29,6 +29,15 @@ class AppColors {
   static const term364 = Color(0xFFD9784A);
 
   static Color forTerm(int days) => days <= 120 ? term91 : days <= 250 ? term182 : term364;
+
+  /// Culorile obligațiunilor pe termen (ani).
+  static Color forBondYears(int years) => switch (years) {
+        2 => term91,
+        3 => term182,
+        5 => term364,
+        7 => const Color(0xFF8E5AC8),
+        _ => const Color(0xFFC2477A),
+      };
 }
 
 class AppTheme {

@@ -152,6 +152,21 @@ class MergeTests(unittest.TestCase):
         out = self.build.merge({}, self.manual, {"securities": [self.bad, reopening]}, [])
         self.assertEqual(out["securities"][0]["coupon_rate"], 6.5)
 
+    def test_history_archive_only_fills_gaps(self):
+        sec = {"isin": "MD4003000001", "type": "BT", "term_label": "91 zile", "term_days": 91,
+               "auction_date": "2015-07-28", "issue_date": "2015-07-30", "maturity": "2015-10-29",
+               "coupon_rate": None, "coupon_dates": [], "source": "arhiva"}
+        hist = {"securities": [sec],
+                "rates": [{"date": "2015-07-30", "days": 91, "min": 17.8, "avg": 18.2, "max": 18.59}],
+                "auctions": [{"auction_date": "2015-07-28", "isin": "MD4003000001", "type": "BT",
+                              "rate_min": 17.8, "rate_avg": 18.02, "rate_max": 18.29, "demand": 100.0}]}
+        prev = {"auctions": [{"auction_date": "2015-07-28", "isin": "MD4003000001", "type": "BT", "demand": 120.0}]}
+        out = self.build.merge(prev, {**self.manual, "history": hist}, {}, [])
+        a = out["auctions"][0]
+        self.assertEqual(a["demand"], 120.0)        # datele publicate au prioritate
+        self.assertEqual(a["rate_avg"], 18.02)      # rata exactă a licitației, nu media combinată pe decontare
+        self.assertEqual(out["rates"][0]["avg"], 18.2)
+
 
 class FloatingCouponTests(unittest.TestCase):
     NOTICE_2026 = """Ministerul Finanţelor anunţă, că rata anuală a dobânzii ce va fi aplicată pentru

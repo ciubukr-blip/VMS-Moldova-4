@@ -1,4 +1,4 @@
-# VMS Moldova – versiunea 3.1
+# VMS Moldova – versiunea 3.2
 
 Aplicație Android (Flutter) pentru valorile mobiliare de stat ale Republicii Moldova:
 rate la licitații, calendarul MF, rezultatele licitațiilor și portofoliul personal
@@ -14,6 +14,13 @@ calculat conform Regulamentului VMS.
 | Licitații | Calendar lunar cu zilele de licitație (BT/OS), cardul „Următoarea licitație”, detaliile fiecărei zile și rezultatele ultimei licitații (ISIN, volume, rate min/medie/max, cerere/ofertă, preț mediu). Linkurile spre calendarul trimestrial MF sunt actualizate. |
 | Date | Un singur fișier `vms_data.json` (rate, ISIN-uri, rezultate, calendar), inclus în APK și actualizat automat online. |
 | Publicare | `applicationId` definitiv, semnare release cu cheia ta, permisiune INTERNET, versiune 3.0.0+3, migrare automată a portofoliului din v2, ecran de confidențialitate și avertisment. |
+
+## Ce este nou în 3.2
+
+- **Arhiva completă 2009–2026:** toate licitațiile de bonuri de trezorerie (91/182/364 zile; fără cele de 21 de zile) și de obligațiuni de stat, cu ISIN, volume, rate și cupoane. Sursa este `data_pipeline/manual/history.json`, generat din Excelul cu rezultatele MF:
+  `cd data_pipeline && python -m tools.import_history_xlsx Rezultate_licitatii_VMS_BT_OS_2009-2026.xlsx` (necesită `openpyxl`).
+  Arhiva este stratul de bază: datele preluate automat și cele din `manual/` au prioritate, arhiva doar completează golurile.
+- **Dobânzi → Obligațiuni de stat:** grafic al ratelor (cuponul stabilit la licitație) pe termene de 2, 3, 5, 7 și 10 ani, filtru dobândă fixă/flotantă și pe ani, ultima rată pe fiecare termen și statistici pe perioadă (minim, medie, maxim, medie ponderată cu volumul, volum plasat, cerere/volum anunțat). Redeschiderile (ex. „4,93 ani”) sunt incluse la termenul inițial.
 
 ## Notificări (3.1)
 

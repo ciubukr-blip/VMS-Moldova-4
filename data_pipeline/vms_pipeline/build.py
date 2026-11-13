@@ -301,8 +301,14 @@ def apply_coupon_notices(secs: dict[str, dict], notices: list[dict]) -> None:
 
 # --------------------------------------------------------------------------
 def merge(prev: dict, manual: dict, scraped: dict, log: list) -> dict:
-    # securities: previous published + scraped + manual (manual wins)
-    secs: dict[str, dict] = {s["isin"]: s for s in prev.get("securities", [])}
+    # arhiva 2009–2026 (manual/history.json) este stratul de bază: completează doar ce lipsește,
+    # orice valoare publicată anterior / preluată automat / manuală are prioritate
+    hist = manual.get("history") or {}
+    hist_secs = {s["isin"]: s for s in hist.get("securities", [])}
+    # securities: arhivă + previous published + scraped + manual (manual wins)
+    secs: dict[str, dict] = dict(hist_secs)
+    for s in prev.get("securities", []):
+        secs[s["isin"]] = {**hist_secs.get(s["isin"], {}), **s}
     # cupoane cunoscute din orice sursă (publicat anterior, manual, alte comunicate – ex. redeschideri)
     known_coupon: dict[str, float] = {}
     for s in [*prev.get("securities", []), *scraped.get("securities", []), *manual["securities"]]:
@@ -340,12 +346,17 @@ def merge(prev: dict, manual: dict, scraped: dict, log: list) -> dict:
     by_isin = secs
 
     # rates history (settlement-date keyed, like the original app)
-    rates = {(r["date"], r["days"]): r for r in prev.get("rates", [])}
+    rates = {(r["date"], r["days"]): r for r in hist.get("rates", [])}
+    rates.update({(r["date"], r["days"]): r for r in prev.get("rates", [])})
     for r in manual["rates"]:
         rates[(r["date"], r["days"])] = r
 
     # auction results
-    res: dict[tuple[str, str], dict] = {(a["auction_date"], a["isin"]): a for a in prev.get("auctions", [])}
+    hist_res = {(a["auction_date"], a["isin"]): a for a in hist.get("auctions", [])}
+    res: dict[tuple[str, str], dict] = dict(hist_res)
+    for a in prev.get("auctions", []):
+        key = (a["auction_date"], a["isin"])
+        res[key] = {**hist_res.get(key, {}), **a}
 
     def put_result(rec: dict) -> None:
         key = (rec["auction_date"], rec["isin"])
@@ -355,6 +366,8 @@ def merge(prev: dict, manual: dict, scraped: dict, log: list) -> dict:
     for s in by_isin.values():
         if s["type"] != "BT" or not s.get("issue_date"):
             continue
+        if (s["auction_date"], s["isin"]) in hist_res:
+            continue  # arhiva are ratele exacte ale licitației (în 2015 – două licitații pe aceeași decontare)
         r = rates.get((s["issue_date"], bucket(s["term_days"])))
         if r:
             put_result({"auction_date": s["auction_date"], "isin": s["isin"], "type": "BT",
@@ -486,6 +499,7 @@ def main(argv: list[str] | None = None) -> int:
         "rates": load(MANUAL / "rates_history.json", []),
         "volumes": load(MANUAL / "auction_volumes.json", []),
         "calendar": load(MANUAL / "calendar.json", {"quarters": []})["quarters"],
+        "history": load(MANUAL / "history.json", {}),
     }
     scraped: dict[str, list] = {}
     if not args.offline:
