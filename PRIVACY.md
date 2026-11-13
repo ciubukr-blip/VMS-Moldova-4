@@ -2,7 +2,7 @@
 
 *Ultima actualizare: noiembrie 2026*
 
-**Cine suntem.** VMS Moldova este dezvoltată de Radu Craciun, radu.craciun1982@gmail.com.
+**Cine suntem.** VMS Moldova este dezvoltată de Craciun Radu, radu.craciun1982@gmail.com.
 
 **Ce date colectăm.** Niciuna. Aplicația nu cere cont, nu folosește instrumente de analiză sau publicitate
 și nu are acces la contacte, locație, cameră sau alte date de pe telefon.
