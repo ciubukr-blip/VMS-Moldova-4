@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 import '../services/format.dart';
 import '../theme/app_theme.dart';
 
+/// Înălțimea graficelor pe ecranul Dobânzi: o secțiune întreagă (BT sau OS)
+/// încape pe un singur ecran de telefon.
+const double kRatesChartHeight = 190;
+
 /// Un punct al graficului de rate: data licitației/emiterii și rata (%).
 class RatePoint {
   final DateTime date;

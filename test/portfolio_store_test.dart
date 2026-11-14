@@ -20,6 +20,27 @@ Holding _h(String id) => Holding(
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  group('Notițe', () {
+    test('notița se păstrează la salvare și citire', () {
+      final h = Holding.fromJson(_h('n').toJson()..['note'] = 'Banii mamei · Studiile copiilor');
+      expect(h.note, 'Banii mamei · Studiile copiilor');
+      final back = Holding.fromJson(jsonDecode(jsonEncode(h.toJson())) as Map<String, dynamic>);
+      expect(back.note, 'Banii mamei · Studiile copiilor');
+    });
+
+    test('pozițiile vechi, fără notiță, se citesc la fel', () {
+      final j = _h('v').toJson();
+      expect(j.containsKey('note'), isFalse);
+      expect(Holding.fromJson(j).note, isNull);
+    });
+
+    test('o notiță goală sau doar cu spații nu se salvează', () {
+      final h = Holding.fromJson(_h('g').toJson()..['note'] = '   ');
+      expect(h.hasNote, isFalse);
+      expect(h.toJson().containsKey('note'), isFalse);
+    });
+  });
+
   group('Protecția portofoliului la citire', () {
     test('o poziție stricată nu șterge restul, iar originalul e păstrat', () async {
       final j = jsonDecode(PortfolioStore.encode([_h('a'), _h('b')])) as Map<String, dynamic>;

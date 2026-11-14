@@ -42,6 +42,10 @@ List<BondPoint> bondPoints(VmsDataset data) {
   return out;
 }
 
+const kBondsNote = 'Obligațiuni de stat: rata = cuponul stabilit la licitație (rata nominală anuală). La dobânda flotantă este rata primului cupon '
+    '(rata medie BT 182 zile + marja). Redeschiderile sunt incluse la termenul inițial al obligațiunii. '
+    'Volume în milioane lei.';
+
 class BondRatesSection extends StatefulWidget {
   final VmsDataset data;
   const BondRatesSection({super.key, required this.data});
@@ -51,6 +55,7 @@ class BondRatesSection extends StatefulWidget {
 }
 
 class _BondRatesSectionState extends State<BondRatesSection> {
+  static const _p = SectionPalette.bonds;
   late final List<BondPoint> all = bondPoints(widget.data);
   late final List<int> terms = (all.map((p) => p.years).toSet().toList()..sort());
   late int term = terms.contains(3) ? 3 : (terms.isEmpty ? 0 : terms.first); // 0 = toate
@@ -70,20 +75,21 @@ class _BondRatesSectionState extends State<BondRatesSection> {
     }
     final years = all.where(_kindOk).map((p) => p.date.year).toSet().toList()..sort();
     final shown = term == 0 ? terms : [term];
-    return Column(children: [
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       _latestCard(),
-      const SizedBox(height: 12),
+      const SizedBox(height: 10),
       AppCard(
-        padding: const EdgeInsets.fromLTRB(12, 14, 12, 12),
+        padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Segmented<int>(
             values: [...terms, 0],
             selected: term,
             label: (v) => v == 0 ? 'Toate' : '$v ani',
             onChanged: (v) => setState(() => term = v),
+            palette: _p,
           ),
-          const SizedBox(height: 8),
-          Segmented<String>(
+          const SizedBox(height: 4),
+          UnderlineTabs<String>(
             values: const ['all', 'fix', 'flot'],
             selected: kind,
             label: (v) => _kindNames[v]!,
@@ -91,46 +97,30 @@ class _BondRatesSectionState extends State<BondRatesSection> {
               kind = v;
               if (year != null && !all.any((p) => _kindOk(p) && p.date.year == year)) year = null;
             }),
+            palette: _p,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           SizedBox(
             height: 32,
             child: ListView(scrollDirection: Axis.horizontal, children: [
-              _yearChip(null, 'Toți anii'),
-              for (final y in years.reversed) _yearChip(y, '$y'),
+              YearChip('Toți anii', selected: year == null, onTap: () => setState(() => year = null), palette: _p),
+              for (final y in years.reversed) YearChip('$y', selected: year == y, onTap: () => setState(() => year = y), palette: _p),
             ]),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 10),
           _chart(shown),
           if (term == 0) ...[
-            const SizedBox(height: 10),
+            const SizedBox(height: 6),
             Wrap(spacing: 14, runSpacing: 4, children: [for (final y in terms) _legend(y)]),
           ],
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           const Divider(),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           _periodStats(shown.expand(_series).toList()),
         ]),
       ),
-      const SizedBox(height: 12),
-      const InfoNote(
-        'Rata = cuponul stabilit la licitație (rata nominală anuală). La dobânda flotantă este rata primului cupon '
-        '(rata medie BT 182 zile + marja). Redeschiderile sunt incluse la termenul inițial al obligațiunii. '
-        'Volume în milioane lei.',
-      ),
     ]);
   }
-
-  Widget _yearChip(int? y, String label) => Padding(
-        padding: const EdgeInsets.only(right: 6),
-        child: ChoiceChip(
-          label: Text(label),
-          selected: year == y,
-          onSelected: (_) => setState(() => year = y),
-          visualDensity: VisualDensity.compact,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        ),
-      );
 
   Widget _legend(int y) => Row(mainAxisSize: MainAxisSize.min, children: [
         Container(width: 10, height: 3, decoration: BoxDecoration(color: AppColors.forBondYears(y), borderRadius: BorderRadius.circular(2))),
@@ -140,14 +130,11 @@ class _BondRatesSectionState extends State<BondRatesSection> {
 
   Widget _latestCard() {
     final last = all.last.date;
-    return AppCard(
+    return BandCard(
+      palette: _p,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(children: [
-          const Text('Ultima rată pe termen', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
-          const Spacer(),
-          Text('ultima licitație OS ${date(last)}', style: const TextStyle(fontSize: 11.5, color: AppColors.textMuted)),
-        ]),
-        const SizedBox(height: 12),
+        Text('Ultima rată pe termen · licitația OS ${date(last)}', style: const TextStyle(fontSize: 11.5, color: AppColors.textMuted)),
+        const SizedBox(height: 8),
         Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           for (final y in terms) Expanded(child: _latestTile(y)),
         ]),
@@ -207,7 +194,7 @@ class _BondRatesSectionState extends State<BondRatesSection> {
         Expanded(child: Stat('Maxim', pct(v.reduce(math.max)), valueSize: 14)),
         Expanded(child: Stat('Licitații', '${s.length}', valueSize: 14)),
       ]),
-      const SizedBox(height: 12),
+      const SizedBox(height: 10),
       Row(children: [
         Expanded(child: Stat('Medie ponderată', weighted == null ? '–' : pct(weighted), valueSize: 14)),
         Expanded(child: Stat('Plasat', milLei(placed), valueSize: 14)),
@@ -219,6 +206,7 @@ class _BondRatesSectionState extends State<BondRatesSection> {
 
   Widget _chart(List<int> shown) => ZoomableRateChart(
         key: ValueKey('os-$term-$kind-$year'),
+        height: kRatesChartHeight,
         series: [
           for (final y in shown)
             RateSeries(AppColors.forBondYears(y), [for (final p in _series(y)) RatePoint(p.date, p.rate)]),

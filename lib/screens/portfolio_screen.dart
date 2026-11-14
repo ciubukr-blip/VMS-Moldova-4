@@ -383,6 +383,26 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
               '${matured ? ' · încasat' : ' · ${m.daysLeft} zile rămase'}',
               style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
             ),
+            if (h.hasNote) ...[
+              const SizedBox(height: 6),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                decoration: BoxDecoration(color: AppColors.amberSoft.withValues(alpha: 0.6), borderRadius: BorderRadius.circular(8)),
+                child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 1),
+                    child: Icon(Icons.sticky_note_2_outlined, size: 14, color: AppColors.amber),
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(h.note!,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 12, color: AppColors.text, height: 1.3)),
+                  ),
+                ]),
+              ),
+            ],
             const SizedBox(height: 8),
             ClipRRect(
               borderRadius: BorderRadius.circular(4),

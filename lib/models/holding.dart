@@ -21,6 +21,7 @@ class Holding {
   final String? couponType; // 'flotant' = dobândă flotantă
   final double? margin; // p.p. peste rata medie BT 182 zile
   final Map<DateTime, double> couponHistory; // ratele cupoanelor anunțate (copie la salvare)
+  final String? note; // notiță liberă a utilizatorului (ex. „banii mamei”)
 
   Holding({
     required this.id,
@@ -38,7 +39,10 @@ class Holding {
     this.couponType,
     this.margin,
     this.couponHistory = const {},
-  });
+    String? note,
+  }) : note = (note == null || note.trim().isEmpty) ? null : note.trim();
+
+  bool get hasNote => note != null;
 
   bool get isBill => type == 'BT';
   bool get isFloating => !isBill && couponType == 'flotant';
@@ -60,6 +64,7 @@ class Holding {
     String? couponType,
     double? margin,
     Map<DateTime, double>? couponHistory,
+    String? note,
   }) =>
       Holding(
         id: id,
@@ -77,6 +82,7 @@ class Holding {
         couponType: couponType ?? this.couponType,
         margin: margin ?? this.margin,
         couponHistory: couponHistory ?? this.couponHistory,
+        note: note ?? this.note,
       );
 
   static String _ds(DateTime d) =>
@@ -97,6 +103,7 @@ class Holding {
         'manual': manual,
         if (couponType != null) 'couponType': couponType,
         if (margin != null) 'margin': margin,
+        if (note != null) 'note': note,
         if (couponHistory.isNotEmpty) 'couponHistory': {for (final e in couponHistory.entries) _ds(e.key): e.value},
       };
 
@@ -119,6 +126,7 @@ class Holding {
           for (final e in ((j['couponHistory'] as Map?) ?? const {}).entries)
             dayOnly(DateTime.parse(e.key as String)): (e.value as num).toDouble(),
         },
+        note: j['note'] as String?,
       );
 
   /// Migrare din formatul v2 (nominal total + cost total, fără ISIN).
@@ -149,7 +157,8 @@ class Holding {
     }
   }
 
-  factory Holding.fromSecurity(Security s, {required String id, required DateTime purchaseDate, required double price, required int quantity}) =>
+  factory Holding.fromSecurity(Security s,
+          {required String id, required DateTime purchaseDate, required double price, required int quantity, String? note}) =>
       Holding(
         id: id,
         isin: s.isin,
@@ -165,5 +174,6 @@ class Holding {
         couponType: s.couponType,
         margin: s.margin,
         couponHistory: s.couponHistory,
+        note: note,
       );
 }
