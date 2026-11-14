@@ -8,19 +8,21 @@ import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 
 /// Deschide formularul de adăugare/editare. Returnează poziția salvată sau null.
-Future<Holding?> showHoldingForm(BuildContext context, VmsDataset data, {Holding? initial}) {
+Future<Holding?> showHoldingForm(BuildContext context, VmsDataset data, {Holding? initial, double? prefillPrice, int? prefillQuantity}) {
   return showModalBottomSheet<Holding>(
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
-    builder: (_) => HoldingForm(data: data, initial: initial),
+    builder: (_) => HoldingForm(data: data, initial: initial, prefillPrice: prefillPrice, prefillQuantity: prefillQuantity),
   );
 }
 
 class HoldingForm extends StatefulWidget {
   final VmsDataset data;
   final Holding? initial;
-  const HoldingForm({super.key, required this.data, this.initial});
+  final double? prefillPrice; // din calculator
+  final int? prefillQuantity;
+  const HoldingForm({super.key, required this.data, this.initial, this.prefillPrice, this.prefillQuantity});
 
   @override
   State<HoldingForm> createState() => _HoldingFormState();
@@ -48,6 +50,10 @@ class _HoldingFormState extends State<HoldingForm> {
   void initState() {
     super.initState();
     final h = widget.initial;
+    if (h == null) {
+      if (widget.prefillPrice != null) _price.text = priceFmt(widget.prefillPrice!);
+      if (widget.prefillQuantity != null) _qty.text = '${widget.prefillQuantity}';
+    }
     if (h != null) {
       _price.text = priceFmt(h.price);
       _qty.text = '${h.quantity}';
@@ -78,6 +84,8 @@ class _HoldingFormState extends State<HoldingForm> {
   }
 
   // ---------------------------------------------------------------- draft
+  List<Sale> get _sales => widget.initial?.sales ?? const [];
+
   DateTime? get _issue => _manual ? _manualIssue : _security?.issueDate;
   DateTime? get _maturity => _manual ? _manualMaturity : _security?.maturity;
 
@@ -105,9 +113,10 @@ class _HoldingFormState extends State<HoldingForm> {
         quantity: qty,
         manual: true,
         note: _note.text,
+        sales: _sales,
       );
     }
-    return Holding.fromSecurity(_security!, id: id, purchaseDate: purchase, price: price, quantity: qty, note: _note.text);
+    return Holding.fromSecurity(_security!, id: id, purchaseDate: purchase, price: price, quantity: qty, note: _note.text, sales: _sales);
   }
 
   Future<void> _pickSecurity() async {
@@ -163,6 +172,15 @@ class _HoldingFormState extends State<HoldingForm> {
     final h = _draft();
     if (h == null) {
       _snack('Verifică prețul și cantitatea');
+      return;
+    }
+    final sold = widget.initial?.soldQuantity ?? 0;
+    if (h.quantity < sold) {
+      _snack('Ai vândut deja $sold titluri din această poziție; cantitatea nu poate fi mai mică.');
+      return;
+    }
+    if (_sales.any((x) => !x.date.isAfter(h.purchaseDate) || !x.date.isBefore(h.maturity))) {
+      _snack('Există vânzări în afara perioadei dintre cumpărare și scadență. Verifică datele.');
       return;
     }
     Navigator.pop(context, h);

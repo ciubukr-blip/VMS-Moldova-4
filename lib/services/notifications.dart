@@ -47,6 +47,7 @@ List<PlannedNotification> maturityPlan(List<Holding> holdings, Map<String, bool>
   final today = dayOnly(now);
   final byMaturity = <DateTime, List<Holding>>{};
   for (final h in holdings) {
+    if (h.fullySold) continue;
     final m = dayOnly(h.maturity);
     if (m.isAfter(today)) (byMaturity[m] ??= []).add(h);
   }

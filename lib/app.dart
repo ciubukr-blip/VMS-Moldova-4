@@ -258,7 +258,7 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
       body = const Center(child: CircularProgressIndicator());
     } else {
       body = IndexedStack(index: tab, children: [
-        RatesScreen(key: ValueKey('rates-${d.generatedAt}'), data: d),
+        RatesScreen(key: ValueKey('rates-${d.generatedAt}'), data: d, onAddHolding: _upsert),
         PortfolioScreen(
           data: d,
           holdings: holdings,
@@ -266,7 +266,7 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
           onDelete: (h) => _saveHoldings(holdings.where((x) => x.id != h.id).toList()),
           onReplaceAll: _saveHoldings,
         ),
-        AuctionsScreen(key: ValueKey('auctions-${d.generatedAt}'), data: d),
+        AuctionsScreen(key: ValueKey('auctions-${d.generatedAt}'), data: d, onAddHolding: _upsert),
         AlertsScreen(preferences: prefs, onChange: _setPref, pushAvailable: NotificationService.instance.pushAvailable),
         MoreScreen(
           data: d,
@@ -275,6 +275,7 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
           syncMessage: syncMessage,
           onSync: () => _sync(force: true),
           holdings: holdings,
+          onSaveHolding: _upsert,
         ),
       ]);
     }

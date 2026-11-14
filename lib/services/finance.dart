@@ -213,7 +213,7 @@ class HoldingMetrics {
 
 HoldingMetrics computeMetrics(Holding h, {DateTime? today}) {
   final now = today ?? DateTime.now();
-  final q = h.quantity.toDouble();
+  final q = h.remaining.toDouble(); // titlurile rămase după vânzări
   final term = math.max(1, daysBetween(h.issueDate, h.maturity));
   final held = math.max(1, daysBetween(h.purchaseDate, h.maturity));
   final left = daysBetween(now, h.maturity);
@@ -315,12 +315,13 @@ class YearIncome {
   double bills = 0; // dobânda la BT: (100 − preț) × titluri, în anul scadenței
   double coupons = 0; // cupoanele OS în anul plății, minus dobânda acumulată plătită la cumpărare
   double maturityDiff = 0; // OS: (100 − preț) × titluri, în anul scadenței (scont / primă)
+  double sales = 0; // vânzări: (preț vânzare − preț cumpărare + dobânda acumulată primită) × titluri
   double received = 0; // partea deja încasată (până azi, inclusiv)
   double pending = 0; // partea care urmează
   bool estimated = false; // conține cupoane flotante cu rata încă neanunțată
   YearIncome(this.year);
 
-  double get total => bills + coupons + maturityDiff;
+  double get total => bills + coupons + maturityDiff + sales;
 }
 
 /// Venitul pe ani pentru toate pozițiile (active și ajunse la scadență), crescător după an.
@@ -341,24 +342,133 @@ List<YearIncome> incomeByYear(Iterable<Holding> holdings, {DateTime? today}) {
   }
 
   for (final h in holdings) {
-    final q = h.quantity.toDouble();
-    final diff = q * (kNominal - h.price);
+    final rem = h.remaining.toDouble();
+    final diffPerUnit = kNominal - h.price;
     final rates = couponRatesFor(h);
     if (rates == null) {
-      add(h.maturity, diff, h.isBill ? (y, v) => y.bills += v : (y, v) => y.maturityDiff += v);
-      continue;
+      add(h.maturity, rem * diffPerUnit, h.isBill ? (y, v) => y.bills += v : (y, v) => y.maturityDiff += v);
+    } else {
+      // cupoanele: pentru titlurile deținute la data plății (rămase + cele vândute după acea dată)
+      final coupons = bondCouponsWith(h.issueDate, h.maturity, rates, h.couponDates);
+      for (final c in coupons) {
+        if (!dayOnly(c.date).isAfter(dayOnly(h.purchaseDate))) continue;
+        final held = rem + h.sales.where((x) => !dayOnly(x.date).isBefore(dayOnly(c.date))).fold<int>(0, (t, x) => t + x.quantity);
+        add(c.date, held * c.amount, (y, v) => y.coupons += v, estimated: c.estimated);
+      }
+      final accrued = accruedInterestWith(h.issueDate, h.maturity, rates, h.couponDates, h.purchaseDate);
+      add(h.purchaseDate, -h.quantity * accrued, (y, v) => y.coupons += v);
+      add(h.maturity, rem * diffPerUnit, (y, v) => y.maturityDiff += v);
     }
-    final coupons = bondCouponsWith(h.issueDate, h.maturity, rates, h.couponDates);
-    for (final c in coupons) {
-      if (!dayOnly(c.date).isAfter(dayOnly(h.purchaseDate))) continue;
-      add(c.date, q * c.amount, (y, v) => y.coupons += v, estimated: c.estimated);
+    for (final x in h.sales) {
+      add(x.date, x.quantity * (x.price - h.price + accruedAt(h, x.date)), (y, v) => y.sales += v);
     }
-    final accrued = accruedInterestWith(h.issueDate, h.maturity, rates, h.couponDates, h.purchaseDate);
-    add(h.purchaseDate, -q * accrued, (y, v) => y.coupons += v);
-    add(h.maturity, diff, (y, v) => y.maturityDiff += v);
   }
   return years.values.toList()..sort((a, b) => a.year.compareTo(b.year));
 }
+
+/// Dobânda acumulată pentru o VMS de 100 lei la data [on] (0 pentru bonuri).
+double accruedAt(Holding h, DateTime on) {
+  final rates = couponRatesFor(h);
+  return rates == null ? 0 : accruedInterestWith(h.issueDate, h.maturity, rates, h.couponDates, on);
+}
+
+/// Rata anuală a investiției dacă poziția e păstrată până la scadență.
+double holdToMaturityRate(Holding h) => computeMetrics(h).investmentReturn;
+
+/// Rezultatul unei vânzări pe piața secundară (pentru [quantity] titluri).
+class SaleQuote {
+  final double price; // preț net pentru 100 lei
+  final double accruedPerUnit; // dobânda acumulată plătită de cumpărător (OS)
+  final double proceeds; // primești: titluri × (preț + dobândă acumulată)
+  final double cost; // ai plătit la cumpărare pentru aceste titluri (cu dobânda acumulată)
+  final double couponsReceived; // cupoanele încasate pentru aceste titluri până la vânzare
+  final double profit; // câștigul tău (poate fi negativ)
+  final double sellerRate; // rata anuală a ta, de la cumpărare la vânzare
+  final double buyerRate; // rata anuală a cumpărătorului, de la vânzare la scadență
+  final int daysHeld, daysLeft;
+  const SaleQuote({
+    required this.price,
+    required this.accruedPerUnit,
+    required this.proceeds,
+    required this.cost,
+    required this.couponsReceived,
+    required this.profit,
+    required this.sellerRate,
+    required this.buyerRate,
+    required this.daysHeld,
+    required this.daysLeft,
+  });
+}
+
+/// Calculul unei vânzări la prețul [price], la data [date].
+/// BT: ratele după pct. 72; OS: randamentul după pct. 74 (cu dobânda acumulată, pct. 76).
+SaleQuote saleQuote(Holding h, {required DateTime date, required int quantity, required double price}) {
+  final q = quantity.toDouble();
+  final rates = couponRatesFor(h);
+  final held = math.max(1, daysBetween(h.purchaseDate, date));
+  final left = math.max(1, daysBetween(date, h.maturity));
+  if (rates == null) {
+    return SaleQuote(
+      price: price,
+      accruedPerUnit: 0,
+      proceeds: q * price,
+      cost: q * h.price,
+      couponsReceived: 0,
+      profit: q * (price - h.price),
+      sellerRate: 100 * (price - h.price) / h.price * 365 / held,
+      buyerRate: billRate(price, left),
+      daysHeld: held,
+      daysLeft: left,
+    );
+  }
+  final coupons = bondCouponsWith(h.issueDate, h.maturity, rates, h.couponDates);
+  final accB = accruedInterestWith(h.issueDate, h.maturity, rates, h.couponDates, h.purchaseDate);
+  final accS = accruedInterestWith(h.issueDate, h.maturity, rates, h.couponDates, date);
+  final got = coupons.where((c) => dayOnly(c.date).isAfter(dayOnly(h.purchaseDate)) && !dayOnly(c.date).isAfter(dayOnly(date))).toList();
+  final future = [
+    ...coupons.where((c) => dayOnly(c.date).isAfter(dayOnly(date))),
+    CashFlow(h.maturity, kNominal, isCoupon: false),
+  ];
+  final cpu = got.fold<double>(0, (t, c) => t + c.amount);
+  return SaleQuote(
+    price: price,
+    accruedPerUnit: accS,
+    proceeds: q * (price + accS),
+    cost: q * (h.price + accB),
+    couponsReceived: q * cpu,
+    profit: q * (price + accS + cpu - h.price - accB),
+    sellerRate: bondYield(h.price + accB, [...got, CashFlow(date, price + accS, isCoupon: false)], h.purchaseDate),
+    buyerRate: bondYield(price + accS, future, date),
+    daysHeld: held,
+    daysLeft: left,
+  );
+}
+
+/// Prețul net (rotunjit la 2 zecimale) la care vânzătorul obține rata anuală [rate].
+double priceForSellerRate(Holding h, DateTime date, double rate) {
+  final rates = couponRatesFor(h);
+  final held = math.max(1, daysBetween(h.purchaseDate, date));
+  double p;
+  if (rates == null) {
+    p = h.price * (1 + rate / 100 * held / 365);
+  } else {
+    final coupons = bondCouponsWith(h.issueDate, h.maturity, rates, h.couponDates);
+    final accB = accruedInterestWith(h.issueDate, h.maturity, rates, h.couponDates, h.purchaseDate);
+    final accS = accruedInterestWith(h.issueDate, h.maturity, rates, h.couponDates, date);
+    final f = 1 + rate / 100;
+    var pvCoupons = 0.0;
+    for (final c in coupons) {
+      if (dayOnly(c.date).isAfter(dayOnly(h.purchaseDate)) && !dayOnly(c.date).isAfter(dayOnly(date))) {
+        pvCoupons += c.amount / math.pow(f, daysBetween(h.purchaseDate, c.date) / 365);
+      }
+    }
+    p = (h.price + accB - pvCoupons) * math.pow(f, held / 365).toDouble() - accS;
+  }
+  return (p * 100).round() / 100;
+}
+
+/// Prețul BT (rotunjit la 2 zecimale) pentru o rată nominală (pct. 72).
+double billPriceRounded(double rate, int days) => (billPriceFromRate(rate, days) * 100).round() / 100;
 
 class PortfolioSummary {
   final int positions;
@@ -382,7 +492,7 @@ PortfolioSummary summarize(List<Holding> holdings, {DateTime? today}) {
     coupons += m.couponsTotal;
     interest += m.interest;
     weighted += m.cost * m.investmentReturn;
-    units += h.quantity;
+    units += h.remaining;
   }
   return PortfolioSummary(holdings.length, units, cost, principal, coupons, interest, cost > 0 ? weighted / cost : 0);
 }

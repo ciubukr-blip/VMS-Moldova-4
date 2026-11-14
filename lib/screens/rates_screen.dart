@@ -5,11 +5,13 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/dataset.dart';
+import '../models/holding.dart';
 import '../services/format.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import '../widgets/rate_chart.dart';
 import 'bond_rates_section.dart';
+import 'buy_calculator_screen.dart';
 
 const _billsNote = 'Bonuri de trezorerie: rate nominale anuale (Regulament VMS, pct. 72). Datele sunt indexate după data emiterii. '
     'Istoricul 2009–2026 (fără bonurile de 21 de zile) a fost importat din arhiva MF și se completează automat după fiecare licitație. '
@@ -17,7 +19,8 @@ const _billsNote = 'Bonuri de trezorerie: rate nominale anuale (Regulament VMS, 
 
 class RatesScreen extends StatefulWidget {
   final VmsDataset data;
-  const RatesScreen({super.key, required this.data});
+  final ValueChanged<Holding>? onAddHolding;
+  const RatesScreen({super.key, required this.data, this.onAddHolding});
 
   @override
   State<RatesScreen> createState() => _RatesScreenState();
@@ -72,12 +75,20 @@ class _RatesScreenState extends State<RatesScreen> {
       PageHeader(
         'Dobânzi',
         subtitle: 'Licitațiile MF 2009–2026',
-        trailing: IconButton(
-          onPressed: _showInfo,
-          tooltip: 'Despre date',
-          visualDensity: VisualDensity.compact,
-          icon: const Icon(Icons.info_outline, size: 20, color: AppColors.textMuted),
-        ),
+        trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+          TextButton.icon(
+            onPressed: () => openBuyCalculator(context, widget.data, onAddHolding: widget.onAddHolding),
+            style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
+            icon: const Icon(Icons.calculate_outlined, size: 19),
+            label: const Text('Calculator'),
+          ),
+          IconButton(
+            onPressed: _showInfo,
+            tooltip: 'Despre date',
+            visualDensity: VisualDensity.compact,
+            icon: const Icon(Icons.info_outline, size: 20, color: AppColors.textMuted),
+          ),
+        ]),
       ),
       SectionSwitch(bonds: bonds, onChanged: _setSection),
       const SizedBox(height: 10),

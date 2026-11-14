@@ -3,13 +3,17 @@ import 'package:intl/intl.dart';
 
 import '../config.dart';
 import '../models/dataset.dart';
+import '../models/holding.dart';
 import '../services/format.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
+import 'buy_calculator_screen.dart';
+import 'calculator_common.dart';
 
 class AuctionsScreen extends StatefulWidget {
   final VmsDataset data;
-  const AuctionsScreen({super.key, required this.data});
+  final ValueChanged<Holding>? onAddHolding;
+  const AuctionsScreen({super.key, required this.data, this.onAddHolding});
 
   @override
   State<AuctionsScreen> createState() => _AuctionsScreenState();
@@ -61,7 +65,8 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
 
     return ListView(padding: const EdgeInsets.fromLTRB(16, 8, 16, 24), children: [
       PageHeader('Licitații', subtitle: quarters.isEmpty ? 'Calendarul MF' : 'Calendar MF · ${quarters.map(_quarterName).join(', ')}'),
-      if (next != null) ...[_nextCard(next, planned[next] ?? const [], now), const SizedBox(height: 12)],
+      if (next != null) _nextCard(next, planned[next] ?? const [], now) else _noAuctionCard(),
+      const SizedBox(height: 12),
       _calendarCard(planned, results, now),
       if (selected != null) ...[const SizedBox(height: 12), _dayDetails(selected!, planned[selected!] ?? const [], results[selected!] ?? const [])],
       if (last.isNotEmpty) ...[
@@ -132,11 +137,57 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
               const SizedBox(height: 8),
               Text('Decontare (emitere): ${date(settle)}', style: const TextStyle(fontSize: 11.5, color: AppColors.textMuted)),
             ],
+            const SizedBox(height: 10),
+            _calcButton(() => openBuyCalculator(context, widget.data, auctionDay: day, planned: entries, onAddHolding: widget.onAddHolding)),
           ]),
         ),
       ]),
     );
   }
+
+  Widget _calcButton(VoidCallback onTap) => SizedBox(
+        width: double.infinity,
+        child: OutlinedButton.icon(
+          onPressed: onTap,
+          style: OutlinedButton.styleFrom(
+            foregroundColor: AppColors.primary,
+            backgroundColor: const Color(0xFFF3F6FD),
+            side: const BorderSide(color: Color(0xFFBFCBEF)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            visualDensity: VisualDensity.compact,
+          ),
+          icon: const Icon(Icons.calculate_outlined, size: 18),
+          label: const Text('Calculator'),
+        ),
+      );
+
+  /// Cardul afișat când calendarul publicat nu mai are licitații viitoare.
+  Widget _noAuctionCard() => AppCard(
+        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Container(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(14)),
+            child: const Icon(Icons.event_busy_outlined, color: AppColors.textFaint),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const Text('Următoarea licitație', style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
+              const SizedBox(height: 3),
+              const Text('Nicio licitație planificată', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+              const SizedBox(height: 4),
+              const Text(
+                'Calendarul publicat de Ministerul Finanțelor nu mai conține licitații viitoare. '
+                'Calendarul pentru trimestrul următor se publică de obicei înainte de începutul trimestrului.',
+                style: TextStyle(fontSize: 11.5, color: AppColors.textMuted, height: 1.35),
+              ),
+              const SizedBox(height: 10),
+              _calcButton(() => openBuyCalculator(context, widget.data, onAddHolding: widget.onAddHolding)),
+            ]),
+          ),
+        ]),
+      );
 
   // ------------------------------------------------------------ calendar lunar
   Widget _calendarCard(Map<DateTime, List<CalendarEntry>> planned, Map<DateTime, List<AuctionResult>> results, DateTime now) {
@@ -271,6 +322,14 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
                   ]),
                 ),
                 if (e.volume != null) Text('${e.volume} mil. lei', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+                if (!isPast)
+                  IconButton(
+                    tooltip: 'Calculator',
+                    visualDensity: VisualDensity.compact,
+                    icon: const Icon(Icons.calculate_outlined, size: 20, color: AppColors.primary),
+                    onPressed: () => openBuyCalculator(context, widget.data,
+                        auctionDay: d, planned: planned, initial: TermOption.fromLabel(e.type, e.term), onAddHolding: widget.onAddHolding),
+                  ),
                 ]),
               ),
             ),

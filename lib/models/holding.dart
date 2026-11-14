@@ -1,5 +1,29 @@
 import 'dataset.dart';
 
+/// O vânzare (parțială sau totală) a unei poziții pe piața secundară.
+class Sale {
+  final String id;
+  final DateTime date; // data tranzacției (decontării)
+  final int quantity; // titluri vândute
+  final double price; // preț net pentru o VMS de 100 lei
+
+  const Sale({required this.id, required this.date, required this.quantity, required this.price});
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'date': '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}',
+        'quantity': quantity,
+        'price': price,
+      };
+
+  factory Sale.fromJson(Map<String, dynamic> j) => Sale(
+        id: j['id'] as String,
+        date: DateTime.parse(j['date'] as String),
+        quantity: (j['quantity'] as num).toInt(),
+        price: (j['price'] as num).toDouble(),
+      );
+}
+
 /// O poziție din portofoliu: o cumpărare de [quantity] unități ale unui ISIN.
 ///
 /// Datele titlului (tip, emitere, scadență, cupon) sunt copiate din baza de
@@ -22,6 +46,7 @@ class Holding {
   final double? margin; // p.p. peste rata medie BT 182 zile
   final Map<DateTime, double> couponHistory; // ratele cupoanelor anunțate (copie la salvare)
   final String? note; // notiță liberă a utilizatorului (ex. „banii mamei”)
+  final List<Sale> sales; // vânzările pe piața secundară (cele mai vechi primele)
 
   Holding({
     required this.id,
@@ -40,9 +65,40 @@ class Holding {
     this.margin,
     this.couponHistory = const {},
     String? note,
-  }) : note = (note == null || note.trim().isEmpty) ? null : note.trim();
+    List<Sale> sales = const [],
+  })  : note = (note == null || note.trim().isEmpty) ? null : note.trim(),
+        sales = List.unmodifiable([...sales]..sort((a, b) => a.date.compareTo(b.date)));
 
   bool get hasNote => note != null;
+
+  /// Titluri vândute în total.
+  int get soldQuantity => sales.fold(0, (t, s) => t + s.quantity);
+
+  /// Titluri rămase în portofoliu ([quantity] = cât s-a cumpărat).
+  int get remaining => quantity - soldQuantity;
+
+  bool get fullySold => remaining <= 0;
+
+  /// Copie cu lista de vânzări înlocuită.
+  Holding withSales(List<Sale> list) => Holding(
+        id: id,
+        isin: isin,
+        type: type,
+        termLabel: termLabel,
+        issueDate: issueDate,
+        maturity: maturity,
+        purchaseDate: purchaseDate,
+        price: price,
+        quantity: quantity,
+        couponRate: couponRate,
+        couponDates: couponDates,
+        manual: manual,
+        couponType: couponType,
+        margin: margin,
+        couponHistory: couponHistory,
+        note: note,
+        sales: list,
+      );
 
   bool get isBill => type == 'BT';
   bool get isFloating => !isBill && couponType == 'flotant';
@@ -83,6 +139,7 @@ class Holding {
         margin: margin ?? this.margin,
         couponHistory: couponHistory ?? this.couponHistory,
         note: note ?? this.note,
+        sales: sales,
       );
 
   static String _ds(DateTime d) =>
@@ -104,6 +161,7 @@ class Holding {
         if (couponType != null) 'couponType': couponType,
         if (margin != null) 'margin': margin,
         if (note != null) 'note': note,
+        if (sales.isNotEmpty) 'sales': [for (final x in sales) x.toJson()],
         if (couponHistory.isNotEmpty) 'couponHistory': {for (final e in couponHistory.entries) _ds(e.key): e.value},
       };
 
@@ -127,6 +185,7 @@ class Holding {
             dayOnly(DateTime.parse(e.key as String)): (e.value as num).toDouble(),
         },
         note: j['note'] as String?,
+        sales: [for (final x in (j['sales'] as List?) ?? const []) Sale.fromJson(x as Map<String, dynamic>)],
       );
 
   /// Migrare din formatul v2 (nominal total + cost total, fără ISIN).
@@ -158,7 +217,12 @@ class Holding {
   }
 
   factory Holding.fromSecurity(Security s,
-          {required String id, required DateTime purchaseDate, required double price, required int quantity, String? note}) =>
+          {required String id,
+          required DateTime purchaseDate,
+          required double price,
+          required int quantity,
+          String? note,
+          List<Sale> sales = const []}) =>
       Holding(
         id: id,
         isin: s.isin,
@@ -175,5 +239,6 @@ class Holding {
         margin: s.margin,
         couponHistory: s.couponHistory,
         note: note,
+        sales: sales,
       );
 }

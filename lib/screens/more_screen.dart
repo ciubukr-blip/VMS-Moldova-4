@@ -8,6 +8,8 @@ import '../services/portfolio_backup.dart';
 import '../services/format.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
+import 'buy_calculator_screen.dart';
+import 'sale_screen.dart';
 
 class MoreScreen extends StatelessWidget {
   final VmsDataset data;
@@ -16,11 +18,13 @@ class MoreScreen extends StatelessWidget {
   final String? syncMessage;
   final VoidCallback onSync;
   final List<Holding> holdings;
+  final ValueChanged<Holding>? onSaveHolding; // calculatoarele: adăugare / vânzare
 
   const MoreScreen({
     super.key,
     required this.data,
     required this.holdings,
+    this.onSaveHolding,
     required this.lastChecked,
     required this.syncing,
     required this.syncMessage,
@@ -40,6 +44,13 @@ class MoreScreen extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           childAspectRatio: 0.82,
           children: [
+            IconTile(
+              icon: Icons.calculate_outlined,
+              label: 'Calculatoare',
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => CalculatorsHub(data: data, holdings: holdings, onSaveHolding: onSaveHolding),
+              )),
+            ),
             IconTile(icon: Icons.event_note_outlined, label: 'Calendar MF', onTap: () => openLink(context, calendarPdfUrl())),
             IconTile(icon: Icons.fact_check_outlined, label: 'Rezultate MF', onTap: () => openLink(context, kSourceLinks['Rezultatele licitațiilor']!)),
             IconTile(icon: Icons.gavel_outlined, label: 'Regulament VMS', onTap: () => openLink(context, kSourceLinks['Regulamentul VMS (BNM)']!)),
@@ -232,6 +243,87 @@ class _AppUpdateCardState extends State<AppUpdateCard> {
             label: const Text('Caută actualizări'),
           ),
         ),
+      ]),
+    );
+  }
+}
+
+/// „Mai mult” → „Calculatoare”: cumpărare și vânzare.
+class CalculatorsHub extends StatefulWidget {
+  final VmsDataset data;
+  final List<Holding> holdings;
+  final ValueChanged<Holding>? onSaveHolding;
+  const CalculatorsHub({super.key, required this.data, required this.holdings, this.onSaveHolding});
+
+  @override
+  State<CalculatorsHub> createState() => _CalculatorsHubState();
+}
+
+class _CalculatorsHubState extends State<CalculatorsHub> {
+  late List<Holding> holdings = widget.holdings;
+
+  @override
+  Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final sellable = holdings.where((h) => !h.fullySold && !h.isMatured(now)).toList()..sort((a, b) => a.maturity.compareTo(b.maturity));
+    return Scaffold(
+      appBar: AppBar(title: const Text('Calculatoare')),
+      body: ListView(padding: const EdgeInsets.fromLTRB(16, 4, 16, 24), children: [
+        AppCard(
+          onTap: () => openBuyCalculator(context, widget.data, onAddHolding: widget.onSaveHolding),
+          child: const Row(children: [
+            Icon(Icons.shopping_cart_outlined, color: AppColors.primary),
+            SizedBox(width: 12),
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text('Cumpărare', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                SizedBox(height: 2),
+                Text('Cât primești la scadență, pentru o sumă, un termen și o rată', style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
+              ]),
+            ),
+            Icon(Icons.chevron_right, color: AppColors.textFaint),
+          ]),
+        ),
+        const SectionHeader('Vânzare'),
+        if (sellable.isEmpty)
+          const AppCard(
+            child: Text('Nu ai investiții active de vândut. Adaugă una în Portofoliu.', style: TextStyle(fontSize: 13, color: AppColors.textMuted)),
+          )
+        else
+          AppCard(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+            child: Column(children: [
+              for (final (i, h) in sellable.indexed) ...[
+                if (i > 0) const Divider(),
+                InkWell(
+                  onTap: () async {
+                    final updated = await openSaleScreen(context, widget.data, h);
+                    if (updated == null || !mounted) return;
+                    widget.onSaveHolding?.call(updated);
+                    setState(() => holdings = [for (final x in holdings) x.id == updated.id ? updated : x]);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(children: [
+                      TypePill(h.type),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                          Text(h.isin, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                          Text('${h.termLabel.isNotEmpty ? '${h.termLabel} · ' : ''}${intFmt(h.remaining)} titluri · scadență ${date(h.maturity)}',
+                              style: const TextStyle(fontSize: 11.5, color: AppColors.textFaint)),
+                        ]),
+                      ),
+                      const Text('Vinde', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.primary)),
+                      const Icon(Icons.chevron_right, color: AppColors.textFaint),
+                    ]),
+                  ),
+                ),
+              ],
+            ]),
+          ),
+        const SizedBox(height: 12),
+        const InfoNote('Calcul informativ, după Regulamentul VMS, fără comisioane. Nu este o recomandare.'),
       ]),
     );
   }

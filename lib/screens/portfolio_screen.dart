@@ -13,6 +13,7 @@ import '../services/portfolio_store.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import 'holding_form.dart';
+import 'sale_screen.dart';
 
 class PortfolioScreen extends StatefulWidget {
   final VmsDataset data;
@@ -35,7 +36,7 @@ class PortfolioScreen extends StatefulWidget {
 }
 
 class _PortfolioScreenState extends State<PortfolioScreen> {
-  bool showActive = true;
+  String listMode = 'active'; // active / closed / sold
   String? expandedId; // un singur rând deschis odată
 
   Future<void> _add() async {
@@ -164,9 +165,14 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
-    final active = widget.holdings.where((h) => !h.isMatured(now)).toList()..sort((a, b) => a.maturity.compareTo(b.maturity));
-    final closed = widget.holdings.where((h) => h.isMatured(now)).toList()..sort((a, b) => b.maturity.compareTo(a.maturity));
-    final shown = showActive ? active : closed;
+    final owned = widget.holdings.where((h) => !h.fullySold);
+    final active = owned.where((h) => !h.isMatured(now)).toList()..sort((a, b) => a.maturity.compareTo(b.maturity));
+    final closed = owned.where((h) => h.isMatured(now)).toList()..sort((a, b) => b.maturity.compareTo(a.maturity));
+    final sold = [
+      for (final h in widget.holdings)
+        for (final x in h.sales) (h, x),
+    ]..sort((a, b) => b.$2.date.compareTo(a.$2.date));
+    final shown = listMode == 'closed' ? closed : active;
     final sum = summarize(active);
 
     return ListView(padding: const EdgeInsets.fromLTRB(16, 8, 16, 24), children: [
@@ -208,20 +214,26 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
         _ladder(active, now),
       ],
       Padding(
-        padding: const EdgeInsets.fromLTRB(4, 18, 0, 6),
-        child: Row(children: [
-          Expanded(child: Text('Pozițiile mele', style: Theme.of(context).textTheme.titleLarge)),
-          _activeSelector(active.length, closed.length),
-        ]),
+        padding: const EdgeInsets.fromLTRB(4, 18, 4, 8),
+        child: Text('Pozițiile mele', style: Theme.of(context).textTheme.titleLarge),
       ),
-      if (shown.isEmpty)
-        AppCard(
-          child: Text(
-            showActive ? 'Nu ai investiții active. Apasă „+” și alege ISIN-ul din listă.' : 'Nicio poziție expirată.',
-            style: const TextStyle(color: AppColors.textMuted, fontSize: 13),
+      _listSelector(active.length, closed.length, sold.length),
+      const SizedBox(height: 4),
+      if (listMode == 'sold') ...[
+        if (sold.isEmpty)
+          const AppCard(child: Text('Nicio vânzare înregistrată. O vânzare se face din detaliile unei investiții active, cu „Vinde”.',
+              style: TextStyle(color: AppColors.textMuted, fontSize: 13))),
+        ..._soldList(sold),
+      ] else ...[
+        if (shown.isEmpty)
+          AppCard(
+            child: Text(
+              listMode == 'active' ? 'Nu ai investiții active. Apasă „+” și alege ISIN-ul din listă.' : 'Nicio poziție expirată.',
+              style: const TextStyle(color: AppColors.textMuted, fontSize: 13),
+            ),
           ),
-        ),
-      ..._groupedList(shown, now),
+        ..._groupedList(shown, now),
+      ],
       if (widget.holdings.isNotEmpty) ...[
         SectionHeader('Venit pe ani', action: 'Exportă', onAction: _shareIncome),
         _incomeCard(now),
@@ -258,37 +270,47 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
         style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
       );
 
-  /// Selectorul „Active | Expirate”, lângă titlul listei.
-  Widget _activeSelector(int nActive, int nClosed) {
-    Widget opt(String text, bool value) {
-      final on = showActive == value;
-      return GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => setState(() {
-          showActive = value;
-          expandedId = null;
-        }),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          decoration: BoxDecoration(color: on ? AppColors.surface : Colors.transparent, borderRadius: BorderRadius.circular(8)),
-          child: Text(text,
-              style: TextStyle(fontSize: 12, fontWeight: on ? FontWeight.w600 : FontWeight.w500, color: on ? AppColors.text : AppColors.textMuted)),
+  /// Selectorul „Active | Expirate | Vândute”.
+  Widget _listSelector(int nActive, int nClosed, int nSold) {
+    Widget opt(String text, String value) {
+      final on = listMode == value;
+      return Expanded(
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => setState(() {
+            listMode = value;
+            expandedId = null;
+          }),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
+            padding: const EdgeInsets.symmetric(vertical: 7),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: on ? AppColors.surface : Colors.transparent,
+              border: Border.all(color: on ? const Color(0xFFD9DEE6) : Colors.transparent),
+              borderRadius: BorderRadius.circular(9),
+            ),
+            child: Text(text,
+                style: TextStyle(fontSize: 12.5, fontWeight: on ? FontWeight.w600 : FontWeight.w500, color: on ? AppColors.text : const Color(0xFF4B5563))),
+          ),
         ),
       );
     }
 
+    Widget sep(bool hide) => Container(width: 1, height: 14, color: hide ? Colors.transparent : const Color(0xFFCDD3DC));
     return Container(
-      padding: const EdgeInsets.all(2),
+      padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         color: const Color(0xFFE9ECF1),
         border: Border.all(color: const Color(0xFFD9DEE6)),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: Row(mainAxisSize: MainAxisSize.min, children: [
-        opt('Active ($nActive)', true),
-        Container(width: 1, height: 14, color: const Color(0xFFCDD3DC)),
-        opt('Expirate ($nClosed)', false),
+      child: Row(children: [
+        opt('Active ($nActive)', 'active'),
+        sep(listMode != 'sold'),
+        opt('Expirate ($nClosed)', 'closed'),
+        sep(listMode != 'active'),
+        opt('Vândute ($nSold)', 'sold'),
       ]),
     );
   }
@@ -387,7 +409,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
     }
     final out = <Widget>[];
     for (final e in byYear.entries) {
-      final nominal = e.value.fold<double>(0, (t, h) => t + h.quantity * 100.0);
+      final nominal = e.value.fold<double>(0, (t, h) => t + h.remaining * 100.0);
       out.add(Padding(
         padding: const EdgeInsets.fromLTRB(4, 6, 4, 5),
         child: Row(children: [
@@ -426,8 +448,19 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(h.isin, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 2),
-                Text('${date(h.maturity)} · ${rateLabel.toLowerCase()} ${pct(rateValue)}',
-                    style: const TextStyle(fontSize: 11.5, color: AppColors.textFaint)),
+                Text.rich(
+                  TextSpan(children: [
+                    TextSpan(text: '${date(h.maturity)} · ${rateLabel.toLowerCase()} ${pct(rateValue)}'),
+                    if (h.sales.isNotEmpty) ...[
+                      const TextSpan(text: ' · '),
+                      TextSpan(
+                        text: '${intFmt(h.remaining)} din ${intFmt(h.quantity)}',
+                        style: const TextStyle(color: _soldColor, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ]),
+                  style: const TextStyle(fontSize: 11.5, color: AppColors.textFaint),
+                ),
               ]),
             ),
             Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
@@ -511,7 +544,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
             ]),
             const SizedBox(height: 5),
             Text(
-              'Valoarea nominală = suma primită la scadență (${intFmt(h.quantity)} × 100 lei)',
+              'Valoarea nominală = suma primită la scadență (${intFmt(h.remaining)} × 100 lei)',
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 10.5, color: AppColors.textFaint),
             ),
@@ -545,10 +578,19 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                 padding: EdgeInsets.only(top: 6),
                 child: Text('ISIN introdus manual', textAlign: TextAlign.center, style: TextStyle(fontSize: 11, color: AppColors.amber)),
               ),
+            if (h.sales.isNotEmpty) ...[
+              const SizedBox(height: 10),
+              const Divider(),
+              const SizedBox(height: 4),
+              KV('Cumpărat', '${intFmt(h.quantity)} × ${priceFmt(h.price)} · ${date(h.purchaseDate)}'),
+              for (final x in h.sales) KV('Vândut', '${intFmt(x.quantity)} × ${priceFmt(x.price)} · ${date(x.date)}'),
+              KV('Îți rămân', '${intFmt(h.remaining)} titluri · ${lei(h.remaining * 100.0)} la scadență', strong: true),
+            ],
             const SizedBox(height: 4),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Wrap(alignment: WrapAlignment.center, spacing: 4, children: [
+              if (!matured)
+                TextButton.icon(onPressed: () => _sell(h), icon: const Icon(Icons.swap_horiz, size: 17), label: const Text('Vinde')),
               TextButton.icon(onPressed: () => _edit(h), icon: const Icon(Icons.edit_outlined, size: 17), label: const Text('Editează')),
-              const SizedBox(width: 8),
               TextButton.icon(
                 onPressed: () => _delete(h),
                 style: TextButton.styleFrom(foregroundColor: AppColors.red),
@@ -560,6 +602,144 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
         ),
       ]),
     );
+  }
+
+  // ------------------------------------------------------------ vânzări
+  Future<void> _sell(Holding h, {Sale? editing}) async {
+    final updated = await openSaleScreen(context, widget.data, h, editing: editing);
+    if (updated == null || !mounted) return;
+    widget.onSave(updated);
+    setState(() => expandedId = null);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(editing == null ? 'Vânzarea a fost înregistrată. O găsești la „Vândute”.' : 'Vânzarea a fost actualizată.'),
+    ));
+  }
+
+  Future<void> _cancelSale(Holding h, Sale x) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: const Text('Anulezi vânzarea?'),
+        content: Text('${intFmt(x.quantity)} titluri ${h.isin} revin în poziția activă.'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(c, false), child: const Text('Renunță')),
+          FilledButton(onPressed: () => Navigator.pop(c, true), child: const Text('Anulează vânzarea')),
+        ],
+      ),
+    );
+    if (ok != true) return;
+    widget.onSave(h.withSales(h.sales.where((s) => s.id != x.id).toList()));
+    setState(() => expandedId = null);
+  }
+
+  /// Istoricul vânzărilor, grupat pe anul vânzării.
+  List<Widget> _soldList(List<(Holding, Sale)> sold) {
+    final byYear = <int, List<(Holding, Sale)>>{};
+    for (final e in sold) {
+      (byYear[e.$2.date.year] ??= []).add(e);
+    }
+    final out = <Widget>[];
+    for (final e in byYear.entries) {
+      final total = e.value.fold<double>(0, (t, x) => t + saleQuote(x.$1, date: x.$2.date, quantity: x.$2.quantity, price: x.$2.price).proceeds);
+      out.add(Padding(
+        padding: const EdgeInsets.fromLTRB(4, 6, 4, 5),
+        child: Row(children: [
+          Expanded(child: Text('Vândute în ${e.key}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textMuted))),
+          Text('${intFmt(total.round())} lei', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
+        ]),
+      ));
+      out.add(AppCard(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          for (final (i, x) in e.value.indexed) ...[
+            if (i > 0) const Divider(),
+            _soldRow(x.$1, x.$2),
+          ],
+        ]),
+      ));
+      out.add(const SizedBox(height: 6));
+    }
+    return out;
+  }
+
+  Widget _soldRow(Holding h, Sale x) {
+    final q = saleQuote(h, date: x.date, quantity: x.quantity, price: x.price);
+    final key = 'sale:${x.id}';
+    final open = expandedId == key;
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      InkWell(
+        onTap: () => setState(() => expandedId = open ? null : key),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(children: [
+            const Pill('vândut', fg: _soldColor, bg: _soldSoft, fontSize: 10),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text('${h.isin}${h.termLabel.isNotEmpty ? ' · ${h.type} ${h.termLabel}' : ''}',
+                    maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600)),
+                const SizedBox(height: 2),
+                Text('${date(x.date)} · ${intFmt(x.quantity)} × ${priceFmt(x.price)} · ${pct(q.sellerRate)} pe an',
+                    style: const TextStyle(fontSize: 11.5, color: AppColors.textFaint)),
+              ]),
+            ),
+            Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+              Text('${intFmt(q.proceeds.round())} lei', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+              const SizedBox(height: 2),
+              Text('${q.profit >= 0 ? '+' : '−'}${intFmt(q.profit.abs().round())}',
+                  style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w500, color: q.profit >= 0 ? AppColors.green : AppColors.red)),
+            ]),
+            const SizedBox(width: 4),
+            Icon(open ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, size: 22, color: open ? AppColors.primary : AppColors.textFaint),
+          ]),
+        ),
+      ),
+      AnimatedSize(
+        duration: const Duration(milliseconds: 180),
+        alignment: Alignment.topCenter,
+        child: !open
+            ? const SizedBox(width: double.infinity)
+            : Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFBFCFD),
+                  border: Border.all(color: const Color(0xFFDCE1E8)),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                  Container(height: 3, color: _soldLine),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                      KV('Data vânzării', date(x.date)),
+                      KV('Titluri × preț', '${intFmt(x.quantity)} × ${priceFmt(x.price)} lei'),
+                      if (q.accruedPerUnit > 0) KV('Dobânda acumulată primită', '${priceFmt(q.accruedPerUnit)} lei / titlu'),
+                      KV('Cumpărate la', '${priceFmt(h.price)} lei · ${date(h.purchaseDate)}'),
+                      KV('Primești', lei(q.proceeds)),
+                      KV('Câștig · rata ta', '${q.profit >= 0 ? '+' : '−'}${lei(q.profit.abs())} · ${pct(q.sellerRate)}', strong: true),
+                      Wrap(alignment: WrapAlignment.center, spacing: 4, children: [
+                        TextButton.icon(
+                          onPressed: () => _sell(h, editing: x),
+                          icon: const Icon(Icons.edit_outlined, size: 17),
+                          label: const Text('Editează vânzarea'),
+                        ),
+                        TextButton.icon(
+                          onPressed: () => _cancelSale(h, x),
+                          style: TextButton.styleFrom(foregroundColor: AppColors.red),
+                          icon: const Icon(Icons.undo, size: 17),
+                          label: const Text('Anulează vânzarea'),
+                        ),
+                      ]),
+                      Text('„Anulează” readuce cele ${intFmt(x.quantity)} titluri în poziția activă.',
+                          textAlign: TextAlign.center, style: const TextStyle(fontSize: 10.5, color: AppColors.textFaint)),
+                      const SizedBox(height: 4),
+                    ]),
+                  ),
+                ]),
+              ),
+      ),
+    ]);
   }
 
   // ------------------------------------------------------------ venit pe ani
@@ -613,7 +793,14 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
         ]),
         const SizedBox(height: 8),
         Table(
-          columnWidths: const {0: FlexColumnWidth(1.45), 1: FlexColumnWidth(1), 2: FlexColumnWidth(1), 3: FlexColumnWidth(1), 4: FlexColumnWidth(1.05)},
+          columnWidths: const {
+            0: FlexColumnWidth(1.4),
+            1: FlexColumnWidth(1),
+            2: FlexColumnWidth(1),
+            3: FlexColumnWidth(1),
+            4: FlexColumnWidth(0.95),
+            5: FlexColumnWidth(1.05),
+          },
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           children: [
             row(const [
@@ -621,6 +808,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
               Text('Dobândă\nBT', textAlign: TextAlign.right, style: head),
               Text('Cupoane\nOS', textAlign: TextAlign.right, style: head),
               Text('Dif. la\nscadență', textAlign: TextAlign.right, style: head),
+              Text('Vânzări', textAlign: TextAlign.right, style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w500, color: _soldColor, height: 1.2)),
               Text('Total', textAlign: TextAlign.right, style: head),
             ], decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: AppColors.divider)))),
             for (final y in years)
@@ -629,6 +817,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                 cellNum(y.bills, cell),
                 cellNum(y.coupons, cell),
                 cellNum(y.maturityDiff, cell),
+                cellNum(y.sales, cell),
                 cellNum(y.total, bold),
               ], decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color(0xFFF3F4F6))))),
             row([
@@ -636,6 +825,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
               cellNum(t.bills, bold),
               cellNum(t.coupons, bold),
               cellNum(t.diff, bold),
+              cellNum(t.sales, bold),
               cellNum(t.total, bold.copyWith(color: AppColors.green)),
             ], decoration: const BoxDecoration(color: Color(0xFFF8F9FB), border: Border(top: BorderSide(color: Color(0xFFD1D5DB), width: 1.5)))),
           ],
@@ -658,7 +848,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
         const SizedBox(height: 8),
         Text(
           'Dobânda BT = (100 − preț) × titluri, în anul scadenței. Cupoanele, în anul plății, minus dobânda acumulată '
-          'plătită la cumpărare. Diferența la scadență = (100 − preț) × titluri la OS cumpărate sub / peste 100 lei.'
+          'plătită la cumpărare. Diferența la scadență = (100 − preț) × titluri la OS cumpărate sub / peste 100 lei. '
+          'Vânzări = (preț de vânzare − preț de cumpărare + dobânda acumulată primită) × titluri, în anul vânzării.'
           '${years.any((y) => y.estimated) ? ' * Include cupoane flotante cu rata estimată.' : ''}'
           ' Sume în lei, informative; regimul fiscal se verifică la Serviciul Fiscal de Stat.',
           style: const TextStyle(fontSize: 10.5, color: AppColors.textFaint, height: 1.4),
@@ -729,11 +920,11 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
     String status(int y) => y < now.year ? 'încasat' : y == now.year ? 'în curs' : 'estimat';
     final t = _IncomeTotals.of(years);
     final b = StringBuffer('﻿'); // BOM: Excel recunoaște diacriticele
-    b.writeln('An;Stare;Dobândă BT (lei);Cupoane OS (lei);Diferență la scadență (lei);Total (lei);Încasat (lei);Urmează să încasezi (lei)');
+    b.writeln('An;Stare;Dobândă BT (lei);Cupoane OS (lei);Diferență la scadență (lei);Vânzări (lei);Total (lei);Încasat (lei);Urmează să încasezi (lei)');
     for (final y in years) {
-      b.writeln('${y.year};${status(y.year)};${n(y.bills)};${n(y.coupons)};${n(y.maturityDiff)};${n(y.total)};${n(y.received)};${n(y.pending)}');
+      b.writeln('${y.year};${status(y.year)};${n(y.bills)};${n(y.coupons)};${n(y.maturityDiff)};${n(y.sales)};${n(y.total)};${n(y.received)};${n(y.pending)}');
     }
-    b.writeln('Total;;${n(t.bills)};${n(t.coupons)};${n(t.diff)};${n(t.total)};${n(t.received)};${n(t.pending)}');
+    b.writeln('Total;;${n(t.bills)};${n(t.coupons)};${n(t.diff)};${n(t.sales)};${n(t.total)};${n(t.received)};${n(t.pending)}');
     return b.toString();
   }
 
@@ -779,14 +970,15 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
 
 /// Totalurile tabelului „Venit pe ani”.
 class _IncomeTotals {
-  final double bills, coupons, diff, received, pending;
-  const _IncomeTotals(this.bills, this.coupons, this.diff, this.received, this.pending);
-  double get total => bills + coupons + diff;
+  final double bills, coupons, diff, sales, received, pending;
+  const _IncomeTotals(this.bills, this.coupons, this.diff, this.sales, this.received, this.pending);
+  double get total => bills + coupons + diff + sales;
 
   static _IncomeTotals of(List<YearIncome> ys) => _IncomeTotals(
         ys.fold(0, (t, y) => t + y.bills),
         ys.fold(0, (t, y) => t + y.coupons),
         ys.fold(0, (t, y) => t + y.maturityDiff),
+        ys.fold(0, (t, y) => t + y.sales),
         ys.fold(0, (t, y) => t + y.received),
         ys.fold(0, (t, y) => t + y.pending),
       );
@@ -814,3 +1006,8 @@ class _DashPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
+
+// culorile vânzărilor (violet discret)
+const _soldColor = Color(0xFF6D28D9);
+const _soldSoft = Color(0xFFEDE9FE);
+const _soldLine = Color(0xFFDDD6FE);
