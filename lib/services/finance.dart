@@ -309,6 +309,57 @@ CouponCount? couponCount(Holding h, {DateTime? today}) {
   return CouponCount(total: dates.length, mine: mine, received: received, next: next, nextOrdinal: ordinal);
 }
 
+/// Venitul unui an calendaristic (lei), pe surse.
+class YearIncome {
+  final int year;
+  double bills = 0; // dobânda la BT: (100 − preț) × titluri, în anul scadenței
+  double coupons = 0; // cupoanele OS în anul plății, minus dobânda acumulată plătită la cumpărare
+  double maturityDiff = 0; // OS: (100 − preț) × titluri, în anul scadenței (scont / primă)
+  double received = 0; // partea deja încasată (până azi, inclusiv)
+  double pending = 0; // partea care urmează
+  bool estimated = false; // conține cupoane flotante cu rata încă neanunțată
+  YearIncome(this.year);
+
+  double get total => bills + coupons + maturityDiff;
+}
+
+/// Venitul pe ani pentru toate pozițiile (active și ajunse la scadență), crescător după an.
+/// Suma pe toți anii este egală cu suma câștigurilor din [computeMetrics].
+List<YearIncome> incomeByYear(Iterable<Holding> holdings, {DateTime? today}) {
+  final now = dayOnly(today ?? DateTime.now());
+  final years = <int, YearIncome>{};
+  void add(DateTime date, double amount, void Function(YearIncome y, double v) into, {bool estimated = false}) {
+    if (amount == 0) return;
+    final y = years.putIfAbsent(date.year, () => YearIncome(date.year));
+    into(y, amount);
+    if (dayOnly(date).isAfter(now)) {
+      y.pending += amount;
+    } else {
+      y.received += amount;
+    }
+    if (estimated) y.estimated = true;
+  }
+
+  for (final h in holdings) {
+    final q = h.quantity.toDouble();
+    final diff = q * (kNominal - h.price);
+    final rates = couponRatesFor(h);
+    if (rates == null) {
+      add(h.maturity, diff, h.isBill ? (y, v) => y.bills += v : (y, v) => y.maturityDiff += v);
+      continue;
+    }
+    final coupons = bondCouponsWith(h.issueDate, h.maturity, rates, h.couponDates);
+    for (final c in coupons) {
+      if (!dayOnly(c.date).isAfter(dayOnly(h.purchaseDate))) continue;
+      add(c.date, q * c.amount, (y, v) => y.coupons += v, estimated: c.estimated);
+    }
+    final accrued = accruedInterestWith(h.issueDate, h.maturity, rates, h.couponDates, h.purchaseDate);
+    add(h.purchaseDate, -q * accrued, (y, v) => y.coupons += v);
+    add(h.maturity, diff, (y, v) => y.maturityDiff += v);
+  }
+  return years.values.toList()..sort((a, b) => a.year.compareTo(b.year));
+}
+
 class PortfolioSummary {
   final int positions;
   final int units;

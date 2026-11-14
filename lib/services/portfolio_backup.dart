@@ -39,6 +39,18 @@ class PortfolioBackup {
     }
   }
 
+  /// Salvează un fișier text oarecare (ex. CSV) în același folder din Descărcări.
+  static Future<String?> saveText(String name, String content, {String mime = 'text/plain'}) async {
+    if (!Platform.isAndroid) return null;
+    try {
+      return await _channel.invokeMethod<String>('save', {'name': name, 'content': content, 'mime': mime});
+    } on PlatformException {
+      return null;
+    } on MissingPluginException {
+      return null;
+    }
+  }
+
   /// Deschide selectorul de fișiere și returnează conținutul fișierului ales
   /// (`null` dacă utilizatorul a renunțat sau selectorul nu e disponibil).
   static Future<String?> pickFile() async {

@@ -209,8 +209,9 @@ class MainActivity : FlutterActivity() {
                     "save" -> {
                         val name = call.argument<String>("name") ?: "portofoliu.json"
                         val content = call.argument<String>("content") ?: ""
+                        val mime = call.argument<String>("mime") ?: "application/json"
                         try {
-                            result.success(saveToDownloads(name, content))
+                            result.success(saveToDownloads(name, content, mime))
                         } catch (e: Exception) {
                             result.error("save_failed", e.message, null)
                         }
@@ -237,11 +238,11 @@ class MainActivity : FlutterActivity() {
             }
     }
 
-    private fun saveToDownloads(name: String, content: String): String? {
+    private fun saveToDownloads(name: String, content: String, mime: String): String? {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return null
         val values = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-            put(MediaStore.MediaColumns.MIME_TYPE, "application/json")
+            put(MediaStore.MediaColumns.MIME_TYPE, mime)
             put(MediaStore.MediaColumns.RELATIVE_PATH, "Download/VMS Moldova")
         }
         val uri = contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values) ?: return null
