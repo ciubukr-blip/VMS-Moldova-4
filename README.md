@@ -127,7 +127,8 @@ mf.gov.md  ──►  GitHub Actions (la 5 min în zilele de licitație)  ──
 1. Publică proiectul într-un repository GitHub. Datele sunt publice, dar codul poate rămâne privat dacă folosești alt host pentru JSON.
 2. Workflow-ul `.github/workflows/update-data.yml` rulează singur:
    - marți și miercuri (zilele de licitație), la fiecare 30 de minute între 12:07 și 18:37;
-   - în restul zilelor, de două ori pe zi, la 14:23 și 17:23.
+   - luni, joi și vineri, de două ori pe zi, la 14:23 și 17:23;
+   - sâmbăta și duminica nu rulează (se poate porni manual din Actions → „Run workflow”).
    Orele sunt pentru ora de iarnă a Chișinăului. GitHub programează în UTC, așa că vara totul vine cu o oră mai târziu.
 3. `data_pipeline/` descarcă publicațiile noi, le validează și scrie `data/vms_data.json` doar dacă toate verificările trec. Verificările includ ordinea min ≤ medie ≤ max, rata recalculată din volume vs. rata publicată, datele calendarului și ISIN-urile.
 4. Aplicația verifică fișierul la pornire și la revenirea în aplicație, cel mult o dată la 30 de minute. Acceptă datele doar dacă trec validarea și sunt mai noi. Fără internet, folosește ultima copie sau datele incluse în APK.
