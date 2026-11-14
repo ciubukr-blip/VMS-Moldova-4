@@ -17,6 +17,14 @@ const double kNominal = 100;
 
 const String kAppVersion = '3.3.0';
 
+/// Numărul compilării (GitHub Actions run_number), transmis la build cu --dart-define=APP_BUILD.
+/// 0 = compilare locală: verificarea actualizărilor este oprită.
+const int kAppBuild = int.fromEnvironment('APP_BUILD');
+
+/// Repository-ul GitHub („utilizator/repo”) în care se publică APK-urile (Releases).
+/// Gol = verificarea actualizărilor este oprită.
+const String kGithubRepo = String.fromEnvironment('GITHUB_REPO');
+
 /// Firebase (notificări despre licitații). Valorile vin din google-services.json,
 /// transmise la build prin --dart-define (vezi .github/workflows/build-apk.yml).
 /// Goale = versiune fără Firebase: alertele de scadență funcționează în continuare.

@@ -108,6 +108,13 @@ Fă o copie a fișierului `.jks` și a parolelor într-un loc sigur, în afara c
 Fără ele nu poți publica actualizări. În Google Play activează **Play App Signing**: cheia
 de mai sus devine „upload key” și poate fi resetată prin Google dacă se pierde.
 
+## Actualizarea aplicației (fără Google Play)
+
+- Fiecare rulare „Compilare APK” publică în Releases un APK cu eticheta `apk-<număr>`. Numărul rulării devine `versionCode`, deci crește la fiecare compilare.
+- Cu secretele `KEYSTORE_*` setate, toate APK-urile au aceeași semnătură și se instalează peste versiunea existentă, fără ștergere. Portofoliul și setările rămân.
+- În ecranul „Mai mult”, aplicația verifică ultimul release din GitHub. Dacă e mai nou, afișează „Actualizare disponibilă” cu butonul de descărcare.
+- Compilările locale (fără `--dart-define=APP_BUILD` și `GITHUB_REPO`) nu verifică actualizări.
+
 ## Actualizarea automată a datelor (MF → aplicație)
 
 ```

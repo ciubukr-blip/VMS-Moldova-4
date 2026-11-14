@@ -110,6 +110,9 @@ jobs:
             flutter test || echo "TESTS_FAILED"
             echo "=== flutter build apk ==="
             flutter build apk --release $(cat "$RUNNER_TEMP/firebase-defines.txt") \
+              --build-number=${{ github.run_number }} \
+              --dart-define=APP_BUILD=${{ github.run_number }} \
+              --dart-define=GITHUB_REPO=${{ github.repository }} \
               --dart-define=VMS_DATA_URL=https://raw.githubusercontent.com/${{ github.repository }}/main/data/vms_data.json
           } 2>&1 | tee "$RUNNER_TEMP/build-log.txt"
           cp build/app/outputs/flutter-apk/app-release.apk "$RUNNER_TEMP/vms-moldova-${{ github.run_number }}.apk"
@@ -120,10 +123,12 @@ jobs:
         with:
           tag_name: apk-${{ github.run_number }}
           name: VMS Moldova – compilarea ${{ github.run_number }}
-          prerelease: true
+          prerelease: false
+          make_latest: true
           body: |
             APK compilat automat din commit-ul ${{ github.sha }}.
             Descarcă fișierul .apk de mai jos direct pe telefon și instalează-l.
+            Se instalează peste versiunea existentă (aceeași cheie de semnare), fără ștergere.
           files: ${{ runner.temp }}/vms-moldova-${{ github.run_number }}.apk
 
       - name: Salvează jurnalul compilării în ramura build-logs
