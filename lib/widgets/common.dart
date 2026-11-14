@@ -10,14 +10,14 @@ class AppCard extends StatelessWidget {
   final VoidCallback? onTap;
   final Color? color;
   final BorderSide side;
-  const AppCard({super.key, required this.child, this.padding = const EdgeInsets.all(16), this.onTap, this.color, this.side = BorderSide.none});
+  const AppCard({super.key, required this.child, this.padding = const EdgeInsets.all(16), this.onTap, this.color, this.side = const BorderSide(color: AppColors.divider)});
 
   @override
   Widget build(BuildContext context) {
     final content = Padding(padding: padding, child: child);
     return Material(
       color: color ?? AppColors.surface,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: side),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: side),
       clipBehavior: Clip.antiAlias,
       child: onTap == null ? content : InkWell(onTap: onTap, child: content),
     );
@@ -60,7 +60,7 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.fromLTRB(4, 18, 4, 10),
+        padding: const EdgeInsets.fromLTRB(4, 22, 4, 10),
         child: Row(children: [
           Expanded(child: Text(title, style: Theme.of(context).textTheme.titleLarge)),
           if (action != null)
@@ -143,7 +143,7 @@ class Stat extends StatelessWidget {
   Widget build(BuildContext context) => Column(crossAxisAlignment: align, mainAxisSize: MainAxisSize.min, children: [
         Text(label, textAlign: _textAlign, style: const TextStyle(fontSize: 11.5, color: AppColors.textMuted)),
         const SizedBox(height: 3),
-        Text(value, textAlign: _textAlign, style: TextStyle(fontSize: valueSize, fontWeight: FontWeight.w600, color: valueColor ?? AppColors.text)),
+        Text(value, textAlign: _textAlign, style: TextStyle(fontSize: valueSize, fontWeight: FontWeight.w700, color: valueColor ?? AppColors.text)),
       ]);
 }
 
@@ -210,7 +210,7 @@ class Segmented<T> extends StatelessWidget {
       final v = values[i];
       if (p != null && i > 0) {
         final hide = v == selected || values[i - 1] == selected;
-        items.add(Container(width: 1, height: 16, color: hide ? Colors.transparent : const Color(0xFFCDD3DC)));
+        items.add(Container(width: 1, height: 16, color: hide ? Colors.transparent : const Color(0xFFCBD3DF)));
       }
       final on = v == selected;
       items.add(Expanded(
@@ -221,9 +221,9 @@ class Segmented<T> extends StatelessWidget {
             duration: const Duration(milliseconds: 150),
             padding: const EdgeInsets.symmetric(vertical: 7),
             decoration: BoxDecoration(
-              color: on ? (p?.soft ?? AppColors.surface) : Colors.transparent,
+              color: on ? (p == null ? AppColors.surface : AppColors.primarySoft) : Colors.transparent,
               borderRadius: BorderRadius.circular(9),
-              border: p == null ? null : Border.all(color: on ? p.line : Colors.transparent),
+              border: p == null ? null : Border.all(color: on ? AppColors.primaryLine : Colors.transparent),
               boxShadow: on && p == null ? const [BoxShadow(color: Color(0x14000000), blurRadius: 4, offset: Offset(0, 1))] : null,
             ),
             alignment: Alignment.center,
@@ -233,8 +233,8 @@ class Segmented<T> extends StatelessWidget {
                 softWrap: false,
                 style: TextStyle(
                   fontSize: 12.5,
-                  fontWeight: on ? FontWeight.w600 : FontWeight.w500,
-                  color: on ? (p?.text ?? AppColors.text) : (p == null ? AppColors.textMuted : const Color(0xFF4B5563)),
+                  fontWeight: on ? FontWeight.w700 : FontWeight.w500,
+                  color: on ? (p == null ? AppColors.text : AppColors.primary) : (p == null ? AppColors.textMuted : const Color(0xFF475569)),
                 )),
           ),
         ),
@@ -243,10 +243,10 @@ class Segmented<T> extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(3),
       decoration: p == null
-          ? BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(12))
+          ? BoxDecoration(color: AppColors.track, borderRadius: BorderRadius.circular(12))
           : BoxDecoration(
-              color: const Color(0xFFE9ECF1),
-              border: Border.all(color: const Color(0xFFD9DEE6)),
+              color: AppColors.track,
+              border: Border.all(color: const Color(0xFFDCE2EC)),
               borderRadius: BorderRadius.circular(12),
             ),
       child: Row(children: items),
@@ -266,11 +266,11 @@ class YearChip extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.only(right: 6),
         child: ChoiceChip(
-          label: Text(label, style: TextStyle(color: selected ? palette.text : AppColors.text, fontWeight: selected ? FontWeight.w600 : FontWeight.w500)),
+          label: Text(label, style: TextStyle(color: selected ? AppColors.primary : AppColors.text, fontWeight: selected ? FontWeight.w700 : FontWeight.w500)),
           selected: selected,
           onSelected: (_) => onTap(),
-          selectedColor: palette.wash,
-          side: BorderSide(color: selected ? palette.line : const Color(0xFFDCE1E8)),
+          selectedColor: AppColors.primarySoft,
+          side: BorderSide(color: selected ? AppColors.primaryLine : const Color(0xFFDCE2EC)),
           visualDensity: VisualDensity.compact,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
@@ -313,8 +313,7 @@ class SectionSwitch extends StatelessWidget {
               borderRadius: BorderRadius.circular(11),
               border: Border.all(color: on ? p.line : Colors.transparent),
             ),
-            child: Text(text,
-                style: TextStyle(fontSize: 13.5, fontWeight: on ? FontWeight.w600 : FontWeight.w500, color: on ? p.text : AppColors.textMuted)),
+            child: Text(text, style: TextStyle(fontSize: 13.5, fontWeight: on ? FontWeight.w700 : FontWeight.w600, color: p.text.withValues(alpha: on ? 1 : 0.75))),
           ),
         ),
       );
@@ -322,7 +321,7 @@ class SectionSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.all(3),
-        decoration: BoxDecoration(color: const Color(0xFFEAEDF2), borderRadius: BorderRadius.circular(14)),
+        decoration: BoxDecoration(color: AppColors.track, border: Border.all(color: const Color(0xFFDCE2EC)), borderRadius: BorderRadius.circular(14)),
         child: Row(children: [
           _half('Bonuri · BT', !bonds, SectionPalette.bills, () => onChanged(false)),
           _half('Obligațiuni · OS', bonds, SectionPalette.bonds, () => onChanged(true)),
@@ -367,8 +366,8 @@ class OutlinedTile extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         padding: padding,
         decoration: BoxDecoration(
-          color: const Color(0xFFFBFCFD),
-          border: Border.all(color: const Color(0xFFDCE1E8)),
+          color: const Color(0xFFF8FAFC),
+          border: Border.all(color: AppColors.divider),
           borderRadius: BorderRadius.circular(14),
         ),
         child: child,
@@ -385,8 +384,8 @@ class StatBox extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 7),
         decoration: BoxDecoration(
-          color: const Color(0xFFF5F7FA),
-          border: Border.all(color: const Color(0xFFE7EAF0)),
+          color: const Color(0xFFF8FAFC),
+          border: Border.all(color: AppColors.divider),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -394,7 +393,7 @@ class StatBox extends StatelessWidget {
           const SizedBox(height: 3),
           FittedBox(
             fit: BoxFit.scaleDown,
-            child: Text(value, maxLines: 1, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.text)),
+            child: Text(value, maxLines: 1, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.text)),
           ),
         ]),
       );

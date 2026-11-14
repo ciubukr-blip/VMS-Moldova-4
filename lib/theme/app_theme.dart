@@ -1,27 +1,31 @@
+import 'dart:ui' show FontFeature;
+
 import 'package:flutter/material.dart';
 
 /// Paletă discretă, inspirată de aplicațiile financiare moderne:
 /// fundal gri foarte deschis, carduri albe rotunjite, un singur albastru
 /// de accent și culori pastelate pentru evidențieri.
 class AppColors {
-  static const background = Color(0xFFF3F5F8);
+  static const background = Color(0xFFE9EDF4); // gri-albăstrui, puțin mai închis: cardurile albe ies în evidență
   static const surface = Colors.white;
   static const tile = Color(0xFFEEF2F8); // fundalul pătratelor cu icon
-  static const primary = Color(0xFF3557C8); // albastru calm
-  static const primarySoft = Color(0xFFE6ECFA);
-  static const text = Color(0xFF111827);
-  static const textMuted = Color(0xFF6B7280);
-  static const textFaint = Color(0xFF9CA3AF);
-  static const divider = Color(0xFFE7EAF0);
+  static const primary = Color(0xFF2B59D9); // albastru: selecții și acțiuni
+  static const primarySoft = Color(0xFFE8EEFC);
+  static const primaryLine = Color(0xFFC9D6F5);
+  static const text = Color(0xFF0F172A);
+  static const textMuted = Color(0xFF64748B);
+  static const textFaint = Color(0xFF94A3B8);
+  static const divider = Color(0xFFE3E8F0); // și conturul fin al cardurilor
+  static const track = Color(0xFFEEF1F6); // fundalul selectoarelor și al barelor
 
-  static const green = Color(0xFF1E7B4A);
-  static const greenSoft = Color(0xFFE5F5EC);
+  static const green = Color(0xFF15803D); // câștiguri, încasări
+  static const greenSoft = Color(0xFFDCFCE7);
   static const red = Color(0xFFB4372F);
   static const redSoft = Color(0xFFFCEBEA);
-  static const amber = Color(0xFF9A5B00);
-  static const amberSoft = Color(0xFFFFF3DD);
-  static const teal = Color(0xFF2A8C82);
-  static const tealSoft = Color(0xFFE2F3F1);
+  static const amber = Color(0xFFA16207); // ocru: obligațiuni (OS)
+  static const amberSoft = Color(0xFFFBF0DC);
+  static const teal = Color(0xFF0F766E); // verde petrol: bonuri (BT)
+  static const tealSoft = Color(0xFFE0F2EF);
 
   // seriile din grafice (nuanțe atenuate)
   static const term91 = Color(0xFF2A9D8F);
@@ -51,22 +55,25 @@ class SectionPalette {
   const SectionPalette({required this.text, required this.soft, required this.line, required this.underline, required this.wash});
 
   static const bills = SectionPalette(
-    text: Color(0xFF2F7D6E),
-    soft: Color(0xFFDDF1EB),
-    line: Color(0xFFBFE3D9),
-    underline: Color(0xFF8FCDBD),
-    wash: Color(0xFFEEF7F4),
+    text: Color(0xFF0F766E),
+    soft: Color(0xFFE0F2EF),
+    line: Color(0xFFA7D7CF),
+    underline: Color(0xFF5EB3A6),
+    wash: Color(0xFFEFF8F6),
   );
   static const bonds = SectionPalette(
-    text: Color(0xFFA0673A),
-    soft: Color(0xFFFBEADB),
-    line: Color(0xFFF3D5BC),
-    underline: Color(0xFFEBBF9A),
-    wash: Color(0xFFFCF3EC),
+    text: Color(0xFFA16207),
+    soft: Color(0xFFFBF0DC),
+    line: Color(0xFFEBCB8F),
+    underline: Color(0xFFD9A54A),
+    wash: Color(0xFFFDF7EC),
   );
 }
 
 class AppTheme {
+  /// Cifre cu lățime egală: sumele și procentele se aliniază pe coloane.
+  static const _tnum = [FontFeature.tabularFigures()];
+
   static ThemeData light() {
     const font = 'Inter';
     final scheme = ColorScheme.fromSeed(
@@ -76,16 +83,16 @@ class AppTheme {
       brightness: Brightness.light,
     );
     const t = TextTheme(
-      headlineSmall: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: AppColors.text, letterSpacing: -0.2),
-      titleLarge: TextStyle(fontSize: 17, fontWeight: FontWeight.w600, color: AppColors.text),
-      titleMedium: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.text),
-      titleSmall: TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600, color: AppColors.text),
-      bodyLarge: TextStyle(fontSize: 14, color: AppColors.text),
-      bodyMedium: TextStyle(fontSize: 13, color: AppColors.text),
-      bodySmall: TextStyle(fontSize: 11.5, color: AppColors.textMuted),
-      labelLarge: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-      labelMedium: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-      labelSmall: TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: AppColors.textMuted),
+      headlineSmall: TextStyle(fontFeatures: _tnum, fontSize: 21, fontWeight: FontWeight.w700, color: AppColors.text, letterSpacing: -0.2),
+      titleLarge: TextStyle(fontFeatures: _tnum, fontSize: 17, fontWeight: FontWeight.w700, color: AppColors.text),
+      titleMedium: TextStyle(fontFeatures: _tnum, fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.text),
+      titleSmall: TextStyle(fontFeatures: _tnum, fontSize: 13.5, fontWeight: FontWeight.w600, color: AppColors.text),
+      bodyLarge: TextStyle(fontFeatures: _tnum, fontSize: 14, color: AppColors.text),
+      bodyMedium: TextStyle(fontFeatures: _tnum, fontSize: 13, color: AppColors.text),
+      bodySmall: TextStyle(fontFeatures: _tnum, fontSize: 11.5, color: AppColors.textMuted),
+      labelLarge: TextStyle(fontFeatures: _tnum, fontSize: 13, fontWeight: FontWeight.w600),
+      labelMedium: TextStyle(fontFeatures: _tnum, fontSize: 12, fontWeight: FontWeight.w500),
+      labelSmall: TextStyle(fontFeatures: _tnum, fontSize: 11, fontWeight: FontWeight.w500, color: AppColors.textMuted),
     );
     final radius = BorderRadius.circular(14);
     return ThemeData(
@@ -106,12 +113,14 @@ class AppTheme {
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         margin: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: const BorderSide(color: AppColors.divider)),
       ),
       dividerTheme: const DividerThemeData(color: AppColors.divider, thickness: 1, space: 1),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: AppColors.surface,
         surfaceTintColor: Colors.transparent,
+        shadowColor: AppColors.divider,
+        elevation: 1,
         indicatorColor: AppColors.primarySoft,
         height: 64,
         labelTextStyle: WidgetStateProperty.resolveWith((s) => TextStyle(
@@ -127,7 +136,7 @@ class AppTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.background,
+        fillColor: AppColors.track,
         isDense: true,
         contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         labelStyle: const TextStyle(fontSize: 13, color: AppColors.textMuted),
@@ -140,7 +149,7 @@ class AppTheme {
       chipTheme: ChipThemeData(
         backgroundColor: AppColors.surface,
         selectedColor: AppColors.primarySoft,
-        side: const BorderSide(color: AppColors.divider),
+        side: const BorderSide(color: Color(0xFFDCE2EC)),
         labelStyle: const TextStyle(fontFamily: font, fontSize: 12.5, fontWeight: FontWeight.w500, color: AppColors.text),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),

@@ -318,7 +318,7 @@ class _SaleScreenState extends State<SaleScreen> {
       const SizedBox(height: 10),
       Container(
         padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(12)),
+        decoration: BoxDecoration(color: AppColors.track, borderRadius: BorderRadius.circular(12)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const Text('Rate de la licitații (informativ)', style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600)),
           const SizedBox(height: 5),

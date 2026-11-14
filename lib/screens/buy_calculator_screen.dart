@@ -191,7 +191,7 @@ class _BuyCalculatorScreenState extends State<BuyCalculatorScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
         decoration: BoxDecoration(
           color: on ? p.soft : AppColors.surface,
-          border: Border.all(color: on ? p.line : const Color(0xFFDCE1E8)),
+          border: Border.all(color: on ? p.line : const Color(0xFFE3E8F0)),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -212,8 +212,8 @@ class _BuyCalculatorScreenState extends State<BuyCalculatorScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
-          color: on ? AppColors.primarySoft : const Color(0xFFF5F7FA),
-          border: Border.all(color: on ? AppColors.primary : const Color(0xFFE7EAF0)),
+          color: on ? AppColors.primarySoft : const Color(0xFFF8FAFC),
+          border: Border.all(color: on ? AppColors.primary : const Color(0xFFE3E8F0)),
           borderRadius: BorderRadius.circular(9),
         ),
         child: Column(children: [
@@ -227,8 +227,8 @@ class _BuyCalculatorScreenState extends State<BuyCalculatorScreen> {
   Widget _dateBox(String label, DateTime d, bool real) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 6),
         decoration: BoxDecoration(
-          color: const Color(0xFFF5F7FA),
-          border: Border.all(color: const Color(0xFFE7EAF0)),
+          color: const Color(0xFFF8FAFC),
+          border: Border.all(color: const Color(0xFFE3E8F0)),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -239,7 +239,7 @@ class _BuyCalculatorScreenState extends State<BuyCalculatorScreen> {
             const SizedBox(width: 5),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-              decoration: BoxDecoration(color: real ? AppColors.primarySoft : AppColors.background, borderRadius: BorderRadius.circular(4)),
+              decoration: BoxDecoration(color: real ? AppColors.primarySoft : AppColors.track, borderRadius: BorderRadius.circular(4)),
               child: Text(real ? 'MF' : 'estimată',
                   style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.w600, color: real ? AppColors.primary : AppColors.textMuted)),
             ),
@@ -253,8 +253,8 @@ class _BuyCalculatorScreenState extends State<BuyCalculatorScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
       decoration: BoxDecoration(
-        color: const Color(0xFFF5F7FA),
-        border: Border.all(color: const Color(0xFFC7CCD3)),
+        color: const Color(0xFFF8FAFC),
+        border: Border.all(color: const Color(0xFFCBD3DF)),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(children: [
@@ -302,7 +302,7 @@ class _BuyCalculatorScreenState extends State<BuyCalculatorScreen> {
     final p = parseNum(_osPrice.text);
     final d = p == null ? null : 100 - p;
     final (String text, Color fg, Color bg, String expl) = d == null
-        ? ('—', AppColors.textMuted, AppColors.background, '')
+        ? ('—', AppColors.textMuted, AppColors.track, '')
         : d.abs() < 0.005
             ? ('la nominal', AppColors.primary, AppColors.primarySoft, 'prețul = valoarea nominală')
             : d > 0

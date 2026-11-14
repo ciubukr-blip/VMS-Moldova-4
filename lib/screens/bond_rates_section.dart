@@ -176,7 +176,7 @@ class _BondRatesSectionState extends State<BondRatesSection> {
         child: Pill(
           '${up ? '▲' : down ? '▼' : '='} ${NumberFormat('0.00', 'ro').format(diff.abs())}',
           fg: up ? AppColors.green : down ? AppColors.red : AppColors.textMuted,
-          bg: up ? AppColors.greenSoft : down ? AppColors.redSoft : AppColors.background,
+          bg: up ? AppColors.greenSoft : down ? AppColors.redSoft : AppColors.track,
           fontSize: 10,
         ),
       ),

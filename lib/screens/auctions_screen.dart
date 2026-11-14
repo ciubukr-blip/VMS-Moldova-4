@@ -152,7 +152,7 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
           style: OutlinedButton.styleFrom(
             foregroundColor: AppColors.primary,
             backgroundColor: const Color(0xFFF3F6FD),
-            side: const BorderSide(color: Color(0xFFBFCBEF)),
+            side: const BorderSide(color: Color(0xFFC9D6F5)),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             visualDensity: VisualDensity.compact,
           ),
@@ -167,7 +167,7 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
           Container(
             width: 56,
             height: 56,
-            decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(14)),
+            decoration: BoxDecoration(color: AppColors.track, borderRadius: BorderRadius.circular(14)),
             child: const Icon(Icons.event_busy_outlined, color: AppColors.textFaint),
           ),
           const SizedBox(width: 14),
@@ -258,7 +258,8 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
         : has
             ? (types.contains('OS') && !types.contains('BT') ? AppColors.amberSoft : AppColors.tealSoft)
             : Colors.transparent;
-    final fg = isSelected ? Colors.white : has ? AppColors.text : (d.weekday >= 6 ? AppColors.textFaint : AppColors.text);
+    final osOnly = types.contains('OS') && !types.contains('BT');
+    final fg = isSelected ? Colors.white : has ? (osOnly ? AppColors.amber : AppColors.teal) : (d.weekday >= 6 ? AppColors.textFaint : AppColors.text);
     return GestureDetector(
       onTap: has ? () => setState(() => selected = d) : null,
       child: Container(
@@ -270,7 +271,7 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
           border: isToday && !isSelected ? Border.all(color: AppColors.primary, width: 1.2) : null,
         ),
         child: Stack(alignment: Alignment.center, children: [
-          Text('${d.day}', style: TextStyle(fontSize: 13, fontWeight: has ? FontWeight.w600 : FontWeight.w400, color: fg)),
+          Text('${d.day}', style: TextStyle(fontSize: 13.5, fontWeight: has || isToday ? FontWeight.w700 : FontWeight.w500, color: isToday && !isSelected && !has ? AppColors.primary : fg)),
           if (has)
             Positioned(
               bottom: 5,

@@ -180,15 +180,16 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
         'Portofoliu',
         subtitle: 'Salvat doar pe acest telefon',
         trailing: Row(mainAxisSize: MainAxisSize.min, children: [
-          IconButton.filled(
+          FilledButton.icon(
             onPressed: _add,
-            tooltip: 'Adaugă investiție',
-            visualDensity: VisualDensity.compact,
-            style: IconButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            style: FilledButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              visualDensity: VisualDensity.compact,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(11)),
+              textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
             ),
-            icon: const Icon(Icons.add, size: 20, color: Colors.white),
+            icon: const Icon(Icons.add, size: 18),
+            label: const Text('Adaugă titlu'),
           ),
           PopupMenuButton<String>(
             icon: const Icon(Icons.more_horiz, color: AppColors.textMuted),
@@ -249,7 +250,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
           const Text('Vei încasa la scadență', style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
           const SizedBox(height: 2),
           Row(crossAxisAlignment: CrossAxisAlignment.baseline, textBaseline: TextBaseline.alphabetic, children: [
-            Text(money(s.atMaturity), style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700, letterSpacing: -0.5)),
+            Text(money(s.atMaturity), style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800, letterSpacing: -0.6)),
             const SizedBox(width: 6),
             const Text('lei', style: TextStyle(fontSize: 13, color: AppColors.textMuted, fontWeight: FontWeight.w500)),
           ]),
@@ -287,22 +288,22 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: on ? AppColors.surface : Colors.transparent,
-              border: Border.all(color: on ? const Color(0xFFD9DEE6) : Colors.transparent),
+              border: Border.all(color: on ? const Color(0xFFDCE2EC) : Colors.transparent),
               borderRadius: BorderRadius.circular(9),
             ),
             child: Text(text,
-                style: TextStyle(fontSize: 12.5, fontWeight: on ? FontWeight.w600 : FontWeight.w500, color: on ? AppColors.text : const Color(0xFF4B5563))),
+                style: TextStyle(fontSize: 12.5, fontWeight: on ? FontWeight.w600 : FontWeight.w500, color: on ? AppColors.text : const Color(0xFF475569))),
           ),
         ),
       );
     }
 
-    Widget sep(bool hide) => Container(width: 1, height: 14, color: hide ? Colors.transparent : const Color(0xFFCDD3DC));
+    Widget sep(bool hide) => Container(width: 1, height: 14, color: hide ? Colors.transparent : const Color(0xFFCBD3DF));
     return Container(
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
-        color: const Color(0xFFE9ECF1),
-        border: Border.all(color: const Color(0xFFD9DEE6)),
+        color: const Color(0xFFEEF1F6),
+        border: Border.all(color: const Color(0xFFDCE2EC)),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(children: [
@@ -361,7 +362,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 3),
                 padding: const EdgeInsets.only(top: 3),
-                decoration: const BoxDecoration(border: Border(top: BorderSide(color: Color(0xFFD1D5DB)))),
+                decoration: const BoxDecoration(border: Border(top: BorderSide(color: Color(0xFFCBD3DF)))),
                 child: Text('${sp.$1}',
                     textAlign: TextAlign.center, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.text)),
               ),
@@ -375,15 +376,15 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
   Widget _monthBar(DateTime month, double value, double maxV, double area) {
     final bar = Column(children: [
       Expanded(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 3),
+        child: Center(
           child: Container(
-            decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(4)),
+            width: 10,
+            decoration: BoxDecoration(color: AppColors.track, borderRadius: BorderRadius.circular(5)),
             alignment: Alignment.bottomCenter,
             child: FractionallySizedBox(
               heightFactor: value <= 0 ? 0 : math.max(0.06, value / (maxV * 1.1)),
               widthFactor: 1,
-              child: Container(decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(4))),
+              child: Container(decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(5))),
             ),
           ),
         ),
@@ -498,8 +499,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
     final (rateLabel, rateValue) = _rateOf(h, m);
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFFBFCFD),
-        border: Border.all(color: const Color(0xFFDCE1E8)),
+        color: const Color(0xFFF8FAFC),
+        border: Border.all(color: const Color(0xFFE3E8F0)),
         borderRadius: BorderRadius.circular(14),
       ),
       clipBehavior: Clip.antiAlias,
@@ -702,8 +703,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
             : Container(
                 margin: const EdgeInsets.only(bottom: 10),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFBFCFD),
-                  border: Border.all(color: const Color(0xFFDCE1E8)),
+                  color: const Color(0xFFF8FAFC),
+                  border: Border.all(color: const Color(0xFFE3E8F0)),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 clipBehavior: Clip.antiAlias,
@@ -761,7 +762,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
           ? ('încasat', AppColors.green, AppColors.greenSoft)
           : year == now.year
               ? ('în curs', AppColors.primary, AppColors.primarySoft)
-              : (estimated ? 'estimat*' : 'estimat', AppColors.textMuted, AppColors.background);
+              : (estimated ? 'estimat*' : 'estimat', AppColors.textMuted, AppColors.track);
       return Container(
         margin: const EdgeInsets.only(left: 4),
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
@@ -789,7 +790,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
         Wrap(spacing: 12, runSpacing: 4, children: [
           _legendDot(AppColors.green, 'încasat'),
           _legendDot(AppColors.primary.withValues(alpha: 0.35), 'urmează în ${now.year}'),
-          _legendDot(const Color(0xFFC7CCD3), 'estimat'),
+          _legendDot(const Color(0xFFCBD3DF), 'estimat'),
         ]),
         const SizedBox(height: 8),
         Table(
@@ -827,7 +828,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
               cellNum(t.diff, bold),
               cellNum(t.sales, bold),
               cellNum(t.total, bold.copyWith(color: AppColors.green)),
-            ], decoration: const BoxDecoration(color: Color(0xFFF8F9FB), border: Border(top: BorderSide(color: Color(0xFFD1D5DB), width: 1.5)))),
+            ], decoration: const BoxDecoration(color: Color(0xFFF8F9FB), border: Border(top: BorderSide(color: Color(0xFFCBD3DF), width: 1.5)))),
           ],
         ),
         const SizedBox(height: 6),
@@ -891,14 +892,15 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
               Text(k, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600)),
               const SizedBox(height: 2),
               SizedBox(
+                width: 12,
                 height: math.min(h, math.max(0.0, c.maxHeight - 16)),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(6),
                   child: Column(children: [
                     if (pendingFlex > 0)
                       Expanded(
                         flex: pendingFlex,
-                        child: Container(color: cur ? AppColors.primary.withValues(alpha: 0.35) : const Color(0xFFC7CCD3)),
+                        child: Container(color: cur ? AppColors.primary.withValues(alpha: 0.35) : const Color(0xFFCBD3DF)),
                       ),
                     if (receivedFlex > 0)
                       Expanded(flex: receivedFlex, child: Container(color: cur ? AppColors.primary : AppColors.green)),
@@ -996,7 +998,7 @@ class _DashPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final p = Paint()
-      ..color = const Color(0xFFC7CCD3)
+      ..color = const Color(0xFFCBD3DF)
       ..strokeWidth = 1;
     for (var y = 0.0; y < size.height; y += 6) {
       canvas.drawLine(Offset(0.5, y), Offset(0.5, math.min(y + 3, size.height)), p);

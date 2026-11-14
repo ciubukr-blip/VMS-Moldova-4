@@ -220,7 +220,7 @@ class _HoldingFormState extends State<HoldingForm> {
               borderRadius: BorderRadius.circular(14),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
-                decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(14)),
+                decoration: BoxDecoration(color: AppColors.track, borderRadius: BorderRadius.circular(14)),
                 child: Row(children: [
                   Expanded(
                     child: Text(_security?.isin ?? 'Alege din listă…',
@@ -336,7 +336,7 @@ class _HoldingFormState extends State<HoldingForm> {
         borderRadius: BorderRadius.circular(14),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-          decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(14)),
+          decoration: BoxDecoration(color: AppColors.track, borderRadius: BorderRadius.circular(14)),
           child: Row(children: [
             const Icon(Icons.calendar_today_outlined, size: 16, color: AppColors.textMuted),
             const SizedBox(width: 10),

@@ -182,8 +182,8 @@ class ResultBox extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 7),
         decoration: BoxDecoration(
-          color: const Color(0xFFF5F7FA),
-          border: Border.all(color: const Color(0xFFE7EAF0)),
+          color: const Color(0xFFF8FAFC),
+          border: Border.all(color: const Color(0xFFE3E8F0)),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
