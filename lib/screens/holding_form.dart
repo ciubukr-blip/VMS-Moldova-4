@@ -35,7 +35,7 @@ class _HoldingFormState extends State<HoldingForm> {
   final _note = TextEditingController();
 
   /// Sugestii rapide pentru notiță (se adaugă la textul existent).
-  static const _noteSuggestions = ['Familie', 'Studiile copiilor', 'Pensie', 'Fond de urgență', 'Banii mamei'];
+  static const _noteSuggestions = ['Familie', 'Studiile copiilor', 'Pensie', 'Fond de urgență'];
 
   Security? _security;
   bool _manual = false;
