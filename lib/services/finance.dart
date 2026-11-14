@@ -276,6 +276,39 @@ HoldingMetrics computeMetrics(Holding h, {DateTime? today}) {
   );
 }
 
+/// Cupoanele unei obligațiuni din perspectiva deținătorului.
+class CouponCount {
+  final int total; // cupoanele obligațiunii, de la emitere la scadență
+  final int mine; // cele plătite după data cumpărării (revin deținătorului)
+  final int received; // dintre ale mele, deja plătite până azi (inclusiv)
+  final DateTime? next; // data următorului cupon (null dacă nu mai urmează niciunul)
+  final int? nextOrdinal; // al câtelea cupon al obligațiunii este următorul (1 = primul)
+  const CouponCount({required this.total, required this.mine, required this.received, this.next, this.nextOrdinal});
+}
+
+/// Numărul de cupoane (fără sume): null pentru bonuri și titluri fără cupon.
+CouponCount? couponCount(Holding h, {DateTime? today}) {
+  if (couponRatesFor(h) == null) return null;
+  final dates = couponSchedule(h.issueDate, h.maturity, h.couponDates);
+  if (dates.isEmpty) return null;
+  final bought = dayOnly(h.purchaseDate), now = dayOnly(today ?? DateTime.now());
+  var mine = 0, received = 0;
+  DateTime? next;
+  int? ordinal;
+  for (var i = 0; i < dates.length; i++) {
+    final d = dayOnly(dates[i]);
+    if (!d.isAfter(bought)) continue;
+    mine++;
+    if (!d.isAfter(now)) {
+      received++;
+    } else if (next == null) {
+      next = dates[i];
+      ordinal = i + 1;
+    }
+  }
+  return CouponCount(total: dates.length, mine: mine, received: received, next: next, nextOrdinal: ordinal);
+}
+
 class PortfolioSummary {
   final int positions;
   final int units;

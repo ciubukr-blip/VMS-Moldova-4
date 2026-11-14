@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../config.dart';
 import '../models/dataset.dart';
@@ -121,8 +122,7 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text('Următoarea licitație · $when', style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
             const SizedBox(height: 3),
-            Text('${weekdayName(day)[0].toUpperCase()}${weekdayName(day).substring(1)}, ${date(day)}',
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+            _dateWithTotal(day, entries, 15),
             const SizedBox(height: 8),
             Wrap(spacing: 6, runSpacing: 6, children: [
               for (final e in entries)
@@ -242,10 +242,7 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
     return AppCard(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
-          Expanded(
-            child: Text('${weekdayName(d)[0].toUpperCase()}${weekdayName(d).substring(1)}, ${date(d)}',
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-          ),
+          Expanded(child: _dateWithTotal(d, planned, 15)),
           if (results.isNotEmpty)
             const Pill('Rezultate publicate', fg: AppColors.green, bg: AppColors.greenSoft)
           else if (isPast)
@@ -287,6 +284,26 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
           ),
         ],
       ]),
+    );
+  }
+
+  /// Data zilei, urmată (gri, mic) de volumul maxim planificat pentru toate titlurile.
+  Widget _dateWithTotal(DateTime d, List<CalendarEntry> planned, double size) {
+    final total = plannedMaxTotal(planned);
+    return Text.rich(
+      TextSpan(children: [
+        TextSpan(
+          text: '${weekdayName(d)[0].toUpperCase()}${weekdayName(d).substring(1)}, ${date(d)}',
+          style: TextStyle(fontSize: size, fontWeight: FontWeight.w600, color: AppColors.text),
+        ),
+        if (total != null)
+          TextSpan(
+            text: ' · ${NumberFormat('#,##0', 'ro').format(total)} mil. lei',
+            style: const TextStyle(fontSize: 11.5, fontWeight: FontWeight.w400, color: AppColors.textFaint),
+          ),
+      ]),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
     );
   }
 
@@ -382,4 +399,22 @@ Map<DateTime, List<CalendarEntry>> plannedAuctions(VmsDataset data, DateTime now
         : a.type.compareTo(b.type));
   }
   return m;
+}
+
+/// Volumul maxim planificat (mil. lei) pentru titlurile unei zile: capătul de sus al fiecărui
+/// interval publicat de MF („1200-1400” → 1400). Null dacă niciun titlu nu are volum.
+double? plannedMaxTotal(List<CalendarEntry> planned) {
+  double? total;
+  for (final e in planned) {
+    final v = e.volume;
+    if (v == null) continue;
+    final nums = RegExp(r'\d+(?:[.,]\d+)?')
+        .allMatches(v.replaceAll(RegExp(r'(?<=\d)[ \u00A0](?=\d{3}\b)'), ''))
+        .map((m) => double.tryParse(m.group(0)!.replaceAll(',', '.')))
+        .whereType<double>()
+        .toList();
+    if (nums.isEmpty) continue;
+    total = (total ?? 0) + nums.reduce((a, b) => a > b ? a : b);
+  }
+  return total;
 }

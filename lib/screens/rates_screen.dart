@@ -163,9 +163,7 @@ class _BillRatesSectionState extends State<BillRatesSection> {
             const SizedBox(height: 6),
             Wrap(spacing: 14, children: [for (final d in const [91, 182, 364]) _legend(d)]),
           ],
-          const SizedBox(height: 8),
-          const Divider(),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           _periodStats(terms.expand(_series).toList(), _auctions(terms)),
         ]),
       ),
@@ -235,17 +233,17 @@ class _BillRatesSectionState extends State<BillRatesSection> {
     final dem = withAnn.fold<double>(0, (t, a) => t + a.demand!);
     final cover = ann > 0 ? dem / ann : null;
     return Column(children: [
-      Row(children: [
-        Expanded(child: Stat('Minim', pct(v.reduce(math.min)), valueSize: 14)),
-        Expanded(child: Stat('Medie', pct(avg), valueSize: 14)),
-        Expanded(child: Stat('Maxim', pct(v.reduce(math.max)), valueSize: 14)),
-        Expanded(child: Stat('Licitații', '${s.length}', valueSize: 14)),
+      StatBoxRow([
+        StatBox('Minim', pct(v.reduce(math.min))),
+        StatBox('Medie', pct(avg)),
+        StatBox('Maxim', pct(v.reduce(math.max))),
+        StatBox('Licitații', '${s.length}'),
       ]),
-      const SizedBox(height: 10),
-      Row(children: [
-        Expanded(flex: 4, child: Stat('Medie ponderată', weighted == null ? '–' : pct(weighted), valueSize: 14)),
-        Expanded(flex: 5, child: Stat('Plasat', placed > 0 ? milLei(placed) : '–', valueSize: 14)),
-        Expanded(flex: 4, child: Stat('Cerere / anunțat', cover == null ? '–' : '${NumberFormat('0', 'ro').format(cover * 100)}%', valueSize: 14)),
+      const SizedBox(height: 6),
+      StatBoxRow([
+        StatBox('Medie ponderată', weighted == null ? '–' : pct(weighted)),
+        StatBox('Plasat', placed > 0 ? milLei(placed) : '–'),
+        StatBox('Cerere / anunțat', cover == null ? '–' : '${NumberFormat('0', 'ro').format(cover * 100)}%'),
       ]),
     ]);
   }

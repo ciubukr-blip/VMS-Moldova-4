@@ -45,6 +45,7 @@ class ZoomableRateChart extends StatefulWidget {
 class _ZoomableRateChartState extends State<ZoomableRateChart> {
   static const _leftReserved = 34.0;
   static const _labelGapPx = 40.0; // distanța minimă între două procente afișate
+  static const _labelEdgePx = 24.0; // sub această distanță de margine, procentul se aliniază spre interior
   static const _labelsBelowYears = 2.6; // procentele apar când se văd cel mult ~2,5 ani
 
   final _ctl = TransformationController();
@@ -232,6 +233,13 @@ class _ZoomableRateChartState extends State<ZoomableRateChart> {
         }
       }
       final lastIndex = spots.length - 1;
+      // procentele de lângă marginile graficului se aliniază spre interior, ca să nu fie tăiate
+      final visLeft = minX + _visStart * span, visRight = minX + _visEnd * span;
+      int labelAlign(FlSpot spot) {
+        if ((spot.x - visLeft) * pxPerYear < _labelEdgePx) return -1;
+        if ((visRight - spot.x) * pxPerYear < _labelEdgePx) return 1;
+        return 0;
+      }
       bars.add(LineChartBarData(
         spots: spots,
         color: se.color,
@@ -241,7 +249,7 @@ class _ZoomableRateChartState extends State<ZoomableRateChart> {
           show: single || showLabels,
           checkToShowDot: (spot, bar) => true,
           getDotPainter: (spot, percent, bar, i) {
-            if (labeled.contains(i)) return _LabelDotPainter(se.color, pct(spot.y));
+            if (labeled.contains(i)) return _LabelDotPainter(se.color, pct(spot.y), align: labelAlign(spot));
             if (i == lastIndex && single) {
               return FlDotCirclePainter(radius: 3.5, color: se.color, strokeWidth: 2, strokeColor: Colors.white);
             }
@@ -384,7 +392,8 @@ class _ZoomableRateChartState extends State<ZoomableRateChart> {
 class _LabelDotPainter extends FlDotPainter {
   final Color color;
   final String text;
-  const _LabelDotPainter(this.color, this.text);
+  final int align; // -1 = textul pornește de la punct spre dreapta, 1 = se termină la punct, 0 = centrat
+  const _LabelDotPainter(this.color, this.text, {this.align = 0});
 
   @override
   void draw(Canvas canvas, FlSpot spot, Offset offsetInCanvas) {
@@ -395,7 +404,12 @@ class _LabelDotPainter extends FlDotPainter {
       textDirection: TextDirection.ltr,
     )..layout();
     final above = offsetInCanvas.dy - tp.height - 5 >= 0;
-    final pos = Offset(offsetInCanvas.dx - tp.width / 2, above ? offsetInCanvas.dy - tp.height - 5 : offsetInCanvas.dy + 5);
+    final left = switch (align) {
+      -1 => offsetInCanvas.dx + 3,
+      1 => offsetInCanvas.dx - tp.width - 3,
+      _ => offsetInCanvas.dx - tp.width / 2,
+    };
+    final pos = Offset(left, above ? offsetInCanvas.dy - tp.height - 5 : offsetInCanvas.dy + 5);
     canvas.drawRRect(
       RRect.fromRectAndRadius(Rect.fromLTWH(pos.dx - 2, pos.dy - 1, tp.width + 4, tp.height + 2), const Radius.circular(3)),
       Paint()..color = Colors.white.withValues(alpha: 0.85),
@@ -413,7 +427,7 @@ class _LabelDotPainter extends FlDotPainter {
   FlDotPainter lerp(FlDotPainter a, FlDotPainter b, double t) => b;
 
   @override
-  List<Object?> get props => [color, text];
+  List<Object?> get props => [color, text, align];
 }
 
 /// Punct invizibil (păstrează atingerea pentru tooltip, fără desen).

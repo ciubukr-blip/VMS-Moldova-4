@@ -373,92 +373,113 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
   }
 
   Widget _holdingBody(Holding h, HoldingMetrics m, bool matured) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Row(children: [
-          TypePill(h.type),
-          const SizedBox(width: 8),
-          Expanded(child: Text(h.isin, style: const TextStyle(fontSize: 14.5, fontWeight: FontWeight.w600))),
-          PopupMenuButton<String>(
-            icon: const Icon(Icons.more_vert, size: 20, color: AppColors.textMuted),
-            onSelected: (v) => v == 'edit' ? _edit(h) : _delete(h),
-            itemBuilder: (_) => const [
-              PopupMenuItem(value: 'edit', child: Text('Editează')),
-              PopupMenuItem(value: 'delete', child: Text('Șterge')),
-            ],
+    final pal = h.isBill ? SectionPalette.bills : SectionPalette.bonds;
+    final cc = couponCount(h, today: DateTime.now());
+    final gainLabel = m.hasEstimates ? 'Câștig estimat' : 'Câștig';
+    final String rateLabel;
+    final double rateValue;
+    if (h.isBill || cc == null) {
+      rateLabel = 'Rata dobânzii';
+      rateValue = m.nominalRate;
+    } else if (m.floating) {
+      rateLabel = m.nextCouponEstimated ? 'Cupon (estimat)' : 'Cupon';
+      rateValue = m.nextCouponRate ?? h.couponRate ?? m.nominalRate;
+    } else {
+      rateLabel = 'Cupon';
+      rateValue = h.couponRate ?? m.nominalRate;
+    }
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      Row(children: [
+        TypePill(h.type),
+        const SizedBox(width: 8),
+        Expanded(child: Text(h.isin, style: const TextStyle(fontSize: 14.5, fontWeight: FontWeight.w600))),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+          decoration: BoxDecoration(color: matured ? AppColors.greenSoft : pal.wash, borderRadius: BorderRadius.circular(7)),
+          child: Text(
+            matured ? 'încasat' : '${intFmt(m.daysLeft)} ${m.daysLeft == 1 ? 'zi rămasă' : 'zile rămase'}',
+            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: matured ? AppColors.green : pal.text),
           ),
-        ]),
-        Padding(
-          padding: const EdgeInsets.only(right: 10),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(
-              '${h.termLabel.isNotEmpty ? '${h.termLabel} · ' : ''}scadență ${date(h.maturity)}'
-              '${matured ? ' · încasat' : ' · ${m.daysLeft} zile rămase'}',
-              style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
-            ),
-            if (h.hasNote) ...[
-              const SizedBox(height: 6),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                decoration: BoxDecoration(color: AppColors.amberSoft.withValues(alpha: 0.6), borderRadius: BorderRadius.circular(8)),
-                child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 1),
-                    child: Icon(Icons.sticky_note_2_outlined, size: 14, color: AppColors.amber),
-                  ),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: Text(h.note!,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 12, color: AppColors.text, height: 1.3)),
-                  ),
-                ]),
-              ),
-            ],
-            const SizedBox(height: 8),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: LinearProgressIndicator(
-                value: m.progress,
-                minHeight: 5,
-                backgroundColor: AppColors.background,
-                color: matured ? AppColors.green : AppColors.primary,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Row(children: [
-              Expanded(child: Stat('Preț', priceFmt(h.price), valueSize: 13.5)),
-              Expanded(child: Stat('Cantitate', intFmt(h.quantity), valueSize: 13.5)),
-              Expanded(child: Stat('Investit', money(m.cost), valueSize: 13.5)),
-            ]),
-            const SizedBox(height: 10),
-            Row(children: [
-              Expanded(child: Stat('Rata dobânzii', pct(m.nominalRate), valueSize: 13.5, valueColor: AppColors.primary)),
-              Expanded(child: Stat('Rentabilitate', pct(m.investmentReturn), valueSize: 13.5, valueColor: AppColors.primary)),
-              Expanded(child: Stat('Dobândă', '+${money(m.interest)}', valueSize: 13.5, valueColor: AppColors.green)),
-            ]),
-            if (m.floating)
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text(
-                    'Cupon flotant: BT 182 zile${m.margin != null ? ' + ${priceFmt(m.margin!)} p.p.' : ''}'
-                    '${m.nextCouponRate != null ? ' · următorul ${pct(m.nextCouponRate!)}${m.nextCouponEstimated ? ' (estimat)' : ''}' : ''}'
-                    ' · cupoane de încasat ${lei(m.couponsTotal)}${m.hasEstimates ? ' (estimat)' : ''}',
-                    style: const TextStyle(fontSize: 11.5, color: AppColors.textMuted)),
-              )
-            else if (h.couponRate != null && !h.isBill)
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Text('Cupon ${pct(h.couponRate!)} · cupoane de încasat ${lei(m.couponsTotal)}',
-                    style: const TextStyle(fontSize: 11.5, color: AppColors.textMuted)),
-              ),
-            if (h.manual)
-              const Padding(
-                padding: EdgeInsets.only(top: 6),
-                child: Text('ISIN introdus manual', style: TextStyle(fontSize: 11, color: AppColors.amber)),
-              ),
-          ]),
         ),
-      ]);
+        PopupMenuButton<String>(
+          icon: const Icon(Icons.more_vert, size: 20, color: AppColors.textMuted),
+          onSelected: (v) => v == 'edit' ? _edit(h) : _delete(h),
+          itemBuilder: (_) => const [
+            PopupMenuItem(value: 'edit', child: Text('Editează')),
+            PopupMenuItem(value: 'delete', child: Text('Șterge')),
+          ],
+        ),
+      ]),
+      Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Text(
+            '${h.termLabel.isNotEmpty ? '${h.termLabel} · ' : ''}scadență ${date(h.maturity)}',
+            style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+          ),
+          if (h.hasNote) ...[
+            const SizedBox(height: 6),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+              decoration: BoxDecoration(color: AppColors.amberSoft.withValues(alpha: 0.6), borderRadius: BorderRadius.circular(8)),
+              child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 1),
+                  child: Icon(Icons.sticky_note_2_outlined, size: 14, color: AppColors.amber),
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(h.note!,
+                      maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, color: AppColors.text, height: 1.3)),
+                ),
+              ]),
+            ),
+          ],
+          const SizedBox(height: 12),
+          Row(children: [
+            Expanded(child: Stat('Investit (plătit)', money(m.cost), valueSize: 13.5, align: CrossAxisAlignment.center)),
+            Expanded(child: Stat('Valoare nominală', money(m.principalAtMaturity), valueSize: 13.5, align: CrossAxisAlignment.center)),
+            Expanded(
+              child: Stat(gainLabel, '+${money(m.interest)}', valueSize: 13.5, valueColor: AppColors.green, align: CrossAxisAlignment.center),
+            ),
+          ]),
+          const SizedBox(height: 5),
+          Text(
+            'Valoarea nominală = suma primită la scadență (${intFmt(h.quantity)} × 100 lei)',
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 10.5, color: AppColors.textFaint),
+          ),
+          if (cc != null) ...[
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(color: pal.wash, border: Border.all(color: pal.line), borderRadius: BorderRadius.circular(10)),
+              child: Text.rich(
+                TextSpan(children: [
+                  TextSpan(text: 'Cupoane: ${cc.mine} din ${cc.total}', style: TextStyle(fontWeight: FontWeight.w600, color: pal.text)),
+                  TextSpan(text: ' · încasate ${cc.received}'),
+                  if (cc.next != null) TextSpan(text: '\nurmătorul (${cc.nextOrdinal == 1 ? 'primul' : 'al ${cc.nextOrdinal}-lea'}) ${date(cc.next!)}'),
+                ]),
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 12, color: AppColors.text, height: 1.45),
+              ),
+            ),
+          ],
+          const SizedBox(height: 10),
+          Row(children: [
+            Expanded(child: Stat('Preț', priceFmt(h.price), valueSize: 13.5, align: CrossAxisAlignment.center)),
+            Expanded(child: Stat(rateLabel, pct(rateValue), valueSize: 13.5, valueColor: AppColors.primary, align: CrossAxisAlignment.center)),
+            Expanded(
+              child: Stat('Rentabilitate', pct(m.investmentReturn), valueSize: 13.5, valueColor: AppColors.primary, align: CrossAxisAlignment.center),
+            ),
+          ]),
+          if (h.manual)
+            const Padding(
+              padding: EdgeInsets.only(top: 6),
+              child: Text('ISIN introdus manual', textAlign: TextAlign.center, style: TextStyle(fontSize: 11, color: AppColors.amber)),
+            ),
+        ]),
+      ),
+    ]);
   }
 }

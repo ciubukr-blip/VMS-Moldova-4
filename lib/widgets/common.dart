@@ -133,11 +133,17 @@ class Stat extends StatelessWidget {
   final double valueSize;
   const Stat(this.label, this.value, {super.key, this.valueColor, this.align = CrossAxisAlignment.start, this.valueSize = 15});
 
+  TextAlign get _textAlign => switch (align) {
+        CrossAxisAlignment.center => TextAlign.center,
+        CrossAxisAlignment.end => TextAlign.end,
+        _ => TextAlign.start,
+      };
+
   @override
   Widget build(BuildContext context) => Column(crossAxisAlignment: align, mainAxisSize: MainAxisSize.min, children: [
-        Text(label, style: const TextStyle(fontSize: 11.5, color: AppColors.textMuted)),
+        Text(label, textAlign: _textAlign, style: const TextStyle(fontSize: 11.5, color: AppColors.textMuted)),
         const SizedBox(height: 3),
-        Text(value, style: TextStyle(fontSize: valueSize, fontWeight: FontWeight.w600, color: valueColor ?? AppColors.text)),
+        Text(value, textAlign: _textAlign, style: TextStyle(fontSize: valueSize, fontWeight: FontWeight.w600, color: valueColor ?? AppColors.text)),
       ]);
 }
 
@@ -366,5 +372,46 @@ class OutlinedTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
         ),
         child: child,
+      );
+}
+
+/// O cifră într-o căsuță, cu denumirea și valoarea centrate (statisticile de pe ecranul Dobânzi).
+class StatBox extends StatelessWidget {
+  final String label;
+  final String value;
+  const StatBox(this.label, this.value, {super.key});
+
+  @override
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 7),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF5F7FA),
+          border: Border.all(color: const Color(0xFFE7EAF0)),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          FittedBox(fit: BoxFit.scaleDown, child: Text(label, maxLines: 1, style: const TextStyle(fontSize: 11, color: AppColors.textMuted))),
+          const SizedBox(height: 3),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(value, maxLines: 1, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.text)),
+          ),
+        ]),
+      );
+}
+
+/// Un rând de căsuțe [StatBox] egale, cu spațiu între ele.
+class StatBoxRow extends StatelessWidget {
+  final List<StatBox> boxes;
+  const StatBoxRow(this.boxes, {super.key});
+
+  @override
+  Widget build(BuildContext context) => IntrinsicHeight(
+        child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          for (final (i, b) in boxes.indexed) ...[
+            if (i > 0) const SizedBox(width: 6),
+            Expanded(child: b),
+          ],
+        ]),
       );
 }
