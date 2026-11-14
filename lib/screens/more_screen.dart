@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../config.dart';
 import '../models/dataset.dart';
+import '../models/holding.dart';
 import '../services/app_update.dart';
+import '../services/portfolio_backup.dart';
 import '../services/format.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
@@ -13,10 +15,12 @@ class MoreScreen extends StatelessWidget {
   final bool syncing;
   final String? syncMessage;
   final VoidCallback onSync;
+  final List<Holding> holdings;
 
   const MoreScreen({
     super.key,
     required this.data,
+    required this.holdings,
     required this.lastChecked,
     required this.syncing,
     required this.syncMessage,
@@ -81,7 +85,7 @@ class MoreScreen extends StatelessWidget {
       ),
       if (AppUpdateService.enabled) ...[
         const SizedBox(height: 10),
-        const AppUpdateCard(),
+        AppUpdateCard(holdings: holdings),
       ],
       const SizedBox(height: 10),
       const AppCard(
@@ -115,8 +119,12 @@ class MoreScreen extends StatelessWidget {
 /// Verifică la deschidere dacă în GitHub Releases există un APK mai nou și oferă
 /// descărcarea lui. APK-ul nou, semnat cu aceeași cheie, se instalează peste cel
 /// vechi, fără ștergere, și păstrează portofoliul și setările.
+///
+/// Înainte de descărcare salvează o copie a portofoliului (fișier în Descărcări și
+/// clipboard), pentru cazul în care telefonul cere dezinstalarea versiunii vechi.
 class AppUpdateCard extends StatefulWidget {
-  const AppUpdateCard({super.key});
+  final List<Holding> holdings;
+  const AppUpdateCard({super.key, this.holdings = const []});
 
   @override
   State<AppUpdateCard> createState() => _AppUpdateCardState();
@@ -128,6 +136,24 @@ class _AppUpdateCardState extends State<AppUpdateCard> {
   bool _checked = false;
   String? _error;
   AppUpdate? _update;
+  bool _backingUp = false;
+
+  Future<void> _download(AppUpdate u) async {
+    setState(() => _backingUp = true);
+    final holdings = widget.holdings;
+    final path = await PortfolioBackup.beforeUpdate(holdings);
+    if (!mounted) return;
+    setState(() => _backingUp = false);
+    if (holdings.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: const Duration(seconds: 6),
+        content: Text(path != null
+            ? 'Copie a portofoliului salvată în ${PortfolioBackup.folderLabel} și în clipboard.'
+            : 'Copie a portofoliului salvată în clipboard.'),
+      ));
+    }
+    await openLink(context, u.apkUrl);
+  }
 
   @override
   void initState() {
@@ -170,7 +196,7 @@ class _AppUpdateCardState extends State<AppUpdateCard> {
           const SizedBox(height: 8),
           Text(
             'Compilarea ${u.build} (ai compilarea $kAppBuild). Descarcă fișierul, apoi deschide-l și apasă „Actualizează”. '
-            'Portofoliul și setările rămân.',
+            'Portofoliul și setările rămân. Înainte de descărcare se salvează automat o copie a portofoliului.',
             style: const TextStyle(fontSize: 12.5, color: AppColors.green, height: 1.4),
           ),
           const SizedBox(height: 10),
@@ -178,8 +204,10 @@ class _AppUpdateCardState extends State<AppUpdateCard> {
             width: double.infinity,
             child: FilledButton.icon(
               style: FilledButton.styleFrom(backgroundColor: AppColors.green),
-              onPressed: () => openLink(context, u.apkUrl),
-              icon: const Icon(Icons.download, size: 18),
+              onPressed: _backingUp ? null : () => _download(u),
+              icon: _backingUp
+                  ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                  : const Icon(Icons.download, size: 18),
               label: const Text('Descarcă actualizarea'),
             ),
           ),

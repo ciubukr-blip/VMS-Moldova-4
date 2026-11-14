@@ -15,7 +15,7 @@ const int kDataSchema = 1;
 /// Valoarea nominală standard a unei VMS (Regulament VMS, pct. 7).
 const double kNominal = 100;
 
-const String kAppVersion = '3.3.0';
+const String kAppVersion = '3.4.0';
 
 /// Numărul compilării (GitHub Actions run_number), transmis la build cu --dart-define=APP_BUILD.
 /// 0 = compilare locală: verificarea actualizărilor este oprită.

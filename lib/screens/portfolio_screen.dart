@@ -8,6 +8,7 @@ import '../models/dataset.dart';
 import '../models/holding.dart';
 import '../services/finance.dart';
 import '../services/format.dart';
+import '../services/portfolio_backup.dart';
 import '../services/portfolio_store.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
@@ -69,29 +70,95 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
     ));
   }
 
+  Future<void> _saveFile() async {
+    final path = await PortfolioBackup.saveToFile(widget.holdings);
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(path != null
+          ? 'Copie salvată în ${PortfolioBackup.folderLabel}. Rămâne acolo și dacă aplicația e dezinstalată.'
+          : 'Fișierul nu a putut fi salvat (necesită Android 10 sau mai nou). Folosește „Exportă”.'),
+    ));
+  }
+
   Future<void> _import() async {
     final clip = await Clipboard.getData('text/plain');
     if (!mounted) return;
+    await _restoreFrom(clip?.text, 'Clipboard-ul nu conține un export VMS Moldova valid.');
+  }
+
+  Future<void> _importFile() async {
+    final text = await PortfolioBackup.pickFile();
+    if (!mounted || text == null) return;
+    await _restoreFrom(text, 'Fișierul ales nu este o copie VMS Moldova validă.');
+  }
+
+  Future<void> _restoreFrom(String? raw, String invalidMessage) async {
     List<Holding> list;
     try {
-      list = PortfolioStore.decode(clip?.text ?? '');
+      list = PortfolioStore.decode(raw ?? '');
     } catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Clipboard-ul nu conține un export VMS Moldova valid.')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(invalidMessage)));
       return;
     }
     final ok = await showDialog<bool>(
       context: context,
       builder: (c) => AlertDialog(
-        title: const Text('Importă portofoliul?'),
-        content: Text('${list.length} poziții vor înlocui portofoliul curent (${widget.holdings.length} poziții).'),
+        title: Text(widget.holdings.isEmpty ? 'Restaurezi portofoliul?' : 'Importă portofoliul?'),
+        content: Text(widget.holdings.isEmpty
+            ? 'Copia conține ${list.length} poziții.'
+            : '${list.length} poziții vor înlocui portofoliul curent (${widget.holdings.length} poziții).'),
         actions: [
           TextButton(onPressed: () => Navigator.pop(c, false), child: const Text('Anulează')),
-          FilledButton(onPressed: () => Navigator.pop(c, true), child: const Text('Înlocuiește')),
+          FilledButton(onPressed: () => Navigator.pop(c, true), child: Text(widget.holdings.isEmpty ? 'Restaurează' : 'Înlocuiește')),
         ],
       ),
     );
     if (ok == true) widget.onReplaceAll(list);
   }
+
+  void _menu(String v) {
+    switch (v) {
+      case 'export':
+        _export();
+      case 'file':
+        _saveFile();
+      case 'import':
+        _import();
+      case 'importFile':
+        _importFile();
+    }
+  }
+
+  /// Card afișat cât timp portofoliul e gol: restaurare rapidă după o reinstalare.
+  Widget _restoreCard() => AppCard(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const Text('Ai deja o copie a portofoliului?', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+          const SizedBox(height: 6),
+          const Text(
+            'După o reinstalare, poți restaura pozițiile din copia salvată automat în '
+            '${PortfolioBackup.folderLabel} sau din clipboard.',
+            style: TextStyle(fontSize: 12.5, color: AppColors.textMuted, height: 1.4),
+          ),
+          const SizedBox(height: 10),
+          Row(children: [
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: _importFile,
+                icon: const Icon(Icons.folder_open_outlined, size: 18),
+                label: const Text('Din fișier'),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: _import,
+                icon: const Icon(Icons.content_paste, size: 18),
+                label: const Text('Din clipboard'),
+              ),
+            ),
+          ]),
+        ]),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -107,16 +174,19 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
         subtitle: 'Salvat doar pe acest telefon',
         trailing: PopupMenuButton<String>(
           icon: const Icon(Icons.more_horiz, color: AppColors.textMuted),
-          onSelected: (v) => v == 'export' ? _export() : _import(),
+          onSelected: _menu,
           itemBuilder: (_) => const [
             PopupMenuItem(value: 'export', child: Text('Exportă (copiază backup)')),
+            PopupMenuItem(value: 'file', child: Text('Salvează copie în Descărcări')),
             PopupMenuItem(value: 'import', child: Text('Importă din clipboard')),
+            PopupMenuItem(value: 'importFile', child: Text('Importă din fișier')),
           ],
         ),
       ),
       _summaryCard(sum, active.length),
       const SizedBox(height: 12),
       FilledButton.icon(onPressed: _add, icon: const Icon(Icons.add, size: 20), label: const Text('Adaugă investiție')),
+      if (widget.holdings.isEmpty) ...[const SizedBox(height: 12), _restoreCard()],
       if (active.isNotEmpty) ...[
         const SectionHeader('Încasări viitoare'),
         _ladder(active, now),

@@ -1,4 +1,4 @@
-# VMS Moldova – versiunea 3.3
+# VMS Moldova – versiunea 3.4
 
 Aplicație Android (Flutter) pentru valorile mobiliare de stat ale Republicii Moldova:
 rate la licitații, calendarul MF, rezultatele licitațiilor și portofoliul personal
@@ -16,6 +16,13 @@ calculat conform Regulamentului VMS.
 | Licitații | Calendar lunar cu zilele de licitație (BT/OS), cardul „Următoarea licitație”, detaliile fiecărei zile și rezultatele ultimei licitații (ISIN, volume, rate min/medie/max, cerere/ofertă, preț mediu). Linkurile spre calendarul trimestrial MF sunt actualizate. |
 | Date | Un singur fișier `vms_data.json` (rate, ISIN-uri, rezultate, calendar), inclus în APK și actualizat automat online. |
 | Publicare | `applicationId` definitiv, semnare release cu cheia ta, permisiune INTERNET, versiune 3.0.0+3, migrare automată a portofoliului din v2, ecran de confidențialitate și avertisment. |
+
+## Ce este nou în 3.4
+
+- **Portofoliul nu se mai pierde la actualizare:** butonul „Descarcă actualizarea” salvează întâi o copie a portofoliului în *Descărcări › VMS Moldova* (fișier JSON, rămâne și după dezinstalare) și în clipboard.
+- **Restaurare după reinstalare:** la prima pornire cu portofoliul gol, aplicația găsește copia din clipboard și propune restaurarea. Ecranul Portofoliu gol are butoanele „Din fișier” și „Din clipboard”. Meniul ⋯ are în plus „Salvează copie în Descărcări” și „Importă din fișier”.
+- **Protecție la citire:** dacă unele poziții salvate nu pot fi citite (de ex. după o schimbare de format), celelalte se afișează, iar textul original se păstrează separat (`portfolio_v3_unreadable`) și nu mai este suprascris la următoarea salvare.
+- Partea nativă (salvare prin MediaStore, selector de fișiere) este în `MainActivity.kt`, scrisă de `tool/setup_android.dart`.
 
 ## Ce este nou în 3.3
 
@@ -112,6 +119,7 @@ de mai sus devine „upload key” și poate fi resetată prin Google dacă se p
 
 - Fiecare rulare „Compilare APK” publică în Releases un APK cu eticheta `apk-<număr>`. Numărul rulării devine `versionCode`, deci crește la fiecare compilare.
 - Cu secretele `KEYSTORE_*` setate, toate APK-urile au aceeași semnătură și se instalează peste versiunea existentă, fără ștergere. Portofoliul și setările rămân.
+- Compilările până la 15 inclusiv au fost semnate cu chei de test diferite. Trecerea de la una dintre ele la o compilare ≥ 16 cere dezinstalarea, deci portofoliul trebuie restaurat din copie (vezi 3.4).
 - În ecranul „Mai mult”, aplicația verifică ultimul release din GitHub. Dacă e mai nou, afișează „Actualizare disponibilă” cu butonul de descărcare.
 - Compilările locale (fără `--dart-define=APP_BUILD` și `GITHUB_REPO`) nu verifică actualizări.
 

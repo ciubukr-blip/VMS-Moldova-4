@@ -9,6 +9,7 @@
 //  5. .gitignore pentru cheie și parole
 //  6. core library desugaring (necesar pentru flutter_local_notifications)
 //  7. notificări: POST_NOTIFICATIONS, RECEIVE_BOOT_COMPLETED și receptoarele pentru alertele programate
+//  8. MainActivity cu canalul „md.vmsmoldova/backup” (copii ale portofoliului în Descărcări)
 import 'dart:io';
 
 const appId = 'md.vmsmoldova.app';
@@ -32,6 +33,7 @@ void main() {
     exit(1);
   }
   _patchManifest(manifest);
+  _patchMainActivity();
   _patchGitignore();
 
   final keyProps = File('android/key.properties');
@@ -157,6 +159,116 @@ void _patchManifest(File f) {
     stdout.writeln('• ${f.path} era deja configurat');
   }
 }
+
+const _activityMarker = '// vms-moldova: backup channel';
+
+/// Înlocuiește MainActivity generată de `flutter create` cu una care expune canalul
+/// de backup: `save` scrie un fișier în Download/VMS Moldova prin MediaStore
+/// (Android 10+, fără permisiuni), `pick` deschide selectorul de fișiere al
+/// sistemului și returnează textul fișierului ales. Pachetul Kotlin se păstrează.
+void _patchMainActivity() {
+  final dir = Directory('android/app/src/main/kotlin');
+  if (!dir.existsSync()) _fail('nu găsesc android/app/src/main/kotlin');
+  final f = dir
+      .listSync(recursive: true)
+      .whereType<File>()
+      .firstWhere((e) => e.path.endsWith('MainActivity.kt'), orElse: () => _fail('nu găsesc MainActivity.kt'));
+  final s = f.readAsStringSync();
+  if (s.contains(_activityMarker)) {
+    stdout.writeln('• ${f.path} era deja configurat');
+    return;
+  }
+  final pkg = RegExp(r'^package\s+([\w.]+)', multiLine: true).firstMatch(s)?.group(1);
+  if (pkg == null) _fail('nu găsesc linia package în ${f.path}');
+  f.writeAsStringSync(_mainActivity.replaceFirst('__PACKAGE__', pkg));
+  stdout.writeln('✔ ${f.path} actualizat (backup portofoliu)');
+}
+
+const _mainActivity = r"""
+package __PACKAGE__
+
+// vms-moldova: backup channel
+import android.app.Activity
+import android.content.ContentValues
+import android.content.Intent
+import android.os.Build
+import android.provider.MediaStore
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodChannel
+
+class MainActivity : FlutterActivity() {
+    private val pickRequest = 4711
+    private var pendingPick: MethodChannel.Result? = null
+
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        super.configureFlutterEngine(flutterEngine)
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "md.vmsmoldova/backup")
+            .setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "save" -> {
+                        val name = call.argument<String>("name") ?: "portofoliu.json"
+                        val content = call.argument<String>("content") ?: ""
+                        try {
+                            result.success(saveToDownloads(name, content))
+                        } catch (e: Exception) {
+                            result.error("save_failed", e.message, null)
+                        }
+                    }
+                    "pick" -> {
+                        if (pendingPick != null) {
+                            result.error("busy", "Selectorul este deja deschis", null)
+                        } else {
+                            pendingPick = result
+                            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                                addCategory(Intent.CATEGORY_OPENABLE)
+                                type = "*/*"
+                            }
+                            try {
+                                startActivityForResult(intent, pickRequest)
+                            } catch (e: Exception) {
+                                pendingPick = null
+                                result.error("pick_failed", e.message, null)
+                            }
+                        }
+                    }
+                    else -> result.notImplemented()
+                }
+            }
+    }
+
+    private fun saveToDownloads(name: String, content: String): String? {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return null
+        val values = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
+            put(MediaStore.MediaColumns.MIME_TYPE, "application/json")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, "Download/VMS Moldova")
+        }
+        val uri = contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values) ?: return null
+        val out = contentResolver.openOutputStream(uri) ?: return null
+        out.use { it.write(content.toByteArray(Charsets.UTF_8)) }
+        return "Download/VMS Moldova/" + name
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != pickRequest) return
+        val result = pendingPick ?: return
+        pendingPick = null
+        val uri = data?.data
+        if (resultCode != Activity.RESULT_OK || uri == null) {
+            result.success(null)
+            return
+        }
+        try {
+            val text = contentResolver.openInputStream(uri)?.use { it.readBytes().toString(Charsets.UTF_8) }
+            result.success(text)
+        } catch (e: Exception) {
+            result.error("read_failed", e.message, null)
+        }
+    }
+}
+""";
 
 void _patchGitignore() {
   final f = File('.gitignore');

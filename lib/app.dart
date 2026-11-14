@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -143,9 +144,49 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
       });
       _refresh();
       _setupNotifications(sp);
+      _offerRestore(sp);
     } catch (e) {
       if (mounted) setState(() => loadError = '$e');
     }
+  }
+
+  /// După o reinstalare portofoliul e gol, dar copia făcută la „Descarcă actualizarea”
+  /// e de obicei încă în clipboard. Verificăm o singură dată per instalare (Android
+  /// afișează un mesaj la citirea clipboard-ului) și propunem restaurarea.
+  Future<void> _offerRestore(SharedPreferences sp) async {
+    final messenger = ScaffoldMessenger.of(context);
+    if (_store.hadUnreadableData) {
+      messenger.showSnackBar(const SnackBar(
+        duration: Duration(seconds: 8),
+        content: Text('Unele poziții salvate nu au putut fi citite de această versiune. '
+            'Au fost păstrate în siguranță și vor fi recuperate de o versiune viitoare.'),
+      ));
+    }
+    if (holdings.isNotEmpty || (sp.getBool('restore_checked') ?? false)) return;
+    await sp.setBool('restore_checked', true);
+    final clip = await Clipboard.getData('text/plain');
+    final text = clip?.text;
+    if (text == null || !text.contains('vms-moldova-portfolio')) return;
+    List<Holding> list;
+    try {
+      list = PortfolioStore.decode(text);
+    } catch (_) {
+      return;
+    }
+    if (list.isEmpty || !mounted || holdings.isNotEmpty) return;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: const Text('Restaurezi portofoliul?'),
+        content: Text('Am găsit în clipboard o copie a portofoliului cu ${list.length} poziții '
+            '(de exemplu, cea salvată înainte de actualizare).'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(c, false), child: const Text('Nu acum')),
+          FilledButton(onPressed: () => Navigator.pop(c, true), child: const Text('Restaurează')),
+        ],
+      ),
+    );
+    if (ok == true && mounted && holdings.isEmpty) await _saveHoldings(list);
   }
 
   Future<void> _sync({bool force = false, bool quiet = false}) async {
@@ -233,6 +274,7 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
           syncing: syncing,
           syncMessage: syncMessage,
           onSync: () => _sync(force: true),
+          holdings: holdings,
         ),
       ]);
     }
