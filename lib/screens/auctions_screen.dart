@@ -259,8 +259,9 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
         else
           for (final e in planned)
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 6),
-              child: Row(children: [
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: OutlinedTile(
+                child: Row(children: [
                 TypePill(e.type),
                 const SizedBox(width: 10),
                 Expanded(
@@ -273,7 +274,8 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
                   ]),
                 ),
                 if (e.volume != null) Text('${e.volume} mil. lei', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
-              ]),
+                ]),
+              ),
             ),
         if (planned.any((e) => e.sourceUrl != null)) ...[
           const SizedBox(height: 4),
@@ -292,10 +294,7 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
   Widget _resultsCard(List<AuctionResult> list) => AppCard(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          for (final (i, a) in list.indexed) ...[
-            if (i > 0) const Padding(padding: EdgeInsets.symmetric(vertical: 6), child: Divider()),
-            _resultRow(a),
-          ],
+          for (final a in list) _resultRow(a),
           const SizedBox(height: 6),
           const InfoNote('Volume în milioane lei (nominal). Rate nominale anuale: minimă, medie ponderată, maximă acceptată.'),
         ]),
@@ -305,8 +304,9 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
     final s = widget.data.byIsin[a.isin];
     final cover = (a.demand != null && a.announced != null && a.announced! > 0) ? a.demand! / a.announced! : null;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: OutlinedTile(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
           TypePill(a.type),
           const SizedBox(width: 8),
@@ -337,7 +337,8 @@ class _AuctionsScreenState extends State<AuctionsScreen> {
             style: const TextStyle(fontSize: 11, color: AppColors.textMuted),
           ),
         ],
-      ]),
+        ]),
+      ),
     );
   }
 }

@@ -9,14 +9,15 @@ class AppCard extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final VoidCallback? onTap;
   final Color? color;
-  const AppCard({super.key, required this.child, this.padding = const EdgeInsets.all(16), this.onTap, this.color});
+  final BorderSide side;
+  const AppCard({super.key, required this.child, this.padding = const EdgeInsets.all(16), this.onTap, this.color, this.side = BorderSide.none});
 
   @override
   Widget build(BuildContext context) {
     final content = Padding(padding: padding, child: child);
     return Material(
       color: color ?? AppColors.surface,
-      borderRadius: BorderRadius.circular(20),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: side),
       clipBehavior: Clip.antiAlias,
       child: onTap == null ? content : InkWell(onTap: onTap, child: content),
     );
@@ -203,7 +204,7 @@ class Segmented<T> extends StatelessWidget {
       final v = values[i];
       if (p != null && i > 0) {
         final hide = v == selected || values[i - 1] == selected;
-        items.add(Container(width: 1, height: 16, color: hide ? Colors.transparent : const Color(0xFFE3E7ED)));
+        items.add(Container(width: 1, height: 16, color: hide ? Colors.transparent : const Color(0xFFCDD3DC)));
       }
       final on = v == selected;
       items.add(Expanded(
@@ -216,6 +217,7 @@ class Segmented<T> extends StatelessWidget {
             decoration: BoxDecoration(
               color: on ? (p?.soft ?? AppColors.surface) : Colors.transparent,
               borderRadius: BorderRadius.circular(9),
+              border: p == null ? null : Border.all(color: on ? p.line : Colors.transparent),
               boxShadow: on && p == null ? const [BoxShadow(color: Color(0x14000000), blurRadius: 4, offset: Offset(0, 1))] : null,
             ),
             alignment: Alignment.center,
@@ -226,7 +228,7 @@ class Segmented<T> extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 12.5,
                   fontWeight: on ? FontWeight.w600 : FontWeight.w500,
-                  color: on ? (p?.text ?? AppColors.text) : AppColors.textMuted,
+                  color: on ? (p?.text ?? AppColors.text) : (p == null ? AppColors.textMuted : const Color(0xFF4B5563)),
                 )),
           ),
         ),
@@ -234,46 +236,16 @@ class Segmented<T> extends StatelessWidget {
     }
     return Container(
       padding: const EdgeInsets.all(3),
-      decoration: BoxDecoration(color: p == null ? AppColors.background : const Color(0xFFF2F4F7), borderRadius: BorderRadius.circular(12)),
+      decoration: p == null
+          ? BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(12))
+          : BoxDecoration(
+              color: const Color(0xFFE9ECF1),
+              border: Border.all(color: const Color(0xFFD9DEE6)),
+              borderRadius: BorderRadius.circular(12),
+            ),
       child: Row(children: items),
     );
   }
-}
-
-/// File subliniate (ex. Maximă / Medie / Minimă) – un nivel mai discret decât [Segmented].
-class UnderlineTabs<T> extends StatelessWidget {
-  final List<T> values;
-  final T selected;
-  final String Function(T) label;
-  final ValueChanged<T> onChanged;
-  final SectionPalette palette;
-  const UnderlineTabs({super.key, required this.values, required this.selected, required this.label, required this.onChanged, required this.palette});
-
-  @override
-  Widget build(BuildContext context) => Container(
-        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color(0xFFEEF0F4)))),
-        child: Row(children: [
-          for (final v in values)
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => onChanged(v),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 150),
-                margin: const EdgeInsets.only(right: 18),
-                padding: const EdgeInsets.fromLTRB(2, 6, 2, 6),
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: v == selected ? palette.underline : Colors.transparent, width: 2)),
-                ),
-                child: Text(label(v),
-                    style: TextStyle(
-                      fontSize: 12.5,
-                      fontWeight: v == selected ? FontWeight.w600 : FontWeight.w500,
-                      color: v == selected ? palette.text : AppColors.textFaint,
-                    )),
-              ),
-            ),
-        ]),
-      );
 }
 
 /// Cip de an, colorat în nuanța secțiunii când e ales.
@@ -292,7 +264,7 @@ class YearChip extends StatelessWidget {
           selected: selected,
           onSelected: (_) => onTap(),
           selectedColor: palette.wash,
-          side: BorderSide(color: selected ? palette.line : AppColors.divider),
+          side: BorderSide(color: selected ? palette.line : const Color(0xFFDCE1E8)),
           visualDensity: VisualDensity.compact,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
@@ -349,5 +321,50 @@ class SectionSwitch extends StatelessWidget {
           _half('Bonuri · BT', !bonds, SectionPalette.bills, () => onChanged(false)),
           _half('Obligațiuni · OS', bonds, SectionPalette.bonds, () => onChanged(true)),
         ]),
+      );
+}
+
+/// Explicația de la finalul unei secțiuni (ce este un BT / o OS).
+class SectionExplainer extends StatelessWidget {
+  final String title;
+  final String text;
+  final SectionPalette palette;
+  const SectionExplainer({super.key, required this.title, required this.text, required this.palette});
+
+  @override
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.fromLTRB(12, 10, 12, 11),
+        decoration: BoxDecoration(color: palette.wash, borderRadius: BorderRadius.circular(14), border: Border.all(color: palette.line)),
+        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Padding(padding: const EdgeInsets.only(top: 1), child: Icon(Icons.help_outline, size: 16, color: palette.text)),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text.rich(
+              TextSpan(children: [
+                TextSpan(text: '$title: ', style: TextStyle(fontWeight: FontWeight.w600, color: palette.text)),
+                TextSpan(text: text),
+              ]),
+              style: const TextStyle(fontSize: 12, color: AppColors.text, height: 1.4),
+            ),
+          ),
+        ]),
+      );
+}
+
+/// Chenar pentru un element dintr-o listă (un titlu planificat, un rezultat de licitație).
+class OutlinedTile extends StatelessWidget {
+  final Widget child;
+  final EdgeInsetsGeometry padding;
+  const OutlinedTile({super.key, required this.child, this.padding = const EdgeInsets.fromLTRB(12, 8, 12, 10)});
+
+  @override
+  Widget build(BuildContext context) => Container(
+        padding: padding,
+        decoration: BoxDecoration(
+          color: const Color(0xFFFBFCFD),
+          border: Border.all(color: const Color(0xFFDCE1E8)),
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: child,
       );
 }

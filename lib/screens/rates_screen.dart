@@ -142,7 +142,7 @@ class _BillRatesSectionState extends State<BillRatesSection> {
             palette: _p,
           ),
           const SizedBox(height: 4),
-          UnderlineTabs<String>(
+          Segmented<String>(
             values: const ['max', 'avg', 'min'],
             selected: metric,
             label: (v) => _metricNames[v]!,
@@ -168,6 +168,13 @@ class _BillRatesSectionState extends State<BillRatesSection> {
           const SizedBox(height: 8),
           _periodStats(terms.expand(_series).toList(), _auctions(terms)),
         ]),
+      ),
+      const SizedBox(height: 10),
+      const SectionExplainer(
+        title: 'Bon de trezorerie (BT)',
+        text: 'titlu de stat emis de Ministerul Finanțelor, cu valoarea nominală de 100 lei și termen de circulație până la un an '
+            '(91, 182 sau 364 de zile). Se emite cu scont, adică la un preț sub 100 lei, și se răscumpără la scadență la valoarea nominală.',
+        palette: _p,
       ),
     ]);
   }
@@ -236,10 +243,9 @@ class _BillRatesSectionState extends State<BillRatesSection> {
       ]),
       const SizedBox(height: 10),
       Row(children: [
-        Expanded(child: Stat('Medie ponderată', weighted == null ? '–' : pct(weighted), valueSize: 14)),
-        Expanded(child: Stat('Plasat', placed > 0 ? milLei(placed) : '–', valueSize: 14)),
-        Expanded(child: Stat('Cerere / anunțat', cover == null ? '–' : '${NumberFormat('0', 'ro').format(cover * 100)}%', valueSize: 14)),
-        const Expanded(child: SizedBox.shrink()),
+        Expanded(flex: 4, child: Stat('Medie ponderată', weighted == null ? '–' : pct(weighted), valueSize: 14)),
+        Expanded(flex: 5, child: Stat('Plasat', placed > 0 ? milLei(placed) : '–', valueSize: 14)),
+        Expanded(flex: 4, child: Stat('Cerere / anunțat', cover == null ? '–' : '${NumberFormat('0', 'ro').format(cover * 100)}%', valueSize: 14)),
       ]),
     ]);
   }

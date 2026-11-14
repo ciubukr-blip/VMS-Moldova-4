@@ -360,8 +360,20 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
     final matured = h.isMatured(now);
     return AppCard(
       onTap: () => _edit(h),
-      padding: const EdgeInsets.fromLTRB(16, 12, 6, 14),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      padding: EdgeInsets.zero,
+      side: const BorderSide(color: Color(0xFFDCE1E8)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Container(height: 3, color: h.isBill ? SectionPalette.bills.line : SectionPalette.bonds.line),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 9, 6, 14),
+          child: _holdingBody(h, m, matured),
+        ),
+      ]),
+    );
+  }
+
+  Widget _holdingBody(Holding h, HoldingMetrics m, bool matured) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(children: [
           TypePill(h.type),
           const SizedBox(width: 8),
@@ -447,7 +459,6 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
               ),
           ]),
         ),
-      ]),
-    );
+      ]);
   }
 }

@@ -89,7 +89,7 @@ class _BondRatesSectionState extends State<BondRatesSection> {
             palette: _p,
           ),
           const SizedBox(height: 4),
-          UnderlineTabs<String>(
+          Segmented<String>(
             values: const ['all', 'fix', 'flot'],
             selected: kind,
             label: (v) => _kindNames[v]!,
@@ -118,6 +118,14 @@ class _BondRatesSectionState extends State<BondRatesSection> {
           const SizedBox(height: 8),
           _periodStats(shown.expand(_series).toList()),
         ]),
+      ),
+      const SizedBox(height: 10),
+      const SectionExplainer(
+        title: 'Obligațiune de stat (OS)',
+        text: 'titlu de stat emis de Ministerul Finanțelor, cu valoarea nominală de 100 lei și termen de circulație de un an și mai mare '
+            '(2, 3, 5, 7 sau 10 ani). Se emite cu scont, la valoarea nominală sau cu primă. Dobânda (cuponul) se plătește periodic '
+            '(de obicei la fiecare 6 luni), cu rată fixă sau flotantă, iar la scadență titlul se răscumpără la valoarea nominală.',
+        palette: _p,
       ),
     ]);
   }
@@ -196,10 +204,9 @@ class _BondRatesSectionState extends State<BondRatesSection> {
       ]),
       const SizedBox(height: 10),
       Row(children: [
-        Expanded(child: Stat('Medie ponderată', weighted == null ? '–' : pct(weighted), valueSize: 14)),
-        Expanded(child: Stat('Plasat', milLei(placed), valueSize: 14)),
-        Expanded(child: Stat('Cerere / anunțat', cover == null ? '–' : '${NumberFormat('0', 'ro').format(cover * 100)}%', valueSize: 14)),
-        const Expanded(child: SizedBox.shrink()),
+        Expanded(flex: 4, child: Stat('Medie ponderată', weighted == null ? '–' : pct(weighted), valueSize: 14)),
+        Expanded(flex: 5, child: Stat('Plasat', milLei(placed), valueSize: 14)),
+        Expanded(flex: 4, child: Stat('Cerere / anunțat', cover == null ? '–' : '${NumberFormat('0', 'ro').format(cover * 100)}%', valueSize: 14)),
       ]),
     ]);
   }
