@@ -5,8 +5,9 @@ on:
     # Orele cron sunt în UTC; ora Chișinăului = UTC+2 iarna, UTC+3 vara (vara totul vine cu o oră mai târziu).
     # Zilele de licitație (marți = BT, miercuri = OS): la fiecare 30 de minute, 12:07–18:37 ora Chișinăului (iarna)
     - cron: "7,37 10-16 * * 2,3"
-    # Restul zilelor: de două ori pe zi, 14:23 și 17:23 ora Chișinăului (iarna) – calendare noi, comunicate de plasare
-    - cron: "23 12,15 * * 0,1,4,5,6"
+    # Luni, joi și vineri: de două ori pe zi, 14:23 și 17:23 ora Chișinăului (iarna) – calendare noi, comunicate de plasare
+    # Sâmbăta și duminica nu rulează (MF nu publică în weekend).
+    - cron: "23 12,15 * * 1,4,5"
   workflow_dispatch: {}
 
 permissions:
