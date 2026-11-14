@@ -184,40 +184,170 @@ Future<void> openLink(BuildContext context, String url) async {
 }
 
 /// Selector compact cu „pastile” (ex. 91 / 182 / 364).
+///
+/// Cu [palette], opțiunea aleasă ia nuanța pastel a secțiunii, iar între
+/// opțiunile neselectate apar linii fine de separare.
 class Segmented<T> extends StatelessWidget {
   final List<T> values;
   final T selected;
   final String Function(T) label;
   final ValueChanged<T> onChanged;
-  const Segmented({super.key, required this.values, required this.selected, required this.label, required this.onChanged});
+  final SectionPalette? palette;
+  const Segmented({super.key, required this.values, required this.selected, required this.label, required this.onChanged, this.palette});
+
+  @override
+  Widget build(BuildContext context) {
+    final p = palette;
+    final items = <Widget>[];
+    for (var i = 0; i < values.length; i++) {
+      final v = values[i];
+      if (p != null && i > 0) {
+        final hide = v == selected || values[i - 1] == selected;
+        items.add(Container(width: 1, height: 16, color: hide ? Colors.transparent : const Color(0xFFE3E7ED)));
+      }
+      final on = v == selected;
+      items.add(Expanded(
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => onChanged(v),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
+            padding: const EdgeInsets.symmetric(vertical: 7),
+            decoration: BoxDecoration(
+              color: on ? (p?.soft ?? AppColors.surface) : Colors.transparent,
+              borderRadius: BorderRadius.circular(9),
+              boxShadow: on && p == null ? const [BoxShadow(color: Color(0x14000000), blurRadius: 4, offset: Offset(0, 1))] : null,
+            ),
+            alignment: Alignment.center,
+            child: Text(label(v),
+                maxLines: 1,
+                overflow: TextOverflow.fade,
+                softWrap: false,
+                style: TextStyle(
+                  fontSize: 12.5,
+                  fontWeight: on ? FontWeight.w600 : FontWeight.w500,
+                  color: on ? (p?.text ?? AppColors.text) : AppColors.textMuted,
+                )),
+          ),
+        ),
+      ));
+    }
+    return Container(
+      padding: const EdgeInsets.all(3),
+      decoration: BoxDecoration(color: p == null ? AppColors.background : const Color(0xFFF2F4F7), borderRadius: BorderRadius.circular(12)),
+      child: Row(children: items),
+    );
+  }
+}
+
+/// File subliniate (ex. Maximă / Medie / Minimă) – un nivel mai discret decât [Segmented].
+class UnderlineTabs<T> extends StatelessWidget {
+  final List<T> values;
+  final T selected;
+  final String Function(T) label;
+  final ValueChanged<T> onChanged;
+  final SectionPalette palette;
+  const UnderlineTabs({super.key, required this.values, required this.selected, required this.label, required this.onChanged, required this.palette});
+
+  @override
+  Widget build(BuildContext context) => Container(
+        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Color(0xFFEEF0F4)))),
+        child: Row(children: [
+          for (final v in values)
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => onChanged(v),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 150),
+                margin: const EdgeInsets.only(right: 18),
+                padding: const EdgeInsets.fromLTRB(2, 6, 2, 6),
+                decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(color: v == selected ? palette.underline : Colors.transparent, width: 2)),
+                ),
+                child: Text(label(v),
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      fontWeight: v == selected ? FontWeight.w600 : FontWeight.w500,
+                      color: v == selected ? palette.text : AppColors.textFaint,
+                    )),
+              ),
+            ),
+        ]),
+      );
+}
+
+/// Cip de an, colorat în nuanța secțiunii când e ales.
+class YearChip extends StatelessWidget {
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+  final SectionPalette palette;
+  const YearChip(this.label, {super.key, required this.selected, required this.onTap, required this.palette});
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(right: 6),
+        child: ChoiceChip(
+          label: Text(label, style: TextStyle(color: selected ? palette.text : AppColors.text, fontWeight: selected ? FontWeight.w600 : FontWeight.w500)),
+          selected: selected,
+          onSelected: (_) => onTap(),
+          selectedColor: palette.wash,
+          side: BorderSide(color: selected ? palette.line : AppColors.divider),
+          visualDensity: VisualDensity.compact,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+      );
+}
+
+/// Card cu o bandă pastel sus (marchează secțiunea BT / OS).
+class BandCard extends StatelessWidget {
+  final Widget child;
+  final SectionPalette palette;
+  final EdgeInsetsGeometry padding;
+  const BandCard({super.key, required this.child, required this.palette, this.padding = const EdgeInsets.fromLTRB(14, 10, 14, 12)});
+
+  @override
+  Widget build(BuildContext context) => AppCard(
+        padding: EdgeInsets.zero,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Container(height: 3, color: palette.line),
+          Padding(padding: padding, child: child),
+        ]),
+      );
+}
+
+/// Comutatorul mare dintre secțiuni (Bonuri · BT | Obligațiuni · OS).
+class SectionSwitch extends StatelessWidget {
+  final bool bonds;
+  final ValueChanged<bool> onChanged;
+  const SectionSwitch({super.key, required this.bonds, required this.onChanged});
+
+  Widget _half(String text, bool on, SectionPalette p, VoidCallback onTap) => Expanded(
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: onTap,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 180),
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: on ? AppColors.surface : Colors.transparent,
+              borderRadius: BorderRadius.circular(11),
+              border: Border.all(color: on ? p.line : Colors.transparent),
+            ),
+            child: Text(text,
+                style: TextStyle(fontSize: 13.5, fontWeight: on ? FontWeight.w600 : FontWeight.w500, color: on ? p.text : AppColors.textMuted)),
+          ),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.all(3),
-        decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(12)),
+        decoration: BoxDecoration(color: const Color(0xFFEAEDF2), borderRadius: BorderRadius.circular(14)),
         child: Row(children: [
-          for (final v in values)
-            Expanded(
-              child: GestureDetector(
-                onTap: () => onChanged(v),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 150),
-                  padding: const EdgeInsets.symmetric(vertical: 7),
-                  decoration: BoxDecoration(
-                    color: v == selected ? AppColors.surface : Colors.transparent,
-                    borderRadius: BorderRadius.circular(9),
-                    boxShadow: v == selected ? const [BoxShadow(color: Color(0x14000000), blurRadius: 4, offset: Offset(0, 1))] : null,
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(label(v),
-                      style: TextStyle(
-                        fontSize: 12.5,
-                        fontWeight: v == selected ? FontWeight.w600 : FontWeight.w500,
-                        color: v == selected ? AppColors.text : AppColors.textMuted,
-                      )),
-                ),
-              ),
-            ),
+          _half('Bonuri · BT', !bonds, SectionPalette.bills, () => onChanged(false)),
+          _half('Obligațiuni · OS', bonds, SectionPalette.bonds, () => onChanged(true)),
         ]),
       );
 }

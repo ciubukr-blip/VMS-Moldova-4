@@ -40,6 +40,32 @@ class AppColors {
       };
 }
 
+/// Nuanțe pastel pentru o secțiune (BT = mentă, OS = caisă): butonul ales,
+/// sublinierea filei, anul ales și banda de sus a cardurilor.
+class SectionPalette {
+  final Color text; // text pe fundal pastel
+  final Color soft; // fundalul opțiunii selectate
+  final Color line; // banda de sus a cardului
+  final Color underline; // sublinierea filei active
+  final Color wash; // fundalul cipului selectat
+  const SectionPalette({required this.text, required this.soft, required this.line, required this.underline, required this.wash});
+
+  static const bills = SectionPalette(
+    text: Color(0xFF2F7D6E),
+    soft: Color(0xFFDDF1EB),
+    line: Color(0xFFBFE3D9),
+    underline: Color(0xFF8FCDBD),
+    wash: Color(0xFFEEF7F4),
+  );
+  static const bonds = SectionPalette(
+    text: Color(0xFFA0673A),
+    soft: Color(0xFFFBEADB),
+    line: Color(0xFFF3D5BC),
+    underline: Color(0xFFEBBF9A),
+    wash: Color(0xFFFCF3EC),
+  );
+}
+
 class AppTheme {
   static ThemeData light() {
     const font = 'Inter';

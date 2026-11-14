@@ -32,6 +32,10 @@ class _HoldingFormState extends State<HoldingForm> {
   final _qty = TextEditingController();
   final _manualIsin = TextEditingController();
   final _manualCoupon = TextEditingController();
+  final _note = TextEditingController();
+
+  /// Sugestii rapide pentru notiță (se adaugă la textul existent).
+  static const _noteSuggestions = ['Familie', 'Studiile copiilor', 'Pensie', 'Fond de urgență'];
 
   Security? _security;
   bool _manual = false;
@@ -48,6 +52,7 @@ class _HoldingFormState extends State<HoldingForm> {
       _price.text = priceFmt(h.price);
       _qty.text = '${h.quantity}';
       _purchase = h.purchaseDate;
+      _note.text = h.note ?? '';
       final s = widget.data.byIsin[h.isin];
       if (s != null && !h.manual) {
         _security = s;
@@ -68,6 +73,7 @@ class _HoldingFormState extends State<HoldingForm> {
     _qty.dispose();
     _manualIsin.dispose();
     _manualCoupon.dispose();
+    _note.dispose();
     super.dispose();
   }
 
@@ -98,9 +104,10 @@ class _HoldingFormState extends State<HoldingForm> {
         price: price,
         quantity: qty,
         manual: true,
+        note: _note.text,
       );
     }
-    return Holding.fromSecurity(_security!, id: id, purchaseDate: purchase, price: price, quantity: qty);
+    return Holding.fromSecurity(_security!, id: id, purchaseDate: purchase, price: price, quantity: qty, note: _note.text);
   }
 
   Future<void> _pickSecurity() async {
@@ -159,6 +166,15 @@ class _HoldingFormState extends State<HoldingForm> {
       return;
     }
     Navigator.pop(context, h);
+  }
+
+  void _addSuggestion(String t) {
+    final cur = _note.text.trim();
+    if (cur.toLowerCase().contains(t.toLowerCase())) return;
+    final next = cur.isEmpty ? t : '$cur · $t';
+    if (next.length > 300) return;
+    _note.text = next;
+    _note.selection = TextSelection.collapsed(offset: next.length);
   }
 
   void _snack(String m) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(m)));
@@ -258,6 +274,30 @@ class _HoldingFormState extends State<HoldingForm> {
             ),
             if (_purchase != null && _issue != null && daysBetween(_issue!, _purchase!) != 0)
               TextButton(onPressed: () => setState(() => _purchase = _issue), child: const Text('= emitere')),
+          ]),
+          const SizedBox(height: 16),
+          // ---- notiță
+          TextFormField(
+            controller: _note,
+            minLines: 1,
+            maxLines: 4,
+            maxLength: 300,
+            textCapitalization: TextCapitalization.sentences,
+            decoration: const InputDecoration(
+              labelText: 'Notiță (opțional)',
+              helperText: 'pentru cine sau pentru ce sunt banii',
+              prefixIcon: Icon(Icons.sticky_note_2_outlined, size: 18),
+            ),
+          ),
+          const SizedBox(height: 6),
+          Wrap(spacing: 6, runSpacing: 6, children: [
+            for (final t in _noteSuggestions)
+              ActionChip(
+                label: Text(t),
+                visualDensity: VisualDensity.compact,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                onPressed: () => setState(() => _addSuggestion(t)),
+              ),
           ]),
           const SizedBox(height: 16),
           if (draft != null) _preview(draft),
